@@ -28,18 +28,18 @@ output-grid-last-step                = areac1 areac2 areac3 areac4 depth
 output-timeseries-basin-outlet       = discharge
 
 input-data =      SBYP1
-input-data =      sac_PCTIM=0.208342984411865
-input-data =      sac_ADIMP=0.156672969227657
+input-data =      sac_PCTIM=0.0150534518994391
+input-data =      sac_ADIMP=0.0255817811703309
 input-data =      sac_RIVA=0.0
 input-data =      sac_SIDE=0.0 sac_RSERV=0.3 sac_EFC=0.0
-input-data =      sac_UZTWM=-46.3594314794289 
-input-data =      sac_LZTWM=-27.5262402290246
-input-data =      sac_LZFSM=-5.48903384166769 
-input-data =      sac_LZFPM=-25.8344480237923
-input-data =      sac_LZSK=-2.98986664842814
+input-data =      sac_UZTWM=-43.1763336905045 
+input-data =      sac_LZTWM=-44.1534601434832
+input-data =      sac_LZFSM=-56.7651874115923 
+input-data =      sac_LZFPM=-42.6568174898392
+input-data =      sac_LZSK=-0.248564759688452
 input-data =      sac_UZFWM=-1.5
-input-data =      sac_REXP=-2.99337359070778
-input-data =      sac_UZK=-0.621100413706154
+input-data =      sac_REXP=-3.09781673382968
+input-data =      sac_UZK=-0.952122758468613
 
 input-data = peadj_JAN=-0.3              
 input-data = peadj_FEB=-0.4              
@@ -60,7 +60,7 @@ input-data =      areac3=1.0 areac4=1.0
 input-data =      uztwc=0.5   uzfwc=0.0  lztwc=0.5
 input-data =	    lzfsc=0.0  lzfpc=0.5  adimpc=0.5    
 
-input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=1.02144161122851
+input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=1.1469727603253
 input-data =      snow_NMF=0.15 snow_MBASE=0.0 snow_PGM=0.0 snow_LAEC=0.0
 input-data =      snow_SI=0.0 snow_ADC1=0.05 snow_ADC2=0.15 snow_ADC3=0.29
 input-data =      snow_ADC4=0.41 snow_ADC5=0.51 snow_ADC6=0.60 snow_ADC7=0.65
@@ -69,5 +69,5 @@ input-data =      psfrac=9
 
 input-data = snow_RDCO=0
 
-input-data = rutpix_Q0CHN=2.69893138110638
-input-data = rutpix_QMCHN=1.18022224061424
+input-data = rutpix_Q0CHN=3.56231953762472
+input-data = rutpix_QMCHN=0.534545313357376
