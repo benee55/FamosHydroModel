@@ -1,0 +1,73 @@
+#
+#input deck of gorms
+# initialize gridded states
+#  
+#
+#simulaion time period
+#
+
+time-period                          = 2003060100T00  2007123100T23
+time-step                   = 24
+
+connectivity =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/connect/fd2kremergeadj.con
+
+pixel-size-hrap = 1.0
+
+output-path =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/output/output1
+
+ignore-1d-xmrg = true
+input-path =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/grids
+input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/params_2013
+input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/precip2007
+input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/temp2007
+
+operations = sac rutpix9
+
+output-grid-last-step                = uztwc uzfwc lztwc lzfsc lzfpc adimpc 
+output-grid-last-step                = areac1 areac2 areac3 areac4 depth
+output-timeseries-basin-outlet       = discharge
+
+input-data =      SBYP1
+input-data =      sac_PCTIM=0.208342984411865
+input-data =      sac_ADIMP=0.156672969227657
+input-data =      sac_RIVA=0.0
+input-data =      sac_SIDE=0.0 sac_RSERV=0.3 sac_EFC=0.0
+input-data =      sac_UZTWM=-46.3594314794289 
+input-data =      sac_LZTWM=-27.5262402290246
+input-data =      sac_LZFSM=-5.48903384166769 
+input-data =      sac_LZFPM=-25.8344480237923
+input-data =      sac_LZSK=-2.98986664842814
+input-data =      sac_UZFWM=-1.5
+input-data =      sac_REXP=-2.99337359070778
+input-data =      sac_UZK=-0.621100413706154
+
+input-data = peadj_JAN=-0.3              
+input-data = peadj_FEB=-0.4              
+input-data = peadj_MAR=-0.5               
+input-data = peadj_APR=-0.6              
+input-data = peadj_MAY=-0.7               
+input-data = peadj_JUN=-0.8                
+input-data = peadj_JUL=-0.9               
+input-data = peadj_AUG=-0.9               
+input-data = peadj_SEP=-0.8               
+input-data = peadj_OCT=-0.7              
+input-data = peadj_NOV=-0.6              
+input-data = peadj_DEC=-0.6 
+
+input-data =      areac=0.5 depth=0.0
+input-data =      areac1=1.0 areac2=1.0 
+input-data =      areac3=1.0 areac4=1.0 
+input-data =      uztwc=0.5   uzfwc=0.0  lztwc=0.5
+input-data =	    lzfsc=0.0  lzfpc=0.5  adimpc=0.5    
+
+input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=1.02144161122851
+input-data =      snow_NMF=0.15 snow_MBASE=0.0 snow_PGM=0.0 snow_LAEC=0.0
+input-data =      snow_SI=0.0 snow_ADC1=0.05 snow_ADC2=0.15 snow_ADC3=0.29
+input-data =      snow_ADC4=0.41 snow_ADC5=0.51 snow_ADC6=0.60 snow_ADC7=0.65
+input-data =      snow_ADC8=0.68 snow_ADC9=0.72 snow_ADC10=0.76 snow_ADC11=1.0
+input-data =      psfrac=9
+
+input-data = snow_RDCO=0
+
+input-data = rutpix_Q0CHN=2.69893138110638
+input-data = rutpix_QMCHN=1.18022224061424
