@@ -17,4 +17,5 @@
 *.jpeg
 *.png
 input*.card
-
+errorFileName
+outputFileName
