@@ -5,7 +5,7 @@ source("../run/rWrapper_Continuous.R")
 source("../run/mcmc_source_Tr.R")
 
 # Precalibration
-ensembleN<-5000
+ensembleN<-500
 parMat<-apply(boundMat,1,function(x,ens){runif(ens,min=x[1],max=x[2])},ens=ensembleN)
 parMat<-cbind(rinvgamma(ensembleN,shape = priorPar[1,1], rate = priorPar[1,2]),parMat)
 save(parMat, file="output/mhParameters_0.RData")

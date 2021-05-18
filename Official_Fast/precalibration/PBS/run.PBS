@@ -3,7 +3,7 @@
 #PBS -l nodes=20:ppn=20
 #PBS -l feature=rhel7 
 #PBS -l pmem=4gb 
-#PBS -l walltime=02:00:00                # Wall time.
+#PBS -l walltime=2:00:00                # Wall time.
 #PBS -N Rmpi                 # Job name.
 #PBS -o outputFileName                   # Output file.
 #PBS -e errorFileName                    # Output error info.
