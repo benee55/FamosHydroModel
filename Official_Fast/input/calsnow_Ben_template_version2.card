@@ -14,13 +14,14 @@ input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/params_2013
 input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/precip2007
 input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/temp2007
 
-operations = sac rutpix9
+operations =  snow17 sac rutpix9
 
 output-grid-last-step                = uztwc uzfwc lztwc lzfsc lzfpc adimpc 
 output-grid-last-step                = areac1 areac2 areac3 areac4 depth
+
 output-timeseries-basin-outlet       = discharge
 
-input-data =      SBYP1
+input-data = SBYP1
 input-data =      sac_PCTIM=ADD_PCTIM
 input-data =      sac_ADIMP=ADD_ADIMP
 input-data =      sac_RIVA=0.0
@@ -45,13 +46,13 @@ input-data = peadj_AUG=-0.9
 input-data = peadj_SEP=-0.8               
 input-data = peadj_OCT=-0.7              
 input-data = peadj_NOV=-0.6              
-input-data = peadj_DEC=-0.6 
+input-data = peadj_DEC=-0.6
 
 input-data =      areac=0.5 depth=0.0
 input-data =      areac1=1.0 areac2=1.0 
 input-data =      areac3=1.0 areac4=1.0 
 input-data =      uztwc=0.5   uzfwc=0.0  lztwc=0.5
-input-data =	    lzfsc=0.0  lzfpc=0.5  adimpc=0.5    
+input-data =	  lzfsc=0.0  lzfpc=0.5  adimpc=0.5      
 
 input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=ADD_snow_SCF
 input-data =      snow_NMF=0.15 snow_MBASE=0.0 snow_PGM=0.0 snow_LAEC=0.0
