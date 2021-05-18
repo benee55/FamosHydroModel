@@ -12,6 +12,8 @@ j=1
 writeInput( par = parMat[j,] , j = j , dir = inputDir)# Write Input
 writeOutput( j = j , dir = outputDir) # Write Output
 pt<-proc.time()
-runHydroModel( j = j , dir = inputDir) # Run Model
+# runHydroModel( j = j , dir = inputDir) # Run Model
+system(paste("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/bin/rdhm ",
+             "/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/input/calsnow.card"))
 ptFinal<-proc.time()-pt
 save(ptFinal, file = "FinalTime.RData")
