@@ -15,7 +15,7 @@ mp_type = "MPI" # PSOCK or MPI
 cl <- parallel::makeCluster(spec = nprocs, type="MPI")
 doParallel::registerDoParallel(cl)
 
-outputMat<-foreach::foreach(jobNum=1:ensembleN) %dopar% {
+outputMat<-foreach::foreach(jobNum=1:ensembleN , .combine = "cbind") %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run/mcmc_source_Tr.R")
   load("output/mhParameters_0.RData")
