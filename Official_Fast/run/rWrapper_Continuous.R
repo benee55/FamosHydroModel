@@ -1,8 +1,6 @@
 # RWrapper for Hydro Model
 
 
-
-
 ##################################################################
 # Begin R Wrapper Function
 ##################################################################
@@ -53,20 +51,19 @@ system(paste("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/bin/rdhm ",new
 # Function 4: Read OutputFile
 readOutput<-function(j,dir){
   # Dates evaluated within each interval
-  diffInd<- #ADD NUMBER#
   output<-system(paste("cat ",dir,"/output",j,"/SBYP1_discharge_outlet.ts",sep=""), intern=TRUE)
   endInd<-length(output) # Row of final date
-  startInd<-endInd-diffInd[interval]+1 # Row of first date
+  startInd<-89 #Row of first date
   flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
   dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
-  useDate<-list(c("190904","200904"),
+  useDate<-c(c("190904","200904"),
                 c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
                 c("011205"),
                 c("280606" , "290606" , "300606"),
                 c("181106"),
                 c("160307" , "170307"),
                 c("080208" , "060308" , "090308" , "100308"))
-  flow[which(dates%in%useDate[[interval]])]
+  flow[which(dates%in%useDate)]
 }
 
 
@@ -74,17 +71,12 @@ readOutput<-function(j,dir){
 # Combine Run File + Read
 modelEval<-function( par, j , inputDir , outputDir){
   pt<-proc.time()
-  for(i in 1:7){
-    writeInput( par = par[-1] , j = j , interval = i , dir = inputDir)  # Write Input
-    writeOutput( j = j , interval = i , dir = outputDir) # Write Output
-    runHydroModel( j = j , interval = i , dir = inputDir) # Run Model
+
+  writeInput( par = par[-1] , j = j , dir = inputDir)  # Write Input
+  writeOutput( j = j ,dir = outputDir) # Write Output
+  runHydroModel( j = j , dir = inputDir) # Run Model
     
-    if(i==1){ # Read model output - First
-      output<-readOutput( j = j , interval=i, dir = outputDir)
-    }else{  # Read model output - Next
-      output<-c(output,readOutput( j = j , interval=i, dir = outputDir))
-      }
-  }
+  output<-readOutput( j = j , dir = outputDir)
   ptFinal<-proc.time()-pt
   output<-c(output,ptFinal[3])
   return(output) # Return output
@@ -97,22 +89,13 @@ modelEval<-function( par, j , inputDir , outputDir){
 ####################################################################################################
 # Combine Run File + Read
 modelEval_only<-function( par, j , inputDir , outputDir){
-  for(i in 1:7){
-    writeInput( par = par[-1] , j = j , interval = i , dir = inputDir)  # Write Input
-    writeOutput( j = j , interval = i , dir = outputDir) # Write Output
-    runHydroModel( j = j , interval = i , dir = inputDir) # Run Model
-  }
+  writeInput( par = par[-1] , j = j ,  dir = inputDir)  # Write Input
+  writeOutput( j = j , dir = outputDir) # Write Output
+  runHydroModel( j = j , dir = inputDir) # Run Model
 }
 
 modelEval_read<-function( par, j , inputDir , outputDir){
-  for(i in 1:7){
-    
-    if(i==1){ # Read model output - First
-      output<-readOutput( j = j , interval=i, dir = outputDir)
-    }else{  # Read model output - Next
-      output<-c(output,readOutput( j = j , interval=i, dir = outputDir))
-    }
-  }
+  output<-readOutput( j = j , dir = outputDir)
   return(output) # Return output
 }
 
