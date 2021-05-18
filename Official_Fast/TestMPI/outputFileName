@@ -1,0 +1,110 @@
+------------------------------------------------------
+ This job is allocated on 80 cpu(s)
+Job is running on node(s): 
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0228
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0201
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0192
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+comp-bc-0191
+------------------------------------------------------
+PBS: qsub is running on aci-lgn-001.acib.production.int.aci.ics.psu.edu
+PBS: originating queue is open
+PBS: executing queue is open
+PBS: working directory is /gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/TestMPI
+PBS: execution mode is PBS_BATCH
+PBS: job identifier is 26706115.torque01.util.production.int.aci.ics.psu.edu
+PBS: job name is Rmpi
+PBS: node file is /var/spool/torque/aux//26706115.torque01.util.production.int.aci.ics.psu.edu
+PBS: number of nodes is 4
+PBS: current home directory is /storage/home/skl5261
+PBS: PATH = /usr/lpp/mmfs/bin:/usr/local/bin:/usr/local/sbin:/usr/lib64/qt-3.3/bin:/opt/moab/bin:/opt/mam/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/openssh-7.4p1-el7/bin:/usr/local/sbin:/opt/ibutils/bin:/opt/puppetlabs/bin:/storage/home/skl5261/bin
+------------------------------------------------------
+Starting at
+Tue Apr 20 20:25:42 EDT 2021
+[1] "numeric"
+[1] "Begin"
+	39 slaves are spawned successfully. 0 failed.
+[1] "Made Cluster"
+[1] "Registered Cluster"
+[1] "Parallelized Operations"
+   user  system elapsed 
+ 64.807  37.025 101.837 
+[1] "Job Ended"
+Run completed at 
+Tue Apr 20 20:27:33 EDT 2021
+------------------------------------------------------

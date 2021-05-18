@@ -1,0 +1,21 @@
+#PBS -l select=56:ncpus=36:mpiprocs=36
+#PBS -N Official
+#PBS -A UPSU0024
+#PBS -l walltime=12:00:00
+#PBS -l pmem=10GB
+#PBS -j oe
+#PBS -q economy
+
+cd $PBS_O_WORKDIR
+cd ../run
+
+echo " "
+echo " "
+echo "Job started on `hostname` at `date`"
+export TMPDIR=/glade/scratch/$USER/temp
+mkdir -p $TMPDIR
+
+module load R/3.3.2
+module load openmpi
+mpirun -n 1 Rscript Parallel_MPI.R $args $ens $niter  2>&1 >/dev/null
+echo "Job ended on `hostname` at `date`"

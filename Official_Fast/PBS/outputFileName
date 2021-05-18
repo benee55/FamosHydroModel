@@ -1,0 +1,62 @@
+------------------------------------------------------
+ This job is allocated on 40 cpu(s)
+Job is running on node(s): 
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0140
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+comp-sc-0072
+------------------------------------------------------
+PBS: qsub is running on aci-lgn-005.acib.production.int.aci.ics.psu.edu
+PBS: originating queue is batch
+PBS: executing queue is batch
+PBS: working directory is /gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/PBS
+PBS: execution mode is PBS_BATCH
+PBS: job identifier is 26706031.torque01.util.production.int.aci.ics.psu.edu
+PBS: job name is Rmpi
+PBS: node file is /var/spool/torque/aux//26706031.torque01.util.production.int.aci.ics.psu.edu
+PBS: number of nodes is 2
+PBS: current home directory is /storage/home/skl5261
+PBS: PATH = /usr/lpp/mmfs/bin:/usr/local/bin:/usr/local/sbin:/usr/lib64/qt-3.3/bin:/opt/moab/bin:/opt/mam/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/openssh-7.4p1-el7/bin:/usr/local/sbin:/opt/ibutils/bin:/opt/puppetlabs/bin:/storage/home/skl5261/bin
+------------------------------------------------------
+Starting at
+Tue Apr 20 20:00:18 EDT 2021
+	39 slaves are spawned successfully. 0 failed.
+Run completed at 
+Tue Apr 20 20:00:46 EDT 2021
+------------------------------------------------------
