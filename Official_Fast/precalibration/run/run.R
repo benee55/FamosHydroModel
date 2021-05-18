@@ -10,7 +10,7 @@ parMat<-apply(boundMat,1,function(x,ens){runif(ens,min=x[1],max=x[2])},ens=ensem
 parMat<-cbind(rinvgamma(ensembleN,shape = priorPar[1,1], rate = priorPar[1,2]),parMat)
 save(parMat, file="output/mhParameters_0.RData")
 
-nprocs <-20*20-1
+nprocs <-19*20-1
 mp_type = "MPI" # PSOCK or MPI
 cl <- parallel::makeCluster(spec = nprocs, type="MPI")
 doParallel::registerDoParallel(cl)
