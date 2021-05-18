@@ -1,5 +1,6 @@
 rm(list=ls())
 setwd("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration")
+library(snow);library(Rmpi);library(doParallel);library(foreach)
 source("../run/rWrapper_Continuous.R")
 source("../run/mcmc_source_Tr.R")
 
