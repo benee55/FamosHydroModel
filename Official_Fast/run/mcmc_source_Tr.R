@@ -47,10 +47,10 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
                 boundMat)
 ##################################################################################################################
 # Observations
-load("~/work/hydro/Official_Fast/input/obsData.RData")
+load("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/input/obsData.RData")
 ##################################################################################################################
 # Load Source for RWrapper and Forward Model 
-source("~/work/hydro/Official_Fast/run/rWrapper.R")
+source("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/run/rWrapper_Continuous.R")
 ##################################################################################################################
 # Priors 
 logPrior<-function(par , priorPar){
