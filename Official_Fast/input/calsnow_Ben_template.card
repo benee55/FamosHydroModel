@@ -1,4 +1,10 @@
-
+#
+#input deck of gorms
+# initialize gridded states
+#  
+#
+#simulaion time period
+#
 time-period                          = ADD_DSTART  ADD_DEND
 time-step                   = 24
 
