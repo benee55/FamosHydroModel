@@ -12,7 +12,7 @@ writeInput<-function(par , # Parameters
                      dir # Directory
                      ){
 intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2007/12/31
-intervalMat<-c("20040901T00","20040931T23") # 2003/06/01-2007/12/31
+intervalMat<-c("20040901T00","20040930T23") # 2003/06/01-2007/12/31
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_UZTWM" , "ADD_LZTWM" , 
                 "ADD_LZFSM" , "ADD_LZFPM" , "ADD_LZSK" , "ADD_snow_SCF" , 
                 "ADD_REXP" , "ADD_UZK" , "ADD_Q0CHN" , "ADD_QMCHN")
