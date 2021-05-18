@@ -11,13 +11,14 @@ writeInput<-function(par , # Parameters
                      j ,  # JobNumber
                      dir # Directory
                      ){
-intervalMat<-c("2003060100T00","2007123100T23") # 2003/06/01-2007/12/31
+intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2007/12/31
+intervalMat<-c("20040901T00","20040931T23") # 2003/06/01-2007/12/31
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_UZTWM" , "ADD_LZTWM" , 
                 "ADD_LZFSM" , "ADD_LZFPM" , "ADD_LZSK" , "ADD_snow_SCF" , 
                 "ADD_REXP" , "ADD_UZK" , "ADD_Q0CHN" , "ADD_QMCHN")
 
 # Replace placeholders with values
-readInputText  <- readLines(paste(dir,"/calsnow_Ben_template.card",sep="")) # Read Template
+readInputText  <- readLines("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/input/calsnow_Ben_template.card") # Read Template
 readInputText  <- gsub(pattern = "ADD_output", replace = paste("output",j,sep=""), # Replace output directory
                        x = readInputText)
 
