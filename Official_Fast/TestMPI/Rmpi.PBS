@@ -8,6 +8,7 @@
 #PBS -o outputFileName                   # Output file.
 #PBS -e errorFileName                    # Output error info.
 
+export UCX_TLS=all
 module purge
 module use /gpfs/group/RISE/sw7/modules
 module load openmpi/4.1.0-gcc-4.8.5
@@ -39,7 +40,6 @@ cd $PBS_O_WORKDIR                         # aciRun.pbs dir.
 
 echo "Starting at"                        # Output starting time info.
 date
-
 
 ################ User running code #######################
 $(which mpirun) --machinefile $PBS_NODEFILE -np 1 Rscript Test.R 399
