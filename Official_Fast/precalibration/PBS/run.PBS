@@ -42,7 +42,7 @@ date
 
 
 ################ User running code #######################
-$(which mpirun) --machinefile $PBS_NODEFILE -np 1 Rscript run.R
+$(which mpirun) --machinefile $PBS_NODEFILE UCX_TLS=all-np 1 Rscript run.R
 
 echo "Run completed at "                  # Output ending info.
 date
