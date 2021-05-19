@@ -38,7 +38,7 @@ cd $PBS_O_WORKDIR                         # aciRun.pbs dir.
 cd /gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/run
 echo "Starting at"                        # Output starting time info.
 date
-
+export UCX_TLS=all
 
 ################ User running code #######################
 $(which mpirun) --machinefile $PBS_NODEFILE -np 1 Rscript run.R
