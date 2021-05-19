@@ -42,7 +42,7 @@ echo "Starting at"                        # Output starting time info.
 date
 
 ################ User running code #######################
-$(which mpirun) --machinefile $PBS_NODEFILE -np 1 Rscript Test.R 399
+$(which mpirun) --machinefile $PBS_NODEFILE -np 1 --mca pml ucx -x UCX_TLS=all Rscript Test.R 399
 
 echo "Run completed at "                  # Output ending info.
 date
