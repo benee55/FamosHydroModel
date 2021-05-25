@@ -1,11 +1,11 @@
-library(snow);library(Rmpi);
+library(Rmpi);library(snow);
 library(doParallel);library(foreach);
 # initialize an Rmpi environment
 
 ns <- as.numeric(commandArgs(trailingOnly=TRUE))
 print(ns)
 print("Begin")
-cl <- makeCluster(spec = ns, type="MPI")
+cl <- parallel::makeCluster(spec = ns, type="MPI")
 print("Made Cluster")
 doParallel::registerDoParallel(cl)
 print("Registered Cluster")
