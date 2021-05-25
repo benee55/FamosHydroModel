@@ -9,17 +9,17 @@
 time-period                          = ADD_DSTART  ADD_DEND
 time-step                   = 24
 
-connectivity =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/connect/fd2kremergeadj.con
+connectivity =/glade/u/home/sanjib/SBYN6/connect/fd2kremergeadj.con
 
 pixel-size-hrap = 1.0
 
 output-path =/gpfs/scratch/skl5261/precalibration/output/ADD_output
 
 ignore-1d-xmrg = true
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/grids
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/params_2013
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/precip2007
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/temp2007
+input-path =/glade/u/home/sanjib/SBYN6/grids
+input-path =/glade/u/home/sanjib/SBYN6/rdhm/hlrdhm_3.5.12_source_binary_parameters/parameters
+input-path =/glade/work/sanjib/precip2007
+input-path =/glade/work/sanjib/temp2007
 
 operations = sac rutpix9
 
@@ -52,7 +52,7 @@ input-data = peadj_AUG=-0.9
 input-data = peadj_SEP=-0.8               
 input-data = peadj_OCT=-0.7              
 input-data = peadj_NOV=-0.6              
-input-data = peadj_DEC=-0.6 
+input-data = peadj_DEC=-0.6
 
 input-data =      areac=0.5 depth=0.0
 input-data =      areac1=1.0 areac2=1.0 
