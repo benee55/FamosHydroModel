@@ -1,21 +1,20 @@
 library(snow);library(Rmpi);library(doParallel);library(foreach);
 # initialize an Rmpi environment
-ns <- commandArgs(trailingOnly=TRUE)
-nRun<-100
+
+ns <- as.numeric(commandArgs(trailingOnly=TRUE))
+class(ns)
 print("Begin")
 cl <- parallel::makeCluster(spec = ns, type="MPI")
 print("Made Cluster")
 doParallel::registerDoParallel(cl)
 print("Registered Cluster")
 pt<-proc.time()
-outputMat<-foreach::foreach(jobNum=1:nRun, .combine = "c") %dopar% {
-  Sys.sleep(5)
+outputMat<-foreach::foreach(jobNum=1:(ns*10), .combine = "c") %dopar% {
+  Sys.sleep(10)
   jobNum
-}
+  }
 ptFinal<-proc.time()-pt
-# For 2 processors and 10 total runs, time is 25.257 seconds
-# For 10 processors and 10 total runs, time is 5.578 seconds. It works!
 print("Parallelized Operations")
-ptFinal
+print(ptFinal)
 save(outputMat,ptFinal, file = "testNew.RData")
 print("Job Ended")
