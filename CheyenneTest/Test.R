@@ -3,9 +3,9 @@ library(doParallel);library(foreach);
 # initialize an Rmpi environment
 
 ns <- as.numeric(commandArgs(trailingOnly=TRUE))
-class(ns)
+print(ns)
 print("Begin")
-cl <- parallel::makeCluster(spec = ns, type="MPI")
+cl <- makeCluster(spec = ns, type="MPI")
 print("Made Cluster")
 doParallel::registerDoParallel(cl)
 print("Registered Cluster")

@@ -15,5 +15,5 @@ mkdir -p $TMPDIR
 
 module load R
 module load openmpi
-mpirun -n 72 Rscript Test.R 71
+mpirun -n 1 Rscript Test.R 71
 echo "Job ended on `hostname` at `date`"
