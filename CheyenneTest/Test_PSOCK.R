@@ -16,5 +16,5 @@ outputMat<-foreach::foreach(jobNum=1:(ns*3), .combine = "c") %dopar% {
 ptFinal<-proc.time()-pt
 print("Parallelized Operations")
 print(ptFinal)
-save(outputMat,ptFinal, file = "testNew.RData")
+save(outputMat,ptFinal, file = "testNewPSOCK.RData")
 print("Job Ended")
