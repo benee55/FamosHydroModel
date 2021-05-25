@@ -1,4 +1,4 @@
-#PBS -l select=20:ncpus=36:mpiprocs=36
+#PBS -l select=2:ncpus=36:mpiprocs=36
 #PBS -N Test
 #PBS -A UPSU0040
 #PBS -l walltime=00:02:00
@@ -15,5 +15,5 @@ mkdir -p $TMPDIR
 
 module load R/4.0.2
 module load openmpi
-mpirun -n 1 Rscript Test.R 719
+mpirun -n 1 Rscript Test.R 71
 echo "Job ended on `hostname` at `date`"
