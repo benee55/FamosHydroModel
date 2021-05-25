@@ -6,7 +6,7 @@
 #simulaion time period
 #
 #time-period                          = 20051001T00  20120930T23 
-time-period                          = 20030601T00  20080331T23
+time-period                          = 20030101T00  20121230T23
 #
 #simulation time step in the format of HH:MM:SS.XXXX
 #
@@ -15,30 +15,29 @@ time-step                   = 24
 #
 #the connectivity file
 #
-connectivity =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/connect/fd2kremergeadj.con
+connectivity =/glade/u/home/sanjib/SBYN6/connect/fd2kremergeadj.con
 
-pixel-size-hrap = 1.0
+pixel-size-hrap = 1
 
 #
 #output path
 #
-output-path =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/output
+output-path =/glade/u/home/sanjib/SBYN6/output
 
 ignore-1d-xmrg = true
 
 #
 #input paths
-#
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/SGrove/grids
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/params_2013
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/precip2007
-input-path =/gpfs/group/kzk10/default/private/hydrocalib/ELCT/temp2007
+input-path =/glade/u/home/sanjib/SBYN6/grids
+input-path =/glade/u/home/sanjib/SBYN6/rdhm/hlrdhm_3.5.12_source_binary_parameters/parameters
+input-path =/glade/work/sanjib/precip2007
+input-path =/glade/work/sanjib/temp2007
 
 #
 #select operations
 #available snow17, sac, frz, api, rutpix7, rutpix9, musk
 #operations = op1 sac snow rout op2
-operations = sac rutpix9
+operations =  sac rutpix9
 #operations = calsac 
 
 #
