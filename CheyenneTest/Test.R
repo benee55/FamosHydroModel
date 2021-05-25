@@ -1,4 +1,5 @@
-library(snow);library(Rmpi);library(doParallel);library(foreach);
+library(snow);library(Rmpi);
+library(doParallel);library(foreach);
 # initialize an Rmpi environment
 
 ns <- as.numeric(commandArgs(trailingOnly=TRUE))
