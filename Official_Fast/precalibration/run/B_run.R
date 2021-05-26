@@ -20,7 +20,7 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c
   inputDir<-"/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input"
   outputDir<-"/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/output"
   jobPar<-parMat[jobNum,]
-  modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
+  modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
 
 save(outputMat,file = paste("output/preCalibrationResults",jobIndex,".RData",sep=""))
