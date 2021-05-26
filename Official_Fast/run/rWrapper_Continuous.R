@@ -11,8 +11,8 @@ writeInput<-function(par , # Parameters
                      j ,  # JobNumber
                      dir # Directory
                      ){
-intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
-# intervalMat<-c("20040901T00","20040930T23") # 2003/06/01-2007/12/31
+# intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
+intervalMat<-c("20040901T00","20040930T23") # 2004/09/01-2004/09/30
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_UZTWM" , "ADD_LZTWM" , 
                 "ADD_LZFSM" , "ADD_LZFPM" , "ADD_LZSK" , "ADD_snow_SCF" , 
                 "ADD_REXP" , "ADD_UZK" , "ADD_Q0CHN" , "ADD_QMCHN")
@@ -57,15 +57,7 @@ readOutput<-function(j,dir){
   endInd<-length(output) # Row of final date
   startInd<-89 #Row of first date
   flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
-  dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
-  useDate<-c(c("190904","200904"),
-                c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
-                c("011205"),
-                c("280606" , "290606" , "300606"),
-                c("181106"),
-                c("160307" , "170307"),
-                c("080208" , "060308" , "090308" , "100308"))
-  flow[which(dates%in%useDate)]
+  flow
 }
 
 
@@ -99,5 +91,24 @@ modelEval_only<-function( par, j , inputDir , outputDir){
 modelEval_read<-function( par, j , inputDir , outputDir){
   output<-readOutput( j = j , dir = outputDir)
   return(output) # Return output
+}
+
+ 
+# Function 4: Read OutputFile for subset
+readOutput_subset<-function(j,dir){
+  # Dates evaluated within each interval
+  output<-system(paste("cat ",dir,"/output",j,"/SBYP1_discharge_outlet.ts",sep=""), intern=TRUE)
+  endInd<-length(output) # Row of final date
+  startInd<-89 #Row of first date
+  flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
+  dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
+  useDate<-c(c("190904","200904"),
+             c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
+             c("011205"),
+             c("280606" , "290606" , "300606"),
+             c("181106"),
+             c("160307" , "170307"),
+             c("080208" , "060308" , "090308" , "100308"))
+  flow[which(dates%in%useDate)]
 }
 
