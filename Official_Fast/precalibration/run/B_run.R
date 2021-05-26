@@ -11,7 +11,7 @@ doParallel::registerDoParallel(cl)
 
 # Values for runs
 runIndex<-((jobIndex-1)*(nprocs*4))+(1:(nprocs*4))
-outputMat<-foreach::foreach(jobNum=1:ensembleN , .combine = "cbind") %dopar% {
+outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind") %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run/mcmc_source_Tr.R")
   load(file="output/mhParameters_0.RData")
