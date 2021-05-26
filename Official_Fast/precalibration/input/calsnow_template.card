@@ -13,7 +13,7 @@ connectivity =/glade/u/home/sanjib/SBYN6/connect/fd2kremergeadj.con
 
 pixel-size-hrap = 1.0
 
-output-path =/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/output/ADD_output
+output-path =ADD_output
 
 ignore-1d-xmrg = true
 input-path =/glade/u/home/sanjib/SBYN6/grids

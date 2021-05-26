@@ -9,17 +9,18 @@
 
 writeInput<-function(par , # Parameters
                      j ,  # JobNumber
-                     dir # Directory
+                     dir, # Directory
+                     outputDir #  OutputDirectory
                      ){
-intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
-# intervalMat<-c("20040901T00","20040930T23") # 2004/09/01-2004/09/30
+# intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
+intervalMat<-c("20040901T00","20040930T23") # 2004/09/01-2004/09/30
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_UZTWM" , "ADD_LZTWM" , 
                 "ADD_LZFSM" , "ADD_LZFPM" , "ADD_LZSK" , "ADD_snow_SCF" , 
                 "ADD_REXP" , "ADD_UZK" , "ADD_Q0CHN" , "ADD_QMCHN")
 
 # Replace placeholders with values
 readInputText  <- readLines("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input/calsnow_template.card") # Read Template
-readInputText  <- gsub(pattern = "ADD_output", replace = paste("output",j,sep=""), # Replace output directory
+readInputText  <- gsub(pattern = "ADD_output", replace = paste(outputDir,"output",j,sep=""), # Replace output directory
                        x = readInputText)
 
   for(kk in 1:length(par)){
@@ -66,7 +67,7 @@ readOutput<-function(j,dir){
 modelEval<-function( par, j , inputDir , outputDir){
   pt<-proc.time()
 
-  writeInput( par = par[-1] , j = j , dir = inputDir)  # Write Input
+  writeInput( par = par[-1] , j = j , dir = inputDir , outputDir=outputDir)  # Write Input
   writeOutput( j = j ,dir = outputDir) # Write Output
   runHydroModel( j = j , dir = inputDir) # Run Model
     
