@@ -1,50 +1,20 @@
-#PBS -A kzk10_e_g_sc_default
-#PBS -l nodes=5:ppn=20
-#PBS -l feature=rhel7 
-#PBS -l pmem=4gb 
-#PBS -l walltime=02:00:00                # Wall time.
-#PBS -N Rmpi                 # Job name.
-#PBS -o outputFileName                   # Output file.
-#PBS -e errorFileName                    # Output error info.
+#PBS -l select=1:ncpus=36:mpiprocs=36
+#PBS -N Test
+#PBS -A UPSU0040
+#PBS -l walltime=01:00:00
+#PBS -j oe
+#PBS -q regular
 
-export UCX_TLS=all
-module purge
-module use /gpfs/group/RISE/sw7/modules
-module load openmpi/4.1.0-gcc-4.8.5
+cd $PBS_O_WORKDIR
+cd ../run
 
-##############################################################
-NCPU=`wc -l < $PBS_NODEFILE`             # Get number of processors.
-NNODES=`uniq $PBS_NODEFILE | wc -l`      # Get the number of nodes.
+echo " "
+echo " "
+echo "Job started on `hostname` at `date`"
+export TMPDIR=/glade/scratch/$USER/temp
+mkdir -p $TMPDIR
 
-############## Print info ####################################
-echo ------------------------------------------------------
-echo ' This job is allocated on '${NCPU}' cpu(s)'
-echo 'Job is running on node(s): '
-cat $PBS_NODEFILE
-echo ------------------------------------------------------
-echo PBS: qsub is running on $PBS_O_HOST
-echo PBS: originating queue is $PBS_O_QUEUE
-echo PBS: executing queue is $PBS_QUEUE
-echo PBS: working directory is $PBS_O_WORKDIR
-echo PBS: execution mode is $PBS_ENVIRONMENT
-echo PBS: job identifier is $PBS_JOBID
-echo PBS: job name is $PBS_JOBNAME
-echo PBS: node file is $PBS_NODEFILE
-echo PBS: number of nodes is $NNODES
-echo PBS: current home directory is $PBS_O_HOME
-echo PBS: PATH = $PBS_O_PATH
-echo ------------------------------------------------------
-
-cd $PBS_O_WORKDIR                         # aciRun.pbs dir.
-cd /gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/run
-echo "Starting at"                        # Output starting time info.
-date
-
-
-################ User running code #######################
-$(which mpirun) --machinefile $PBS_NODEFILE -np 1 --mca pml ucx -x UCX_TLS=all Rscript run.R
-
-echo "Run completed at "                  # Output ending info.
-date
-echo ------------------------------------------------------
-###############################################################
+module load R
+module load openmpi
+mpirun -n 1 Rscript B_run.R $args
+echo "Job ended on `hostname` at `date`"
