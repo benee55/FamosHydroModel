@@ -18,7 +18,7 @@
 
 library(invgamma);
 library(mvtnorm);
-# library(tmvtnorm)
+library(tmvtnorm)
 # Parameter Names
 parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
