@@ -3,7 +3,7 @@
 #PBS -A UPSU0040
 #PBS -l walltime=01:00:00
 #PBS -j oe
-#PBS -q regular
+#PBS -q economy
 
 cd $PBS_O_WORKDIR
 cd ../run
