@@ -31,7 +31,8 @@ readInputText  <- gsub(pattern = "ADD_DSTART", replace = intervalMat[1], # Repla
 readInputText  <- gsub(pattern = "ADD_DEND", replace =intervalMat[2], # Replace Time End
                        x = readInputText)
 
-  writeLines(readInputText, con=paste(dir,"/input",j,".card",sep="")) # Write Calsnow file
+system(paste("rm -f ",paste(dir,"/input",j,".card",sep="") , sep=""))
+writeLines(readInputText, con=paste(dir,"/input",j,".card",sep="")) # Write Calsnow file
 }
 
 # Function 2: Delete Directory and Create

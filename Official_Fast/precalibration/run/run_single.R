@@ -16,6 +16,8 @@ inputDir<-"/glade/scratch/sanjib/precalibration/input"
 outputDir<-"/glade/scratch/sanjib/precalibration/output"
 jobNum=1
 jobPar<-parMat[jobNum,]
+pt<-proc.time()
 outputMat<- modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
+ptFinal<-proc.time()-pt
 
-save(outputMat,file = "preCalibrationResults.RData")
+save(outputMat,ptFinal,file = "preCalibrationResults.RData")
