@@ -20,7 +20,7 @@ intervalMat<-c("20040901T00","20040930T23") # 2004/09/01-2004/09/30
 
 # Replace placeholders with values
 readInputText  <- readLines("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input/calsnow_template.card") # Read Template
-readInputText  <- gsub(pattern = "ADD_output", replace = paste(outputDir,"output",j,sep=""), # Replace output directory
+readInputText  <- gsub(pattern = "ADD_output", replace = paste(outputDir,"/output",j,sep=""), # Replace output directory
                        x = readInputText)
 
   for(kk in 1:length(par)){
