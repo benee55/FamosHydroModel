@@ -8,7 +8,7 @@ cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 
 # Values for runs
-runIndex<-nprocs*2
+runIndex<-1:(nprocs*2)
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run/rWrapper_Continuous_Fast.R")
   source("../run/mcmc_source_Tr.R")
