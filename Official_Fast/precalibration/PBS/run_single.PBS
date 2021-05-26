@@ -15,5 +15,5 @@ export TMPDIR=/glade/scratch/$USER/temp
 mkdir -p $TMPDIR
 
 module load R
-mpirun -n 1 Rscript run_single.R
+Rscript run_single.R
 echo "Job ended on `hostname` at `date`"
