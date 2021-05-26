@@ -4,7 +4,8 @@ library(vioplot)
 # Set working directory and load Full observations
 setwd("~/Dropbox/FamosHydroModel/Official_Fast/output/")
 load("../input/fullObservations.RData") # Load Full observation
-
+load("../precalibration/output/mhParameters_0.RData")
+source("../run/mcmc_source_Tr.R")
 # Compile precalibration data
 for(i in 1:22){
   load(paste("../precalibration/output/preCalibrationResults",i,".RData",sep=""))
@@ -33,6 +34,66 @@ modelEnd<-which(dateVect==as.Date("2008-03-31")) # Trim Last Days
 keepInd<-1:ncol(modelOutput) # Can use sample() to select subset
 newModelOutput<-modelOutput[modelStart:modelEnd,keepInd] # Trimmed Data
 newDateVect<-dateVect[modelStart:modelEnd] # Trimmed Dates
+
+############################################################################################################
+############################################################################################################
+# Scoring
+############################################################################################################
+############################################################################################################
+extremeModelOuput<-modelOutput[obsInd,]
+MSE<-apply(extremeModelOuput,2,function(x){mean((x-extremeObs)^2)})
+goodRuns<-which(MSE<quantile(MSE, probs=0.05))
+goodModelOutput<-modelOutput[modelStart:modelEnd,goodRuns] # Trimmed Data
+goodParMat<-parMat[goodRuns,-1]
+############################################################################################################
+############################################################################################################
+# Figures
+############################################################################################################
+############################################################################################################
+# All runs with good runs in green
+############################################################################################################
+par(mfrow=c(1,1), mar=c(5,4,2,2))
+plot(x=newDateVect, y= obs[modelStart:modelEnd,4], typ="n", 
+     ylim=range(newModelOutput), xlim=c(as.Date("2004-08-01") , as.Date("2008-03-31")),
+     ylab="Streamflow" , xlab="Date " , 
+     main="Streamflow")
+for(k in 1:ncol(newModelOutput)){
+  lines(x=newDateVect, y= newModelOutput[,k] , col="gray" , lwd=0.5)
+}
+for(k in goodRuns){
+  lines(x=newDateVect, y= newModelOutput[,k] , col="green" , lwd=0.5)
+}
+lines(x=newDateVect, y= obs[modelStart:modelEnd,4] , col="blue", lwd=1)
+points(x=extremeDate , y = extremeObs , col="red" , pch=16, cex=1.5)
+abline(h=4950.55, col="red", lty=2)
+legend("topright" , legend=c("Observations" , "Model Output" , "Good Model Runs","Extreme Points" , "Action Stage"),
+       lty=c(1,1,1,NA,2) , pch=c(NA,NA,NA,16,NA), col=c("blue","gray","green","red","red"),
+       lwd=rep(2,2,2,NA,1),cex=0.75)
+############################################################################################################
+############################################################################################################
+# Good runs Violin Plots
+############################################################################################################
+par(mfrow=c(5,5), mar=c(2,2,2,2))
+for(i in 1:21){
+  k<-obsInd[i]
+  vioplot(modelOutput[k,goodRuns], ylim=range(modelOutput[k,goodRuns],extremeObs[i],4950.55), 
+          main = extremeDate[i])
+  points(x=1, y=extremeObs[i], col="red" ,pch=16)
+  abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+}
+############################################################################################################
+############################################################################################################
+# Good runs Parameters
+############################################################################################################
+par(mfrow=c(4,3), mar=c(2,2,2,2))
+for(i in 1:12){
+  plot(density(goodParMat[,i]) , xlim=range(boundMat[i,1:2]),  main=parNames[i+1])
+  abline(v=boundMat[i,1:2], col="red")
+}
+
+
+############################################################################################################
+############################################################################################################
 
 # Figure - Streamflow 
 par(mfrow=c(1,1), mar=c(5,4,2,2))
