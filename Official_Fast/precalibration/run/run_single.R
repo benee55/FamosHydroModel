@@ -20,4 +20,4 @@ pt<-proc.time()
 outputMat<- modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 ptFinal<-proc.time()-pt
 
-save(outputMat,ptFinal,file = "preCalibrationResults.RData")
+save(outputMat,ptFinal,file = "output/preCalibrationResults.RData")
