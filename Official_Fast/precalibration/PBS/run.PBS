@@ -1,9 +1,9 @@
-#PBS -l select=1:ncpus=36:mpiprocs=36
+#PBS -l select=1:ncpus=5
 #PBS -N Test
 #PBS -A UPSU0040
 #PBS -l walltime=01:00:00
 #PBS -j oe
-#PBS -q regular
+#PBS -q share
 
 cd $PBS_O_WORKDIR
 cd ../run

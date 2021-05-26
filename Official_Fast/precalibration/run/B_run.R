@@ -4,7 +4,7 @@ library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration")
 
 # Parallelize
-nprocs <-35
+nprocs <-4
 mp_type = "PSOCK"
 cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
