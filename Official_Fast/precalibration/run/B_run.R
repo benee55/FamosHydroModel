@@ -21,5 +21,5 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind") %dopar% {
   modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
 
-save(outputMat,file = paste("../output/preCalibrationResults",jobIndex,".RData",sep=""))
+save(outputMat,file = paste("output/preCalibrationResults",jobIndex,".RData",sep=""))
 
