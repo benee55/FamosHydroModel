@@ -1,4 +1,4 @@
-#PBS -l select=1:ncpus=36:mpiprocs=36
+#PBS -l select=1:ncpus=36:mem=109GB
 #PBS -N Test
 #PBS -A UPSU0040
 #PBS -l walltime=01:00:00
