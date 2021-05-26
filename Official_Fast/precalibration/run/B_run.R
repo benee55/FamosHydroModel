@@ -15,8 +15,8 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind") %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run/mcmc_source_Tr.R")
   load(file="output/mhParameters_0.RData")
-  inputDir<-"/glade/scratch/sanjib/precalibration/input"
-  outputDir<-"/glade/scratch/sanjib/precalibration/output"
+  inputDir<-"/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input"
+  outputDir<-"/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/output"
   jobPar<-parMat[jobNum,]
   modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
