@@ -11,14 +11,14 @@ writeInput<-function(par , # Parameters
                      j ,  # JobNumber
                      dir # Directory
                      ){
-intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
-# intervalMat<-c("20040901T00","20040930T23") # 2003/06/01-2007/12/31
+# intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
+intervalMat<-c("20040901T00","20040930T23") # 2003/06/01-2007/12/31
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_UZTWM" , "ADD_LZTWM" , 
                 "ADD_LZFSM" , "ADD_LZFPM" , "ADD_LZSK" , "ADD_snow_SCF" , 
                 "ADD_REXP" , "ADD_UZK" , "ADD_Q0CHN" , "ADD_QMCHN")
 
 # Replace placeholders with values
-readInputText  <- readLines("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration/input/calsnow_Ben_template.card") # Read Template
+readInputText  <- readLines("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input/calsnow_template.card") # Read Template
 readInputText  <- gsub(pattern = "ADD_output", replace = paste("output",j,sep=""), # Replace output directory
                        x = readInputText)
 
@@ -45,7 +45,7 @@ system(paste("rm -rf ",newOutputDirectory,";","mkdir ",newOutputDirectory , sep=
 # Function 3: Run Model + Save FIle
 runHydroModel<- function(j,dir){
 newInputFile<-paste(dir,"/input",j,".card",sep="")
-system(paste("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/bin/rdhm ",newInputFile))
+system(paste("/glade/u/home/sanjib/SBYN6/bin3/rdhm ",newInputFile))
 }
 
 

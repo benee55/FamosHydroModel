@@ -16,7 +16,9 @@
 #
 # We remove the variance parameter for the lGM
 
-library(invgamma);library(lhs);library(mvtnorm);library(tmvtnorm)
+library(invgamma);
+library(mvtnorm);
+# library(tmvtnorm)
 # Parameter Names
 parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
@@ -47,10 +49,10 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
                 boundMat)
 ##################################################################################################################
 # Observations
-load("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/input/obsData.RData")
+load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 ##################################################################################################################
 # Load Source for RWrapper and Forward Model 
-source("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/run/rWrapper_Continuous.R")
+source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run/rWrapper_Continuous.R")
 ##################################################################################################################
 # Priors 
 logPrior<-function(par , priorPar){

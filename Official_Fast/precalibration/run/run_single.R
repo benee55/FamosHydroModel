@@ -1,5 +1,5 @@
 rm(list=ls())
-setwd("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/precalibration")
+setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration")
 source("../run/rWrapper_Continuous.R")
 source("../run/mcmc_source_Tr.R")
 
@@ -12,15 +12,10 @@ save(parMat, file="output/mhParameters_0.RData")
 source("../run/rWrapper_Continuous.R")
 source("../run/mcmc_source_Tr.R")
 load("output/mhParameters_0.RData")
-inputDir<-"/gpfs/scratch/skl5261/precalibration/input"
-outputDir<-"/gpfs/scratch/skl5261/precalibration/output"
+inputDir<-"/glade/scratch/sanjib/precalibration/input"
+outputDir<-"/glade/scratch/sanjib/precalibration/output"
 jobNum=1
 jobPar<-parMat[jobNum,]
 outputMat<- modelEval( par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 
 save(outputMat,file = "preCalibrationResults.RData")
-
-
-# Write Input
-# j=1
-# dat<-modelEval( par=parMat[j,], j=j , inputDir=inputDir , outputDir=outputDir)
