@@ -24,8 +24,8 @@ parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" ,
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
 
-boundMat<-rbind(c(0, 5) , # PCTIM
-                c(0 , 2), # ADIMP
+boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
+                c(0 , 2), # ADIMP 0.5=original maximum
                 c(-50 , -0.1), # UZTWM
                 c(-70 , -0.1), # LZTWM
                 c(-100 , -0.1), # LZFSM
