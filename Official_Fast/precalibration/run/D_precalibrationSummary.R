@@ -7,7 +7,7 @@ load("../input/fullObservations.RData") # Load Full observation
 load("../precalibration/output/mhParameters_0.RData")
 source("../run/mcmc_source_Tr.R")
 # Compile precalibration data
-for(i in 1:22){
+for(i in 1:14){
   load(paste("../precalibration/output/preCalibrationResults",i,".RData",sep=""))
   if(i==1){
     modelOutput<-outputMat[-nrow(outputMat),]
