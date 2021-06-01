@@ -4,15 +4,15 @@ library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration")
 
 # Parallelize
-nprocs <-mpi.universe.size() - 1
+nprocs <-35
 print(nprocs)
 
-mp_type = "MPI"
+mp_type = "PSOCK"
 cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 
 # Values for runs
-runIndex<-((jobIndex-1)*(nprocs))+(1:(nprocs))
+runIndex<-((jobIndex-1)*(nprocs*4))+(1:(nprocs*4))
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run/mcmc_source_Tr.R")

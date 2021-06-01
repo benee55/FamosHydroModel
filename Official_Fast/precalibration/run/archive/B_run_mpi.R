@@ -1,18 +1,17 @@
-jobIndex <- as.numeric(commandArgs(trailingOnly=TRUE))
-
 library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration")
 
 # Parallelize
-nprocs <-35
-mp_type = "PSOCK"
+nprocs <-mpi.universe.size() - 1
+print(nprocs)
+
+mp_type = "MPI"
 cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 
-
-
 # Values for runs
-runIndex<-((jobIndex-1)*(nprocs*4))+(1:(nprocs*4))
+runIndex<-3080:(3080+nprocs-1)
+
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run/mcmc_source_Tr.R")
@@ -23,5 +22,5 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c
   modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
 
-save(outputMat,file = paste("output/preCalibrationResults",jobIndex,".RData",sep=""))
+save(outputMat,file ="output/preCalibrationResults_Additional.RData")
 
