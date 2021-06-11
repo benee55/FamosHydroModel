@@ -5,7 +5,7 @@ library(vioplot)
 setwd("~/Dropbox/FamosHydroModel/Official_Fast/output/")
 load("../input/fullObservations.RData") # Load Full observation
 load("../precalibration/output/mhParameters_0.RData")
-source("../run/mcmc_source_Tr.R")
+# source("../run/mcmc_source_Tr.R")
 # Compile precalibration data
 for(i in 1:14){
   load(paste("../precalibration/output/preCalibrationResults",i,".RData",sep=""))
@@ -16,8 +16,6 @@ for(i in 1:14){
   }
 }
 modelOutput<-modelOutput[,-ncol(modelOutput)] # Remove last model run (overlap with below)
-# load("../precalibration/output/preCalibrationResults_Additional.RData")
-# modelOutput<-cbind(modelOutput,outputMat[-nrow(outputMat),-1]) # Remove overlapping model run
 
 
 # Format Date
@@ -43,27 +41,34 @@ newDateVect<-dateVect[modelStart:modelEnd] # Trimmed Dates
 foo<-apply(modelOutput,2,function(x)sum(is.na(x)))
 badRuns<-which(foo!=0)
 badParMat<-parMat[badRuns,]
-apply(badParMat, 2 , summary)
-failMetric<-parMat[,2]+parMat[,3]
+goodRuns<-which(foo==0)
+goodParMat<-parMat[goodRuns,]
 failCol<-ifelse(foo==0,"blue","red")
 # Plot failing runs with respect to ADIMP and PCTIM
-plot(x=parMat[-badRuns,2] , y= parMat[-badRuns,3] , pch=16, cex=0.5,
-     xlab="PCTIM" , ylab="ADIMP" , col="black")
-points(x=badParMat[,2] , y= badParMat[,3] , pch=16, col="red")
-lines(x=c(0, 0.3) , y=c(0,0), col="blue", lwd=3)
-lines(x=c(0, 0.3) , y=c(0.5,0.5), col="blue", lwd=3)
-lines(x=c(0, 0) , y=c(0,0.5), col="blue", lwd=3)
-lines(x=c(0.3, 0.3) , y=c(0,0.5), col="blue", lwd=3)
+parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
+            "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
+            "REXP" , "UZK" , "Q0CHN" , "QMCHN")
+parA<-"QMCHN"
+parB<-"PCTIM"
+plot(x=parMat[-badRuns,parA] , y= parMat[-badRuns,parB] , pch=16, cex=0.5,
+     xlab=parA , ylab=parB , col="black")
+points(x=badParMat[,parA] , y= badParMat[,parB] , pch=16, col="red")
+# lines(x=c(0.5, 4.5) , y=c(0.3,0.3), col="blue", lwd=3)
+# lines(x=c(0.5, 4.5) , y=c(2.25,2.25), col="blue", lwd=3)
+# lines(x=c(0, 0) , y=c(0,0.5), col="blue", lwd=3)
+# lines(x=c(0.3, 0.3) , y=c(0,0.5), col="blue", lwd=3)
 legend("topright" , 
        legend=c("Success" , "Failed" , "Original Prior"),
        lty=c(NA,NA,1), 
        pch=c(16,16,NA), 
        col=c("black","red","blue"),
        lwd=c(NA,NA,2),cex=1)
+
+summary(badParMat[,-1])
 ############################################################################################################
-# Violin Plots of runs where ADIMP and PCTIM are less than 1
+# Violin Plots of runs where "QMCHN" is less than 1.9
 ############################################################################################################
-keepNew<-which(parMat[1:5025,2]<3 & parMat[1:5025,3]<1)
+keepNew<-which(goodParMat[,"QMCHN"]<1.9)
 par(mfrow=c(5,5), mar=c(2,2,2,2))
 for(i in 1:21){
   k<-obsInd[i]
@@ -72,6 +77,28 @@ for(i in 1:21){
   points(x=1, y=extremeObs[i], col="red" ,pch=16)
   abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
+
+goodParMat<-goodParMat[,-1]
+bar<-modelOutput[obsInd,goodRuns]
+sdVect<-apply(modelOutput[obsInd,goodRuns],1,sd)
+sdVect<-0
+aboveObs<-apply(bar,2, function(x){sum(x>=(extremeObs-sdVect))})
+extremeIndex<-which(aboveObs==21)
+extremeParMat<-(goodParMat[extremeIndex,])
+extremeOutput<-(bar[,extremeIndex])
+
+par(mfrow=c(5,5), mar=c(2,2,2,2))
+for(k in 1:21){
+  vioplot(extremeOutput[k,], ylim=range(extremeOutput[k,],extremeObs[k],4950.55, na.rm = TRUE), 
+          main = extremeDate[k])
+  points(x=1, y=extremeObs[k], col="red" ,pch=16)
+  abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+}
+names(extremeObs)<-rownames(extremeOutput)<-extremeDate
+colnames(extremeOutput)<-paste("ModelRun",1:ncol(extremeOutput),sep="")
+save(extremeParMat,extremeOutput, extremeObs, extremeDate,  file="captureExtremes.RData")
+
+which(parMat[,2]==extremeParMat[1,1])
 ############################################################################################################
 ############################################################################################################
 # All runs Violin Plots and Paramter densities
