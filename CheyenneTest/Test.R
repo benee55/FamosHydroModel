@@ -11,7 +11,7 @@ doParallel::registerDoParallel(cl)
 print("Registered Cluster")
 pt<-proc.time()
 outputMat<-foreach::foreach(jobNum=1:(ns*4), .combine = "c") %dopar% {
-  Sys.sleep(2)
+  Sys.sleep(5)
   jobNum
   }
 ptFinal<-proc.time()-pt
