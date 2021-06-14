@@ -77,6 +77,12 @@ for(i in 1:21){
   points(x=1, y=extremeObs[i], col="red" ,pch=16)
   abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
+############################################################################################################
+# Model Runs where :
+# 1. QMCHN<1.9
+# 2. Model Runs completed
+# 3. Model outputs are all higher than the observations
+############################################################################################################
 
 goodParMat<-goodParMat[,-1]
 bar<-modelOutput[obsInd,goodRuns]

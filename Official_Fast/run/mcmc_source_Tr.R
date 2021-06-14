@@ -35,7 +35,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
                 c(-3.5 , -0.1), # REXP
                 c(-3.5 , -0.1), # UZK
                 c(0.5,4.5), # rutpix_Q0CHN
-                c(0.3,2.25)) # rutpix_QMCHN Use 2.25 instead of 3.4
+                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25
 
 
 rownames(boundMat)<-parNames
