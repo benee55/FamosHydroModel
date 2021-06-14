@@ -29,7 +29,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
                 c(-50 , -0.1), # UZTWM
                 c(-70 , -0.1), # LZTWM
                 c(-100 , -0.1), # LZFSM
-                c(-120 , -0.1), # LZFPM
+                c(-100 , -0.1), # LZFPM Old -120
                 c(-3.8 , -0.1), # LZSK
                 c(0.5 , 1.5), # snow_SCF
                 c(-3.5 , -0.1), # REXP
