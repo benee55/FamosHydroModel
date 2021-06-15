@@ -28,7 +28,7 @@ for(i in 1:14){
 }
 
 # This provides all values in time series. Need to index
-sampleIndex<-sample(1:ncol(modelOutput), nprocs)
+sampleIndex<-sample(1:ncol(modelOutput), ens)
 modelOutput<-modelOutput[,sampleIndex]
 
 # Parameters
@@ -45,7 +45,7 @@ logLikelihood_temper<-function(par, obs , temper , output, obsInd){
   return(list(llhd,output))
 }
 
-for(i in 1:nprocs){
+for(i in 1:ens){
   jobPar<-parMat[i,]
   llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[,i] , obsInd=obsInd)
   save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/runA/output/PF_",cycle,"_",jobNum,".RData",sep=""))

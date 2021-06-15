@@ -21,7 +21,7 @@ print(args)
 # Intialize
 cycle=args[1] # Cycle <- passed in through PBS file
 niter<-args[2] # Number of MCMC iterations
-nprocs <-mpi.universe.size() - 1 # Number of particles
+ens <-mpi.universe.size() - 1 # Number of particles
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")
@@ -31,7 +31,7 @@ outputDir<-"/glade/scratch/sanjib/runA/output"
 # Parallelize
 library(snow);library(Rmpi);library(doParallel);library(foreach)
 mp_type = "MPI"
-cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
+cl <- parallel::makeCluster(spec = ens, type=mp_type)
 doParallel::registerDoParallel(cl)
 ####################################################################################
 
@@ -39,34 +39,17 @@ doParallel::registerDoParallel(cl)
 ####################################################################################################
 # Importance Sampling - Parallelize
 if(cycle==1){
-  temperVal<-list()
-  temperVal$cumulative<-0 ; temperVal$incremental<-0
-  save(temperVal,file="output/temperVal_0.RData")
+  source("run/Initialize.R") 
 }else{
   load(paste("output/temperVal_",cycle-1,".RData",sep=""))
   if(temperVal$cumulative>0.98){stop("Stopping Criterion Met")}
-  load(paste("output/mhParameters_",cycle-1,".RData",sep=""))
-}
-
-#Compute Initial Weigths for Cycle
-if(cycle==1){
-  
-  foreach::foreach(jobNum=1:ens) %dopar% {
-    source("run/mcmc_source_Tr.R")
-    load(paste("output/mhParameters_",(cycle-1),".RData",sep=""))
-    jobPar<-parMat[jobNum,]
-    llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  j = jobNum, inputDir = inputDir, outputDir = outputDir , temper = 1)
-    save(jobPar,llhd_t,file=paste("output/PF_",cycle,"_",jobNum,".RData",sep=""))
-  }
-  
-}else{
-  load(paste("output/temperVal_",cycle-1,".RData",sep=""))
   MCMCtemperVal<-temperVal$cumulative
-  for(jobNum in 1:ens){
-    load(paste(outputDir,"/mhParameters_",(cycle-1),".RData",sep=""))
+  load(paste("output/mhParameters_",cycle-1,".RData",sep=""))
+  # Reweight based on cycle
+  foreach::foreach(jobNum=1:ens) %dopar% {
     jobPar<-parMat[jobNum,]
     llhd_t<-calcPF(cycle=cycle,jobNum=jobNum,llhdTemper=1, # we are tempering this by 1 to get the full likelihood
-                   mcmcTemper=MCMCtemperVal,
+                   mcmcTemper=MCMCtemperVal, # This is the tempering value from the previous cycle's mutation stage
                    initResults=list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]]))
     # Save the file
     save(jobPar,llhd_t,file=paste(outputDir,"/PF_",cycle,"_",jobNum,".RData",sep=""))
