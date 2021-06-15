@@ -15,16 +15,47 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Generate intial parameter set from pre-calibration
+setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 
-#Initial Parameters
-parMat<-apply(boundMat,1,function(x,ens){runif(ens,min=x[1],max=x[2])},ens=ens)
-parMat<-cbind(rinvgamma(ensembleN,shape = priorPar[1,1], rate = priorPar[1,2]),parMat)
+for(i in 1:14){
+  load(paste("precalibration/output/preCalibrationResults",i,".RData",sep=""))
+  if(i==1){
+    modelOutput<-outputMat[-nrow(outputMat),]
+  }else{
+    modelOutput<-cbind(modelOutput,outputMat[-nrow(outputMat),])
+  }
+}
 
-save(parMat,file="~/work/hydro/Official_Fast/output/mhParameters_0.RData")
+# This provides all values in time series. Need to index
+sampleIndex<-sample(1:ncol(modelOutput), nprocs)
+modelOutput<-modelOutput[,sampleIndex]
+
+# Parameters
+load("precalibration/output/mhParameters_0.RData")
+parMat<-parMat[sampleIndex,]
+save(parMat,file="output/mhParameters_0.RData")
+
+# Functions to compute posterior
+logLikelihood_temper<-function(par, obs , temper , output, obsInd){
+  sigma2<-par[1] # Variance Parameter
+  extremeOutput<-output[obsInd,]
+  llhd<-temper*sum(dnorm(x=obs, mean = extremeOutput , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
+  output<-list(extremeOutput,output)
+  return(list(llhd,output))
+}
+
+for(i in 1:nprocs){
+  jobPar<-parMat[i,]
+  llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[,i] , obsInd=obsInd)
+  save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/runA/output/PF_",cycle,"_",jobNum,".RData",sep=""))
+}
+
+# Tempering values
 temperVal<-list()
 temperVal$cumulative<-0
 temperVal$incremental<-0
-save(temperVal,file="~/work/hydro/Official_Fast/output/temperVal_0.RData")
+save(temperVal,file="output/temperVal_0.RData")
 
 # Save Bhattacharrya Distance for Exact Case
 # ADD VALUES for Streamflow

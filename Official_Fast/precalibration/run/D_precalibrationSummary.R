@@ -15,7 +15,6 @@ for(i in 1:14){
     modelOutput<-cbind(modelOutput,outputMat[-nrow(outputMat),])
   }
 }
-modelOutput<-modelOutput[,-ncol(modelOutput)] # Remove last model run (overlap with below)
 
 
 # Format Date
@@ -127,7 +126,6 @@ extremeModelOuput<-modelOutput[obsInd,]
 MSE<-apply(extremeModelOuput,2,function(x){mean((x-extremeObs)^2)})
 goodRuns<-which(MSE<quantile(MSE, probs=0.05, na.rm = TRUE))
 goodModelOutput<-modelOutput[modelStart:modelEnd,goodRuns] # Trimmed Data
-goodParMat<-parMat[goodRuns,-1]
 ############################################################################################################
 ############################################################################################################
 # Figures
@@ -184,7 +182,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
                 c(-3.5 , -0.1), # UZK
                 c(0.5,4.5), # rutpix_Q0CHN
                 c(0.3,2.25)) # rutpix_QMCHN Use 2.25 instead of 3.4
-for(i in 1:12){
+for(i in 1:11){
   plot(density(goodParMat[,i]) , xlim=range(boundMat[i,1:2]),  main=parNames[i])
   abline(v=boundMat[i,1:2], col="red")
 }

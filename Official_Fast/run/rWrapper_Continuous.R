@@ -58,7 +58,16 @@ readOutput<-function(j,dir){
   endInd<-length(output) # Row of final date
   startInd<-89 #Row of first date
   flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
-  flow
+  dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
+  useDate<-c(c("190904","200904"),
+             c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
+             c("011205"),
+             c("280606" , "290606" , "300606"),
+             c("181106"),
+             c("160307" , "170307"),
+             c("080208" , "060308" , "090308" , "100308"))
+  extremeFlow<-flow[which(dates%in%useDate)]
+  return(list(extremeFlow,flow))
 }
 
 
@@ -66,14 +75,12 @@ readOutput<-function(j,dir){
 # Combine Run File + Read
 modelEval<-function( par, j , inputDir , outputDir){
   pt<-proc.time()
-
   writeInput( par = par[-1] , j = j , dir = inputDir , outputDir=outputDir)  # Write Input
   writeOutput( j = j ,dir = outputDir) # Write Output
   runHydroModel( j = j , dir = inputDir) # Run Model
-    
   output<-readOutput( j = j , dir = outputDir)
   ptFinal<-proc.time()-pt
-  output<-c(output,ptFinal[3])
+  output[[3]]<-ptFinal[3]
   return(output) # Return output
 }
   

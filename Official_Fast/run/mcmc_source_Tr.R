@@ -65,7 +65,7 @@ logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   
   output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
   sigma2<-par[1] # Variance Parameter
-  llhd<-temper*sum(dnorm(x=obs, mean = output , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
+  llhd<-temper*sum(dnorm(x=obs, mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
   return(list(llhd,output))
 }
 

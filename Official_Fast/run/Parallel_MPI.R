@@ -17,23 +17,21 @@
 # Arguments
 args = as.numeric(commandArgs(trailingOnly=TRUE))
 print(args)
-args=c(1,3,2)
 ####################################################################################################
 # Intialize
 cycle=args[1] # Cycle <- passed in through PBS file
-ens=args[2] # Total number of particles
-niter<-args[3] # Number of MCMC iterations
+niter<-args[2] # Number of MCMC iterations
+nprocs <-mpi.universe.size() - 1 # Number of particles
 ####################################################################################################
-setwd("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/")
+setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")
-inputDir<-"~/scratch/famos/input"
-outputDir<-"~/scratch/famos/output"
+inputDir<-"/glade/scratch/sanjib/runA/input"
+outputDir<-"/glade/scratch/sanjib/runA/output"
 ####################################################################################
 # Parallelize
 library(snow);library(Rmpi);library(doParallel);library(foreach)
-nprocs <- ens
-mp_type = "MPI" # PSOCK or MPI
-cl <- parallel::makeCluster(nprocs, type=mp_type)
+mp_type = "MPI"
+cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 ####################################################################################
 
@@ -41,7 +39,9 @@ doParallel::registerDoParallel(cl)
 ####################################################################################################
 # Importance Sampling - Parallelize
 if(cycle==1){
-  source("run/Initialize.R")  
+  temperVal<-list()
+  temperVal$cumulative<-0 ; temperVal$incremental<-0
+  save(temperVal,file="output/temperVal_0.RData")
 }else{
   load(paste("output/temperVal_",cycle-1,".RData",sep=""))
   if(temperVal$cumulative>0.98){stop("Stopping Criterion Met")}
@@ -55,7 +55,6 @@ if(cycle==1){
     source("run/mcmc_source_Tr.R")
     load(paste("output/mhParameters_",(cycle-1),".RData",sep=""))
     jobPar<-parMat[jobNum,]
-    
     llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  j = jobNum, inputDir = inputDir, outputDir = outputDir , temper = 1)
     save(jobPar,llhd_t,file=paste("output/PF_",cycle,"_",jobNum,".RData",sep=""))
   }
@@ -64,13 +63,13 @@ if(cycle==1){
   load(paste("output/temperVal_",cycle-1,".RData",sep=""))
   MCMCtemperVal<-temperVal$cumulative
   for(jobNum in 1:ens){
-    load(paste("output/mhParameters_",(cycle-1),".RData",sep=""))
+    load(paste(outputDir,"/mhParameters_",(cycle-1),".RData",sep=""))
     jobPar<-parMat[jobNum,]
     llhd_t<-calcPF(cycle=cycle,jobNum=jobNum,llhdTemper=1, # we are tempering this by 1 to get the full likelihood
                    mcmcTemper=MCMCtemperVal,
                    initResults=list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]]))
     # Save the file
-    save(jobPar,llhd_t,file=paste("output/PF_",cycle,"_",jobNum,".RData",sep=""))
+    save(jobPar,llhd_t,file=paste(outputDir,"/PF_",cycle,"_",jobNum,".RData",sep=""))
   }
 }
 
@@ -87,8 +86,6 @@ load(paste("output/temperVal_",cycle-1,".RData",sep=""))
 combineIS(cycle=cycle,ens=ens,cumulTemp=temperVal$cumulative)
 print("Central Complete")
 rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
-
-
 
 # ################################################################################################################################################################################################
 # # Metropolis Hastings  - Parallelize

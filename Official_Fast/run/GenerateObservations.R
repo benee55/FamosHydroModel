@@ -1,6 +1,6 @@
 rm(list=ls())
 # Observations
-obs<-read.table("~/work/hydro/Official_Fast/input/SBYP1_obs.txt" , stringsAsFactors = FALSE)
+obs<-read.table("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/SBYP1_obs.txt" , stringsAsFactors = FALSE)
 obs<-obs[-(1:2),]
 obs<-t(apply(obs,1,as.numeric))
 obsInd<-c(which(obs[,2]==2004 & obs[,3]==9 & obs[,4]%in%c(19,20)),
@@ -17,5 +17,5 @@ obsInd<-c(which(obs[,2]==2004 & obs[,3]==9 & obs[,4]%in%c(19,20)),
 obs<-obs[obsInd,]
 obs<-as.numeric(obs[,5])*0.0283 # Need to convert
 
-save(obs, file="~/work/hydro/Official_Fast/input/obsData.RData")
+save(obs, file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 
