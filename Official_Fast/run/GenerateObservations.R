@@ -14,8 +14,9 @@ obsInd<-c(which(obs[,2]==2004 & obs[,3]==9 & obs[,4]%in%c(19,20)),
           which(obs[,2]==2008 & obs[,3]==2 & obs[,4]%in%c(8)),
           which(obs[,2]==2008 & obs[,3]==3 & obs[,4]%in%c(6,9,10))
 )
+fullObs<-obs[,5]
 obs<-obs[obsInd,]
 obs<-as.numeric(obs[,5])*0.0283 # Need to convert
 
-save(obs, file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
+save(obs, obsInd,fullObs, file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 
