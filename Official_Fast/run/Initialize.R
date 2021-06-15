@@ -39,7 +39,7 @@ save(parMat,file="output/mhParameters_0.RData")
 # Functions to compute posterior
 logLikelihood_temper<-function(par, obs , temper , output, obsInd){
   sigma2<-par[1] # Variance Parameter
-  extremeOutput<-output[obsInd,]
+  extremeOutput<-output[obsInd]
   llhd<-temper*sum(dnorm(x=obs, mean = extremeOutput , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
   output<-list(extremeOutput,output)
   return(list(llhd,output))
