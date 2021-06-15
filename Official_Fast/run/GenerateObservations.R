@@ -23,5 +23,5 @@ obsInd<-c(which(obs[,2]==2004 & obs[,3]==9 & obs[,4]%in%c(19,20)),
 # Final reformatting
 obs<-obs[,-1] #1766 total observations
 fullObs<-obs[,4]
-obs<-obs[obsInd,4]
+obs<-fullObs[obsInd]
 save(obs, obsInd,fullObs, file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
