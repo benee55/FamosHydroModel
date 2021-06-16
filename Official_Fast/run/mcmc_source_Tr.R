@@ -52,7 +52,11 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
 load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 ##################################################################################################################
 # Load Source for RWrapper and Forward Model 
-source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run/rWrapper_Continuous_Fast.R")
+if(FAST){
+  source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run/rWrapper_Continuous_Fast.R")  
+}else{
+  source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run/rWrapper_Continuous.R")  
+}
 ##################################################################################################################
 # Priors 
 logPrior<-function(par , priorPar){
@@ -295,7 +299,7 @@ for(i in 1:length(fileDirLoad)){
     }
   
     acceptVect<-vector("numeric")
-    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,1])
+    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
     kMCMC<-length(amcmc.out[[5]])
     
   }else{
