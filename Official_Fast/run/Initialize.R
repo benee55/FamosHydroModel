@@ -64,7 +64,7 @@ llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs[1:2], mean = x[obsInd[
   llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs, mean = x[obsInd] , sd = 1000, log = TRUE))})
 }
 # 
-covIndex<-which(llhd>quantile(llhd,probs = 0.9))
+covIndex<-which(llhd>quantile(llhd,probs = 0.85))
 keepParMat<-parMat[covIndex,]
 # Use acceptance ratio from Rosenthal et al. 
 CovMat<-cov(keepParMat[,-1])*((2.38^2)/ncol(keepParMat[,-1]))
