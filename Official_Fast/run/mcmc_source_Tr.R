@@ -305,7 +305,7 @@ for(i in 1:length(fileDirLoad)){
   }else{
     parMat[i,]<-amcmc.out[[1]][nrow(amcmc.out[[1]]),]
     TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
-    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,1])
+    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
     kMCMC<-length(amcmc.out[[5]])
     
   }
