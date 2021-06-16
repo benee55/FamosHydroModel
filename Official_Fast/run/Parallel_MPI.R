@@ -72,36 +72,33 @@ print("Central Complete")
 rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 
 # ################################################################################################################################################################################################
-# # Metropolis Hastings  - Parallelize
-# #Parallel Settings
-# 
-# foreach::foreach(jobNum=1:ens,
-#                  .packages=c('pscl','compiler')) %dopar% {
-#                    setwd("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/")
-#                    source("run/mcmc_source_Tr.R")
-#                    ################################################################################
-#                    load(paste("output/rsParameters_",cycle,".RData",sep=""))
-#                    # MCMC
-#                    niter.mcmc = niter
-#                    par.init<-parMat[jobNum,]
-#                    ##############################
-#                    load(paste("output/temperVal_",cycle,".RData",sep=""))
-#                    MCMCtemperVal<-temperVal$cumulative
-#                    temperVal<-temperVal$incremental
-#                    ##############################
-#                    ##############################
-#                    # Generate prorposal matrix for first sample
-#                    ##############################
-#                    ##############################
-#                    CovMat<-genPropMat(cycle=cycle,scale=1)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.  
-#                    initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
-#                    set.seed(jobNum*1234*cycle) #set seed
-#                    
-#                    ##################
-#                    ##################
-#                    ##################
-#                    ##################
-#                    ##################
+# Metropolis Hastings  - Parallelize
+
+foreach::foreach(jobNum=1:ens) %dopar% {
+  setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
+  source("run/mcmc_source_Tr.R")
+                   ################################################################################
+                   load(paste("output/rsParameters_",cycle,".RData",sep=""))
+                   # MCMC
+                   niter.mcmc = niter
+                   par.init<-parMat[jobNum,]
+                   
+                   load(paste("output/temperVal_",cycle,".RData",sep=""))
+                   MCMCtemperVal<-temperVal$cumulative
+                   temperVal<-temperVal$incremental
+                   ##############################
+                   ##############################
+                   # Generate prorposal matrix for first sample
+                   ##############################
+                   ##############################
+                   CovMat<-genPropMat(cycle=cycle,scale=1)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
+                   initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
+                   # set.seed(jobNum*1234*cycle) #set seed
+                   ##################
+                   ##################
+                   ##################
+                   ##################
+                   ##################
 #                    # TO DO
 #                    amcmc.out<-mcmcManual_tempered(iter=niter.mcmc,
 #                                                   init=par.init,
@@ -117,21 +114,21 @@ rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 #                                                   parNames=parNames)
 #                    
 #                    
-#                    ##################
-#                    ##################
-#                    ##################
-#                    ##################
-#                    save(amcmc.out,MCMCtemperVal,temperVal,
-#                         file=paste("output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
-#                    ################################################################################
-#                    rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
-#                  }
+                   ##################
+                   ##################
+                   ##################
+                   ##################
+                   save(amcmc.out,MCMCtemperVal,temperVal,
+                        file=paste("/glade/scratch/sanjib/runA/output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
+                   ################################################################################
+                   rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
+                 }
 # 
 # 
 # ####################################################################################################
 # ####################################################################################################
 # # Combine MH- Central Node
-# setwd("/gpfs/group/kzk10/default/private/hydrocalib/SGrove/famos/Official_Fast/")
-# source("run/mcmc_source_Tr.R")
-# combineMH(cycle=cycle,ens=ens,stage=1) # Combine MH
-# combineTotalParticles(cycle=cycle)# combine Total Particles for Covariance Matrix generation(proposal)
+setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
+source("run/mcmc_source_Tr.R")
+combineMH(cycle=cycle,ens=ens,stage=1) # Combine MH
+combineTotalParticles(cycle=cycle)# combine Total Particles for Covariance Matrix generation(proposal)

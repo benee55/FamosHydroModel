@@ -57,6 +57,15 @@ temperVal$cumulative<-0
 temperVal$incremental<-0
 save(temperVal,file="output/temperVal_0.RData")
 
+# Generate Covariance matrix for proposal
+llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs, mean = x[obsInd] , sd = 1000, log = TRUE))})
+covIndex<-which(llhd>quantile(llhd,probs = 0.9))
+keepParMat<-parMat[covIndex,]
+# Use acceptance ratio from Rosenthal et al. 
+CovMat<-cov(keepParMat[,-1])*((2.38^2)/ncol(keepParMat[,-1]))
+save(CovMat, file="output/BeginCovMat_Tr.RData")
+
+
 # Save Bhattacharrya Distance for Exact Case
 # ADD VALUES for Streamflow
 # meanvar<-0.5379547;sdvar<-0.1259628 #Values from the test runs
