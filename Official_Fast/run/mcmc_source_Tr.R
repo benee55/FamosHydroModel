@@ -84,12 +84,12 @@ logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , 
 }
 #######################################################################################################
 # Function to Calculate New Likelihood with respect to tempering 
-calcPF<-function(cycle,jobNum,llhdTemper,mcmcTemper,initResults){
+calcPF<-function(cycle,jobNum,llhdTemper,mcmcTemper,initResults, priorPar){
   par<-parMat[jobNum,]
   ################################################################################################
   names(par)<-parNames
   ################################################################################################
-  lprior<-logPrior(par=par)
+  lprior<-logPrior(par=par, priorPar=priorPar)
   llhd<-((initResults[[1]]-lprior)/mcmcTemper)*llhdTemper
   results<-initResults[[2]]
   return(list(llhd,results))

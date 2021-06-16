@@ -50,7 +50,8 @@ if(cycle==1){
     jobPar<-parMat[jobNum,]
     llhd_t<-calcPF(cycle=cycle,jobNum=jobNum,llhdTemper=1, # we are tempering this by 1 to get the full likelihood
                    mcmcTemper=MCMCtemperVal, # This is the tempering value from the previous cycle's mutation stage
-                   initResults=list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]]))
+                   initResults=list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]]), 
+                   priorPar=priorPar)
     # Save the file
     save(jobPar,llhd_t,file=paste(outputDir,"/PF_",cycle,"_",jobNum,".RData",sep=""))
   }
