@@ -82,7 +82,6 @@ mcmcManual_tempered<-function(iter,
                               obs, 
                               priorPar,
                               temper,
-                              llhdTemper,
                               initResults,
                               parNames,
                               additional=FALSE){
@@ -97,7 +96,7 @@ mcmcManual_tempered<-function(iter,
   # Add posterior
   lpost<-vector("numeric");
   if(additional==FALSE){
-    lpost[1]<-temper*(initResults[[1]]/llhdTemper)+logPrior(par=init,priorPar=priorPar) # Calculate Log Posterior from previous run  - IS step
+    lpost[1]<-temper*(initResults[[1]])+logPrior(par=init,priorPar=priorPar) # Calculate Log Posterior from previous run  - IS step
   }else{
     lpost[1]<-initResults[[1]] # Use log posterior from previous run
   }

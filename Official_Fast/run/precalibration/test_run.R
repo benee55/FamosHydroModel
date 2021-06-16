@@ -132,9 +132,8 @@ foreach::foreach(jobNum=1:ensembleN,
                                                   propCov=CovMat,
                                                   obs = obs,
                                                   priorPar = priorPar,
-                                                  temper=temperVal,
+                                                  temper=MCMCtemperVal,
                                                   x=inputX,
-                                                  llhdTemper=MCMCtemperVal,
                                                   initResults=initResults,
                                                   parNames=parNames)
 
