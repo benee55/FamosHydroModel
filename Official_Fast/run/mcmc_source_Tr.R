@@ -360,7 +360,7 @@ genPropMat<-function(cycle,scale){
     TotalParMat<-TotalParMat[uniqueID,]
     colnames(TotalParMat)<-parNames
     #####################################################################################################################
-    CovMat<-cov(TotalParMat)*((2.38^2)/ncol(TotalParMat))*scale # Optimal proposal from Rosenthal et al. (2008)
+    CovMat<-cov(TotalParMat[,-1])*((2.38^2)/ncol(TotalParMat[,-1]))*scale # Optimal proposal from Rosenthal et al. (2008)
   }
    return(CovMat)
 }
