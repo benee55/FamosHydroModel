@@ -103,7 +103,6 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                                  priorPar = priorPar,
                                  jobNum=jobNum,
                                  temper=MCMCtemperVal,
-                                 llhdTemper=temperVal,
                                  initResults=initResults,
                                  parNames=parNames)
   
