@@ -114,6 +114,7 @@ mcmcManual_tempered<-function(iter,
   # Initialize Values
   n=length(obs)
   names(init)<-parNames
+  boundMat<-priorPar[-1,]
   # Intialize containers
   alphaMat<-parMat<-candMat<-matrix(NA,nrow=iter,ncol=length(init))
   candMat[1,]<-parMat[1,]<-init ; alphaMat[1,]<-1
@@ -133,7 +134,7 @@ mcmcManual_tempered<-function(iter,
    # Propose on the log scale from the multivariate truncated normal
     candMat[i,]<-c(parMat[i-1,1] , rtmvnorm(n = 1,mean = parMat[i-1,-1],
                                             sigma = propCov,
-                                            lower = boundMat[1,],upper = boundMat[3,]) )
+                                            lower = boundMat[,1],upper = boundMat[,2]) )
 
       
     curResults<-logPosterior_temper(par=as.numeric(candMat[i,]),
@@ -146,9 +147,8 @@ mcmcManual_tempered<-function(iter,
         ############################################################################################################################
     # account for asymmetric proposal
     # Do some simulations to make sure this working properly
-    boundMat<-priorPar[-1,]
-    adj1<-log(pmvnorm(upper= boundMat[2,],lower=boundMat[1,],mean=as.numeric(parMat[i-1,-1]),sigma=propCov))[1]#previous
-    adj2<-log(pmvnorm(upper= boundMat[2,],lower=boundMat[1,],mean=as.numeric(candMat[i,-1]),sigma=propCov))[1]#current 
+    adj1<-log(pmvnorm(upper= boundMat[,2],lower=boundMat[,1],mean=as.numeric(parMat[i-1,-1]),sigma=propCov))[1]#previous
+    adj2<-log(pmvnorm(upper= boundMat[,2],lower=boundMat[,1],mean=as.numeric(candMat[i,-1]),sigma=propCov))[1]#current 
     alpha<-min(curResults[[1]]+adj1-lpost[i-1]-adj2,log(1)) # Asymmetric Proposal. Follow Example. Add and subtract constants. 
     #https://journal.r-project.org/archive/2010-1/RJournal_2010-1_Wilhelm+Manjunath.pdf
     ############################################################################################################################
