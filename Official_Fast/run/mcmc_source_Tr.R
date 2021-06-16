@@ -65,7 +65,8 @@ logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   
   output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
   sigma2<-par[1] # Variance Parameter
-  llhd<-temper*sum(dnorm(x=obs, mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
+  lenOut<-length(output[[1]])
+  llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
   return(list(llhd,output))
 }
 
@@ -131,6 +132,7 @@ mcmcManual_tempered<-function(iter,
   curResultsList<-list();curResultsList[[1]]<-initResults[[2]]
   #Begin MCMC
   for(i in 2:iter){
+    resultsList[[i]]
    # Propose on the log scale from the multivariate truncated normal
     candMat[i,]<-c(parMat[i-1,1] , rtmvnorm(n = 1,mean = parMat[i-1,-1],
                                             sigma = propCov,
@@ -170,7 +172,8 @@ mcmcManual_tempered<-function(iter,
     
     # Update Gamma Parameter - Gibbs Update
     alphaPar<-priorPar[1,1]+0.5*n 
-    betaPar<-(sum((resultsList[[i]][[1]]-obs)^2)+2*priorPar[1,2])/2
+    lenOut<-resultsList[[i]][[1]]
+    betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
     parMat[i,1]<-rinvgamma(n=1, shape = alphaPar, rate=betaPar)
     
   }
