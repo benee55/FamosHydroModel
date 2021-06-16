@@ -58,15 +58,16 @@ CovMat<-genPropMat(cycle=cycle,scale=1)   # Note that we use a different functio
 
 initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
 
-output<-modelEval(par=par.init, j=jobNum , inputDir=inputDir , outputDir=outputDir) 
-
-curResults<-logPosterior_temper(par=par.init,
-                                priorPar = priorPar,
-                                obs = obs,
-                                inputDir = inputDir,
-                                outputDir = outputDir,
-                                j=jobNum , 
-                                temper=MCMCtemperVal)
+# Test Finished
+# curResults<-logPosterior_temper(par=par.init,
+#                                 priorPar = priorPar,
+#                                 obs = obs,
+#                                 inputDir = inputDir,
+#                                 outputDir = outputDir,
+#                                 j=jobNum , 
+#                                 temper=MCMCtemperVal)
+# Test FInished
+# output<-modelEval(par=par.init, j=jobNum , inputDir=inputDir , outputDir=outputDir) 
 
 
   # set.seed(jobNum*1234*cycle) #set seed
