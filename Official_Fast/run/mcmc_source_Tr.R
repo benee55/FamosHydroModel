@@ -132,7 +132,7 @@ mcmcManual_tempered<-function(iter,
   curResultsList<-list();curResultsList[[1]]<-initResults[[2]]
   #Begin MCMC
   for(i in 2:iter){
-    resultsList[[i]]
+
    # Propose on the log scale from the multivariate truncated normal
     candMat[i,]<-c(parMat[i-1,1] , rtmvnorm(n = 1,mean = parMat[i-1,-1],
                                             sigma = propCov,
@@ -172,7 +172,7 @@ mcmcManual_tempered<-function(iter,
     
     # Update Gamma Parameter - Gibbs Update
     alphaPar<-priorPar[1,1]+0.5*n 
-    lenOut<-resultsList[[i]][[1]]
+    lenOut<-length(resultsList[[i]][[1]])
     betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
     parMat[i,1]<-rinvgamma(n=1, shape = alphaPar, rate=betaPar)
     
