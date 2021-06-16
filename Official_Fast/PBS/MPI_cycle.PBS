@@ -22,6 +22,6 @@ module load R/3.6.0
 module load ncarcompilers/0.5.0
 module load openmpi/3.1.4
 
-mpirun -n 1 Rscript Parallel_MPI.R $args $niter  
+mpirun -n 1 Rscript Parallel_MPI.R $args $ens $niter  
 #2>&1 >/dev/null
 echo "Job ended on `hostname` at `date`"

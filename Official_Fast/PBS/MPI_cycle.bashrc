@@ -1,15 +1,15 @@
 #!/bin/bash
 
 niter=10
-
+ens=71
 for args in `seq 1 2`;
 do
     if [ "${args}" -eq "1" ]; then
-        two=$(qsub MPI_cycle.PBS -v "args=$args $niter")
+        two=$(qsub MPI_cycle.PBS -v "args=$args $ens $niter")
     else
-        two=$(qsub -W depend=afterany:$one MPI_cycle.PBS -v "args=$args $niter")
+        two=$(qsub -W depend=afterany:$one MPI_cycle.PBS -v "args=$args $ens $niter")
     fi
     echo $two
-    echo $args $niter
+    echo $args $niter $ens 
     one=$two
 done

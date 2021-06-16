@@ -20,9 +20,8 @@ print(args)
 ####################################################################################################
 # Intialize
 cycle=args[1] # Cycle <- passed in through PBS file
-niter<-args[2] # Number of MCMC iterations
-ens <-mpi.universe.size() - 1 # Number of particles
-# cycle=1 ; niter=2 ; ens<-71
+ens <-args[2] # Number of particles
+niter<-args[3] # Number of MCMC iterations
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")
