@@ -22,7 +22,7 @@ print(args)
 cycle=args[1] # Cycle <- passed in through PBS file
 niter<-args[2] # Number of MCMC iterations
 ens <-mpi.universe.size() - 1 # Number of particles
-cycle=2 ; niter=10 ; ens<-71
+cycle=1 ; niter=10 ; ens<-71
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")
@@ -86,7 +86,6 @@ initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
                                   priorPar = priorPar,
                                   jobNum=jobNum,
                                   temper=MCMCtemperVal,
-                                  llhdTemper=temperVal,
                                   initResults=initResults,
                                   parNames=parNames)
   ##################
