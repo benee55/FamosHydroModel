@@ -22,7 +22,6 @@ print(args)
 cycle=args[1] # Cycle <- passed in through PBS file
 ens <-args[2] # Number of particles
 niter<-args[3] # Number of MCMC iterations
-FAST=TRUE
 # cycle=1 ; ens=71 ; niter=6
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
@@ -61,7 +60,7 @@ if(cycle==1){
 }
 
 print("Stopped")
-rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir","FAST")))
+rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 # ####################################################################################################
 # ####################################################################################################
 # Combine - Central Node
@@ -72,7 +71,7 @@ source("run/mcmc_source_Tr.R")
 load(paste("output/temperVal_",cycle-1,".RData",sep=""))
 combineIS(cycle=cycle,cumulTemp=temperVal$cumulative, prop=0.5)
 print("Central Complete")
-rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir","FAST")))
+rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 
 # ################################################################################################################################################################################################
 # Metropolis Hastings  - Parallelize
@@ -111,7 +110,7 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                    save(amcmc.out,MCMCtemperVal,temperVal,
                         file=paste("/glade/scratch/sanjib/runA/output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
                    ################################################################################
-                   rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir","FAST")))
+                   rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
                  }
 
 
