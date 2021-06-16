@@ -59,6 +59,7 @@ save(temperVal,file="output/temperVal_0.RData")
 
 # Generate Covariance matrix for proposal
 llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs[1:2], mean = x[obsInd[1:2]] , sd = 1000, log = TRUE))})
+# llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs, mean = x[obsInd] , sd = 1000, log = TRUE))})
 covIndex<-which(llhd>quantile(llhd,probs = 0.8))
 keepParMat<-parMat[covIndex,]
 # Use acceptance ratio from Rosenthal et al. 
