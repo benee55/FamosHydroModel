@@ -174,7 +174,7 @@ mcmcManual_tempered<-function(iter,
     alphaPar<-priorPar[1,1]+0.5*n 
     lenOut<-length(resultsList[[i]][[1]])
     betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
-    parMat[i,1]<-rinvgamma(n=1, shape = alphaPar, rate=betaPar)
+    parMat[i,1]<-candMat[i,1]<-rinvgamma(n=1, shape = alphaPar, rate=betaPar)
     
   }
   return(list(parMat,candMat,alphaMat,lpost,resultsList,curResultsList))
