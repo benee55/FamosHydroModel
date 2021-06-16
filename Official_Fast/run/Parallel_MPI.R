@@ -80,54 +80,42 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                    ################################################################################
                    load(paste("output/rsParameters_",cycle,".RData",sep=""))
                    # MCMC
-                   niter.mcmc = niter
-                   par.init<-parMat[jobNum,]
-                   
-                   load(paste("output/temperVal_",cycle,".RData",sep=""))
-                   MCMCtemperVal<-temperVal$cumulative
-                   temperVal<-temperVal$incremental
+  niter.mcmc = niter
+  par.init<-parMat[jobNum,]
+  load(paste("output/temperVal_",cycle,".RData",sep=""))
+  MCMCtemperVal<-temperVal$cumulative
+  temperVal<-temperVal$incremental
                    ##############################
                    ##############################
                    # Generate prorposal matrix for first sample
                    ##############################
                    ##############################
-                   CovMat<-genPropMat(cycle=cycle,scale=1)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
-                   initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
-                   # set.seed(jobNum*1234*cycle) #set seed
-                   ##################
-                   ##################
-                   ##################
-                   ##################
-                   ##################
-#                    # TO DO
-#                    amcmc.out<-mcmcManual_tempered(iter=niter.mcmc,
-#                                                   init=par.init,
-#                                                   propCov=CovMat,
-#                                                   inputDir = inputDir,
-#                                                   outputDir = outputDir,
-#                                                   obs = obs, 
-#                                                   priorPar = priorPar,
-#                                                   jobNum=jobNum,
-#                                                   temper=MCMCtemperVal,
-#                                                   llhdTemper=temperVal,
-#                                                   initResults=initResults,
-#                                                   parNames=parNames)
-#                    
-#                    
-                   ##################
-                   ##################
-                   ##################
+  CovMat<-genPropMat(cycle=cycle,scale=1)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
+  initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
+  amcmc.out<-mcmcManual_tempered(iter=niter.mcmc,
+                                 init=par.init,
+                                 propCov=CovMat,
+                                 inputDir = inputDir,
+                                 outputDir = outputDir,
+                                 obs = obs,
+                                 priorPar = priorPar,
+                                 jobNum=jobNum,
+                                 temper=MCMCtemperVal,
+                                 llhdTemper=temperVal,
+                                 initResults=initResults,
+                                 parNames=parNames)
+  
                    ##################
                    save(amcmc.out,MCMCtemperVal,temperVal,
                         file=paste("/glade/scratch/sanjib/runA/output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
                    ################################################################################
                    rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
                  }
-# 
-# 
-# ####################################################################################################
-# ####################################################################################################
-# # Combine MH- Central Node
+
+
+####################################################################################################
+####################################################################################################
+# Combine MH- Central Node
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")
 combineMH(cycle=cycle,ens=ens,stage=1) # Combine MH
