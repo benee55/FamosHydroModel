@@ -68,21 +68,13 @@ logPrior<-function(par , priorPar){
 logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   # Add TRYCatch here 
   
-  output <- try(expr=modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) ,silent = TRUE) # From rmvnorm()
-  if (inherits(output, "try-error")){
-    return(list(-1e6,NA))
-  }else{
-    sigma2<-par[1] # Variance Parameter
-    lenOut<-length(output[[1]])
-    llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
-    return(list(llhd,output))
-    }
-  # output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
+  output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
+  sigma2<-par[1] # Variance Parameter
+  lenOut<-length(output[[1]])
+  llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
+  return(list(llhd,output))
 }
   
-  
-
-
 # Posterior 
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){
   lPri<-logPrior( par = par , priorPar = priorPar )
@@ -151,19 +143,21 @@ mcmcManual_tempered<-function(iter,
                                             lower = boundMat[,1],upper = boundMat[,2]) )
 
       
-    curResults<-logPosterior_temper(par=as.numeric(candMat[i,]),
+    curResults<-try({logPosterior_temper(par=as.numeric(candMat[i,]),
                                     priorPar = priorPar,
                                     obs = obs,
                                     inputDir = inputDir,
                                     outputDir = outputDir,
                                     j=jobNum , 
-                                    temper=temper)
+                                    temper=temper)},silent = TRUE)
+    if (inherits(curResults, "try-error")){curResults<-list(-1e10,NA)}
         ############################################################################################################################
     # account for asymmetric proposal
     # Do some simulations to make sure this working properly
     adj1<-log(pmvnorm(upper= boundMat[,2],lower=boundMat[,1],mean=as.numeric(parMat[i-1,-1]),sigma=propCov))[1]#previous
     adj2<-log(pmvnorm(upper= boundMat[,2],lower=boundMat[,1],mean=as.numeric(candMat[i,-1]),sigma=propCov))[1]#current 
-    alpha<-min(curResults[[1]]+adj1-lpost[i-1]-adj2,log(1)) # Asymmetric Proposal. Follow Example. Add and subtract constants. 
+    alpha<-try(min(curResults[[1]]+adj1-lpost[i-1]-adj2,log(1)),silent = TRUE) # Asymmetric Proposal. Follow Example. Add and subtract constants. 
+    if (inherits(alpha, "try-error")){alpha<--1e10}
     #https://journal.r-project.org/archive/2010-1/RJournal_2010-1_Wilhelm+Manjunath.pdf
     ############################################################################################################################
     
