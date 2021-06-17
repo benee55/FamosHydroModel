@@ -1,4 +1,4 @@
-rm(list=ls())
+rm(list=ls()) 
 setwd("~/Dropbox/FamosHydroModel/Official_Fast/output/")
 load("../input/fullObservations.RData") # Load Full observation
 
@@ -41,11 +41,11 @@ par(mfrow=c(4,4), mar=c(2,2,2,2))
 for(k in 1:ncol(fullParMat[[1]])){
 dens<-list()
 for(h in 1:5){dens[[h]]<-density(fullParMat[[h]][,k])}
-plot(dens[[1]], 
+plot(dens[[j]], 
      xlim=range(dens[[1]]$x , dens[[2]]$x , dens[[3]]$x , dens[[4]]$x, dens[[5]]$x) ,  
      ylim=range(dens[[1]]$y , dens[[2]]$y , dens[[3]]$y , dens[[4]]$y, dens[[5]]$y), 
      main=parNames[k])
-for(j in 1:5){lines((dens[[j]]), col=j)}
+# for(j in 1:5){lines((dens[[j]]), col=j)}
 }
 
 
@@ -80,7 +80,7 @@ par(mfrow=c(5,5), mar=c(2,2,2,2))
 for(k in 1:ncol(extremeOutput[[1]])){
   dens<-density(extremeOutput[[5]][,k])
   plot(dens, 
-       xlim=range(dens$x ) ,  
+       xlim=range(dens$x ,extremeObs[k]) ,  
        ylim=range(dens$y ), 
        main=extremeDate[k])
   abline(v=extremeObs[k], col="red", lwd=2)
