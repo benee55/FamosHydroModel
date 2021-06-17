@@ -66,13 +66,22 @@ logPrior<-function(par , priorPar){
 
 # Likelihood
 logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
+  # Add TRYCatch here 
   
-  output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
-  sigma2<-par[1] # Variance Parameter
-  lenOut<-length(output[[1]])
-  llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
-  return(list(llhd,output))
+  output <- try(expr=modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) ,silent = TRUE) # From rmvnorm()
+  if (inherits(output, "try-error")){
+    return(list(-1e6,NA))
+  }else{
+    sigma2<-par[1] # Variance Parameter
+    lenOut<-length(output[[1]])
+    llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
+    return(list(llhd,output))
+    }
+  # output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
 }
+  
+  
+
 
 # Posterior 
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){

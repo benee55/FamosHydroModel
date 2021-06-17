@@ -86,6 +86,26 @@ for(k in 1:ncol(extremeOutput[[1]])){
   abline(v=extremeObs[k], col="red", lwd=2)
 }
 
+# Figure - Streamflow 
+par(mfrow=c(1,1), mar=c(5,4,2,2))
+newModelOutput<-t(output[[4]])
+plot(x=dateVect, y= obs[,4], typ="n", 
+     ylim=range(newModelOutput, na.rm = TRUE), xlim=c(as.Date("2004-08-01") , as.Date("2008-03-31")),
+     ylab="Streamflow" , xlab="Date " , 
+     main="Pre-calibration Streamflow")
+for(k in 1:ncol(newModelOutput)){
+  lines(x=dateVect, y= newModelOutput[,k] , col="gray" , lwd=0.5)
+}
+lines(x=dateVect, y= obs[,4] , col="blue", lwd=1)
+points(x=extremeDate , y = extremeObs , col="red" , pch=16, cex=1.5)
+abline(h=4950.55, col="red", lty=2)
+legend("topright" , legend=c("Observations" , "Model Output" , "Extreme Points" , "Action Stage"),
+       lty=c(1,1,NA,2) , pch=c(NA,NA,16,NA), col=c("blue","gray","red","red"),
+       lwd=rep(2,2,NA,1),cex=0.75)
+
+
+
+
 
 sqrt(summary(fullParMat[[5]][,1]))
 load("mhParameters_5.RData")
