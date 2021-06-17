@@ -88,5 +88,5 @@ for(k in 1:ncol(extremeOutput[[1]])){
 
 
 sqrt(summary(fullParMat[[5]][,1]))
-
-     
+load("mhParameters_5.RData")
+mean(acceptVect)     
