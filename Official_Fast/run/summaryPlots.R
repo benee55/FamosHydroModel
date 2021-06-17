@@ -41,11 +41,11 @@ par(mfrow=c(4,4), mar=c(2,2,2,2))
 for(k in 1:ncol(fullParMat[[1]])){
 dens<-list()
 for(h in 1:5){dens[[h]]<-density(fullParMat[[h]][,k])}
-plot(dens[[j]], 
+plot(dens[[1]], 
      xlim=range(dens[[1]]$x , dens[[2]]$x , dens[[3]]$x , dens[[4]]$x, dens[[5]]$x) ,  
      ylim=range(dens[[1]]$y , dens[[2]]$y , dens[[3]]$y , dens[[4]]$y, dens[[5]]$y), 
      main=parNames[k])
-# for(j in 1:5){lines((dens[[j]]), col=j)}
+for(j in 1:5){lines((dens[[j]]), col=j)}
 }
 
 

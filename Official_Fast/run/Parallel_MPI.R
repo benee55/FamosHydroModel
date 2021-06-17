@@ -47,7 +47,7 @@ if(cycle==1){
   MCMCtemperVal<-temperVal$cumulative
   load(paste("output/mhParameters_",cycle-1,".RData",sep=""))
   # Reweight based on cycle
-  foreach::foreach(jobNum=1:ens) %dopar% {
+  for (jobNum in 1:ens){ # Faster to do this than parallelize
     source("run/mcmc_source_Tr.R")
     jobPar<-parMat[jobNum,]
     llhd_t<-calcPF(cycle=cycle,jobNum=jobNum,llhdTemper=1, # we are tempering this by 1 to get the full likelihood

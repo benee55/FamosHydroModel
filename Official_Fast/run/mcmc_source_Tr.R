@@ -362,7 +362,7 @@ genPropMat<-function(cycle,scale){
   }else{
     load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/masterTotalParticles.RData")
     TotalParMat<-rbind(masterTotalParticles,parMat)
-    uniqueID<-!duplicated(TotalParMat[,1])
+    uniqueID<-!duplicated(TotalParMat[,2])
     TotalParMat<-TotalParMat[uniqueID,]
     colnames(TotalParMat)<-parNames
     #####################################################################################################################
