@@ -36,7 +36,7 @@ for(hj in 1:11){
 # Intialize
 cycle=hj # Cycle <- passed in through PBS file
 ensembleN=1000 # Total number of particles
-niter<-6 # Number of MCMC iterations
+niter<-10 # Number of MCMC iterations
 ####################################################################################################
 setwd("~/Dropbox/hydroFamos/run/precalibration")
 source("test_Source.R")
@@ -120,7 +120,7 @@ foreach::foreach(jobNum=1:ensembleN,
                    # Generate prorposal matrix for first sample
                    ##############################
                    ##############################
-                   CovMat<-genPropMat(cycle=cycle,scale=0.01)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
+                   CovMat<-genPropMat(cycle=cycle,scale=0.001)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
                    initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
                    # set.seed(jobNum*1234*cycle) #set seed
                    ##################
@@ -178,7 +178,7 @@ for(k in 2:4){
 }
 
 for(k in 1:4){
-  load(paste("mhParameters_",k,".RData",sep=""))
+  load(paste("output/mhParameters_",k,".RData",sep=""))
   # print(mean(acceptVect))
   print(mean(acceptVect!=0))
 }
