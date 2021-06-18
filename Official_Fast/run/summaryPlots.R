@@ -15,7 +15,7 @@ extremeObs<-subsetFinalObs # Extreme Values
 fullParMat<-list()
 extremeOutput<-list()
 output<-list()
-for(k in 1:5){
+for(k in 1:6){
   load(paste("mhParameters_",k,".RData",sep=""))
   fullParMat[[k]]<-parMat
   extremeOutput[[k]]<-matrix(NA,
@@ -31,6 +31,15 @@ for(k in 1:5){
   }
 }
 
+for(k in 1:6){
+  load(paste("mhParameters_",k,".RData",sep=""))
+  # print(mean(acceptVect))
+  print(mean(acceptVect!=0))
+}
+
+
+
+
 head(parMat)
 parNames<-c("S2",
             "PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
@@ -40,12 +49,12 @@ parNames<-c("S2",
 par(mfrow=c(4,4), mar=c(2,2,2,2))
 for(k in 1:ncol(fullParMat[[1]])){
 dens<-list()
-for(h in 1:5){dens[[h]]<-density(fullParMat[[h]][,k])}
+for(h in 1:6){dens[[h]]<-density(fullParMat[[h]][,k])}
 plot(dens[[1]], 
      xlim=range(dens[[1]]$x , dens[[2]]$x , dens[[3]]$x , dens[[4]]$x, dens[[5]]$x) ,  
      ylim=range(dens[[1]]$y , dens[[2]]$y , dens[[3]]$y , dens[[4]]$y, dens[[5]]$y), 
      main=parNames[k])
-for(j in 1:5){lines((dens[[j]]), col=j)}
+for(j in 1:6){lines((dens[[j]]), col=j)}
 }
 
 

@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+#######
+# For study: ens = 1007; niter = 10 ; Proposal Matrix scaling 0.001
+#######
 # Arguments
 args = as.numeric(commandArgs(trailingOnly=TRUE))
 print(args)
@@ -22,7 +25,7 @@ print(args)
 cycle=args[1] # Cycle <- passed in through PBS file
 ens <-args[2] # Number of particles
 niter<-args[3] # Number of MCMC iterations
-# cycle=1 ; ens=71 ; niter=6
+# cycle=1: ; ens=71 ; niter=6
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
 source("run/mcmc_source_Tr.R")

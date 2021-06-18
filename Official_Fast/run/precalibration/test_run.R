@@ -36,7 +36,7 @@ for(hj in 1:11){
 # Intialize
 cycle=hj # Cycle <- passed in through PBS file
 ensembleN=1000 # Total number of particles
-niter<-6 # Number of MCMC iterations
+niter<-8 # Number of MCMC iterations
 ####################################################################################################
 setwd("~/Dropbox/hydroFamos/run/precalibration")
 source("test_Source.R")
@@ -159,6 +159,7 @@ combineTotalParticles(cycle=cycle)# combine Total Particles for Covariance Matri
 
 rm(list = ls())
 load("output/mhParameters_4.RData")
+
 load("MCMCOutput.RData")
 mean(acceptVect)
 par(mfrow=c(2,2))
@@ -177,6 +178,13 @@ for(k in 2:4){
   lines(density(parMat[,2]))  
 }
 
+plot(x=1:length(initResultsList[[2]][[1]]), y=initResultsList[[2]][[2]], ylim=range(unlist(initResultsList[[2]])))
+for(k in 1:length((initResultsList[[2]]))){
+  lines(x=1:length(initResultsList[[2]][[k]]), y=initResultsList[[2]][[k]], col="gray")
+}
+points(x=1:length(initResultsList[[2]][[1]]), y=initResultsList[[2]][[2]], col="blue", pch=16)
+    
+    
 for(k in 1:4){
   load(paste("output/mhParameters_",k,".RData",sep=""))
   # print(mean(acceptVect))
