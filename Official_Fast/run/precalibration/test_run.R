@@ -36,7 +36,7 @@ for(hj in 1:11){
 # Intialize
 cycle=hj # Cycle <- passed in through PBS file
 ensembleN=1000 # Total number of particles
-niter<-10 # Number of MCMC iterations
+niter<-6 # Number of MCMC iterations
 ####################################################################################################
 setwd("~/Dropbox/hydroFamos/run/precalibration")
 source("test_Source.R")
