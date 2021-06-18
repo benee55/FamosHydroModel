@@ -95,7 +95,12 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                    # Generate prorposal matrix for first sample
                    ##############################
                    ##############################
-  CovMat<-genPropMat(cycle=cycle,scale=0.001)   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
+  if(cycle==1){
+    CovMat<-genPropMat(cycle=cycle,scale=0.1)
+  }else{
+    CovMat<-genPropMat(cycle=cycle,scale=0.001)
+  }
+  # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
   initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
   amcmc.out<-mcmcManual_tempered(iter=niter.mcmc,
                                  init=par.init,
