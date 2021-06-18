@@ -264,7 +264,7 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   reSampleInd<-sample(x=1:ensFiles,size = ens,replace = TRUE,prob = weights) # Note that this allows for subsampling
   # Resample
   parMat<-parWeightMat[reSampleInd,]
-  initResultsList<-list(weightVect[reSampleInd],resultsList[[reSampleInd]]) # Provides full log likelihood and results
+  initResultsList<-list(weightVect[reSampleInd],resultsList[reSampleInd]) # Provides full log likelihood and results
   #Transformed COntribution Mat
   # Save final files
   save(parMat,parWeightMat,weightVect,weights,reSampleInd,
