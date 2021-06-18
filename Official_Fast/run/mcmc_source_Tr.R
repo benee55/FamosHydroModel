@@ -233,13 +233,13 @@ optimizeWeights<-function(weightVect,cumulTemp,ens,prop){
 }
 ########################################################################
 # Function to calculate weights + resample
-combineIS<-function(cycle,cumulTemp,prop=0.5){
+combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   setwd("/glade/scratch/sanjib/runA/output/")
   fileDirLoad<-list.files(pattern = paste("PF_",cycle,sep=""))
   orderNum<-sapply(fileDirLoad,function(x) as.numeric(strsplit(x,split="_|[/.]")[[1]][3])) # Need to order it by numerical JobNum
   fileDirLoad<-fileDirLoad[order(orderNum)]
   
-  ens<-length(fileDirLoad)
+  ensFiles<-length(fileDirLoad) # Size of Samples from Importance Function
   weightVect<-vector("numeric")
   resultsList<-list()
   # Load Files
@@ -248,23 +248,23 @@ combineIS<-function(cycle,cumulTemp,prop=0.5){
     resultsList[[i]]<-llhd_t[[2]]
     if(i==1){
       k<-length(jobPar)
-      parWeightMat<-matrix(NA,nrow=ens,ncol=k)
+      parWeightMat<-matrix(NA,nrow=ensFiles,ncol=k)
       parWeightMat[1,]<-jobPar
     }else{parWeightMat[i,]<-jobPar}
     weightVect[i]<-llhd_t[[1]] # Full Log-LIkelihood
   }
   #Optimize
-  optimList<-optimizeWeights(weightVect=weightVect,cumulTemp=cumulTemp,ens=ens,prop=prop)
+  optimList<-optimizeWeights(weightVect=weightVect,cumulTemp=cumulTemp,ens=ensFiles,prop=prop)
   temperVal<-list();
   temperVal$cumulative<-cumulTemp+optimList[[1]]
   temperVal$incremental<-optimList[[1]]
   save(temperVal,file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/temperVal_",cycle,".RData",sep=""))
   weights<-optimList[[2]]$weights
   # Weight 
-  reSampleInd<-sample(x=1:ens,size = ens,replace = TRUE,prob = weights)
+  reSampleInd<-sample(x=1:ensFiles,size = ens,replace = TRUE,prob = weights) # Note that this allows for subsampling
   # Resample
   parMat<-parWeightMat[reSampleInd,]
-  initResultsList<-list(weightVect[reSampleInd],resultsList[reSampleInd]) # Provides full log likelihood and results
+  initResultsList<-list(weightVect[reSampleInd],resultsList[[reSampleInd]]) # Provides full log likelihood and results
   #Transformed COntribution Mat
   # Save final files
   save(parMat,parWeightMat,weightVect,weights,reSampleInd,

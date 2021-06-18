@@ -72,7 +72,7 @@ source("run/mcmc_source_Tr.R")
 ####################################################################################################
 # Combine and Optimize
 load(paste("output/temperVal_",cycle-1,".RData",sep=""))
-combineIS(cycle=cycle,cumulTemp=temperVal$cumulative, prop=0.5)
+combineIS(cycle=cycle,cumulTemp=temperVal$cumulative,ens=ens, prop=0.5)
 print("Central Complete")
 rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 

@@ -28,12 +28,12 @@ for(i in 1:14){
 }
 
 # This provides all values in time series. Need to index
-sampleIndex<-sample(1:ncol(modelOutput), ens)
-modelOutput<-modelOutput[,sampleIndex]
+# sampleIndex<-sample(1:ncol(modelOutput), ens)
+# modelOutput<-modelOutput[,sampleIndex]
 
 # Parameters
 load("precalibration/output/mhParameters_0.RData")
-parMat<-parMat[sampleIndex,]
+# parMat<-parMat[sampleIndex,]
 save(parMat,file="output/mhParameters_0.RData")
 
 # Functions to compute posterior
@@ -45,7 +45,7 @@ logLikelihood_temper<-function(par, obs , temper , output, obsInd){
   return(list(llhd,output))
 }
 
-for(jobNum in 1:ens){
+for(jobNum in 1:nrow(parMat)){
   jobPar<-parMat[jobNum,]
   llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[,jobNum] , obsInd=obsInd)
   save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/runA/output/PF_",cycle,"_",jobNum,".RData",sep=""))

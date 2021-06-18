@@ -24,7 +24,7 @@ setwd("~/Dropbox/hydroFamos/run/precalibration")
 # Parallelize
 library(snow);library(doParallel);library(foreach)
 # library(Rmpi);
-nprocs <- 5
+nprocs <- 7
 mp_type = "PSOCK" # PSOCK or MPI
 cl <- parallel::makeCluster(nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
@@ -35,8 +35,8 @@ for(hj in 1:11){
 
 # Intialize
 cycle=hj # Cycle <- passed in through PBS file
-ensembleN=1000 # Total number of particles
-niter<-8 # Number of MCMC iterations
+ensembleN=3000 # Total number of particles
+niter<-10 # Number of MCMC iterations
 ####################################################################################################
 setwd("~/Dropbox/hydroFamos/run/precalibration")
 source("test_Source.R")
@@ -185,14 +185,8 @@ for(k in 1:length((initResultsList[[2]]))){
 points(x=1:length(initResultsList[[2]][[1]]), y=initResultsList[[2]][[2]], col="blue", pch=16)
     
     
-for(k in 1:4){
+for(k in 1:5){
   load(paste("output/mhParameters_",k,".RData",sep=""))
-  # print(mean(acceptVect))
-  print(mean(acceptVect!=0))
-}
-
-for(k in 1:4){
-  load(paste("mhParameters_",k,".RData",sep=""))
   # print(mean(acceptVect))
   print(mean(acceptVect!=0))
 }
