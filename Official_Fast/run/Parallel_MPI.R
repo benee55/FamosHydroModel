@@ -96,7 +96,7 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                    ##############################
                    ##############################
   if(cycle==1){
-    CovMat<-genPropMat(cycle=cycle,scale=0.1)
+    CovMat<-genPropMat(cycle=cycle,scale=0.5)
   }else{
     CovMat<-genPropMat(cycle=cycle,scale=0.01)
   }
