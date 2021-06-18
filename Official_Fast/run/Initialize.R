@@ -33,7 +33,7 @@ for(i in 1:14){
 
 # Parameters
 load("precalibration/output/mhParameters_0.RData")
-# parMat<-parMat[sampleIndex,]
+parMat<-parMat[1:ncol(modelOutput),]
 save(parMat,file="output/mhParameters_0.RData")
 
 # Functions to compute posterior
