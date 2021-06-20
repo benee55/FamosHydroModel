@@ -35,7 +35,7 @@ for(i in 1:14){
 load("precalibration/output/mhParameters_0.RData")
 parMat<-parMat[1:ncol(modelOutput),]
 parMat[,1]<-1825.215^2 # Results from First Calibration
-parMat<-apply(parMat, 1, orig2rep)
+parMat<-t(apply(parMat, 1, orig2rep))
 save(parMat,file="output_rep/mhParameters_0.RData")
 
 # Functions to compute posterior
