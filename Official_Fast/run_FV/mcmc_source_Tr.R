@@ -180,7 +180,7 @@ mcmcManual_tempered<-function(iter,
     # lenOut<-length(resultsList[[i]][[1]])
     # alphaPar<-priorPar[1,1]+0.5*lenOut 
     # betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
-    parMat[i,1]<-parMat[i-1,1]
+    parMat[i,1]<-parMat[i-1,1] # Fixe variance
     
   }
   return(list(parMat,candMat,alphaMat,lpost,resultsList,curResultsList))
