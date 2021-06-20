@@ -1,6 +1,6 @@
 #!/bin/bash
 
-niter=6
+niter=8
 ens=1007
 for args in `seq 1 7`;
 do

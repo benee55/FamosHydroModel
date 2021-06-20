@@ -1,0 +1,15 @@
+Notes 
+
+6/18
+- Posterior from 1000k iter=8 cycle=6 run are very rough. 
+- Are particles mutating properly? 
+- Should we just temper 10% at a time? 
+-- Big jump is from cycle 3 to 4 and cycle 4 to 5 
+--- Tempered values are 19.6 and 23.7 respectively 
+
+Possible Computer Experiments:
+1. Try rescaling parameters so that the proposals for MCMC lead to faster mixing
+2. Fix variance at 2000?
+3. Adjust tempering schedule?
+
+
