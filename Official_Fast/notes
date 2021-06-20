@@ -8,7 +8,8 @@ Notes
 --- Tempered values are 19.6 and 23.7 respectively 
 
 6/19
-1. Began runs where variance is fixed at posterior estimates from the first official run var=
+1. Began runs where variance is fixed at posterior estimates from the first official run 1825.215^2
+2. Setup for reparameterized parameters. We scale the parameters so the proposal covariance matrix is somewhat well-behaved for all-at-once metropolis. 
 
 Possible Computer Experiments:
 1. Try rescaling parameters so that the proposals for MCMC lead to faster mixing
