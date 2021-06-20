@@ -50,11 +50,11 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
                 boundMat)
 
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
-  c(par[1],par[-1]*abs(boundMat[,2]-boundMat[,1])+boundMat[,1])
+  c(par[1],par[-1]*(boundMat[,2]-boundMat[,1])/10+boundMat[,1])
 }
 
 orig2rep<-function(par){ # Convert from original parameters to reparameterized
-  c(par[1],(par[-1]-boundMat[,1])/abs(boundMat[,2]-boundMat[,1]))
+  c(par[1],10*(par[-1]-boundMat[,1])/(boundMat[,2]-boundMat[,1]))
 }
 
 ##################################################################################################################
