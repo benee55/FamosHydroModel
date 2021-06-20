@@ -1,8 +1,8 @@
 #!/bin/bash
 
-niter=8
+niter=5
 ens=1007
-for args in `seq 1 7`;
+for args in `seq 1 2`;
 do
     if [ "${args}" -eq "1" ]; then
         two=$(qsub MPI_cycle.PBS -v "args=$args $ens $niter")
