@@ -35,7 +35,8 @@ for(i in 1:14){
 load("precalibration/output/mhParameters_0.RData")
 parMat<-parMat[1:ncol(modelOutput),]
 parMat[,1]<-1825.215^2 # Results from First Calibration
-save(parMat,file="output_FV/mhParameters_0.RData")
+parMat<-apply(parMat, 1, orig2rep)
+save(parMat,file="output_rep/mhParameters_0.RData")
 
 # Functions to compute posterior
 logLikelihood_temper<-function(par, obs , temper , output, obsInd){
@@ -49,14 +50,14 @@ logLikelihood_temper<-function(par, obs , temper , output, obsInd){
 for(jobNum in 1:nrow(parMat)){
   jobPar<-parMat[jobNum,]
   llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[,jobNum] , obsInd=obsInd)
-  save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/runA_FV/output/PF_",cycle,"_",jobNum,".RData",sep=""))
+  save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/runA_rep/output/PF_",cycle,"_",jobNum,".RData",sep=""))
 }
 
 # Tempering values
 temperVal<-list()
 temperVal$cumulative<-0
 temperVal$incremental<-0
-save(temperVal,file="output_FV/temperVal_0.RData")
+save(temperVal,file="output_rep/temperVal_0.RData")
 
 # Generate Covariance matrix for proposal
 if(FALSE){
@@ -70,7 +71,7 @@ keepParMat<-parMat[covIndex,-1]
 # Use acceptance ratio from Rosenthal et al. 
 CovMat<-cov(keepParMat)*((2.38^2)/ncol(keepParMat))
 CovMat<-CovMat+diag(ncol(CovMat))*(0.001*diag(CovMat))
-save(CovMat, file="output_FV/BeginCovMat_Tr.RData")
+save(CovMat, file="output_rep/BeginCovMat_Tr.RData")
 
 
 # Save Bhattacharrya Distance for Exact Case

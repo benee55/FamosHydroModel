@@ -16,10 +16,12 @@
 #
 # We remove the variance parameter for the lGM
 
+# Libraries ---------------------------------------------------------------
 library(invgamma);
 library(mvtnorm);
 library(tmvtnorm)
-# Parameter Names
+
+# Parameters --------------------------------------------------------------
 parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
@@ -35,8 +37,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
                 c(-3.5 , -0.1), # REXP
                 c(-3.5 , -0.1), # UZK
                 c(0.5,4.5), # rutpix_Q0CHN
-                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25
-
+                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25 
 
 rownames(boundMat)<-parNames
 colnames(boundMat)<-c("lower","upper")  
@@ -47,6 +48,15 @@ parNames<-c("S2",
 
 priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
                 boundMat)
+
+rep2orig<-function(par){ # Convert from reparameterized to original parameters
+  c(par[1],par[-1]*abs(boundMat[,2]-boundMat[,1])+boundMat[,1])
+}
+
+orig2rep<-function(par){ # Convert from original parameters to reparameterized
+  c(par[1],(par[-1]-boundMat[,1])/abs(boundMat[,2]-boundMat[,1]))
+}
+
 ##################################################################################################################
 # Observations
 load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
@@ -77,6 +87,7 @@ logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   
 # Posterior 
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){
+  par<-rep2orig(par) # Reparameterize
   lPri<-logPrior( par = par , priorPar = priorPar )
   if(lPri==-Inf){
     return(-1e10)
@@ -177,10 +188,10 @@ mcmcManual_tempered<-function(iter,
     curResultsList[[i]]<-curResults[[2]] # Candidate Results -> Many are rejected in MH step
     
     # Update Gamma Parameter - Gibbs Update
-    lenOut<-length(resultsList[[i]][[1]])
-    alphaPar<-priorPar[1,1]+0.5*lenOut 
-    betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
-    parMat[i,1]<-candMat[i,1]<-rinvgamma(n=1, shape = alphaPar, rate=betaPar)
+    # lenOut<-length(resultsList[[i]][[1]])
+    # alphaPar<-priorPar[1,1]+0.5*lenOut 
+    # betaPar<-(sum((resultsList[[i]][[1]]-obs[1:lenOut])^2)+2*priorPar[1,2])/2
+    parMat[i,1]<-candMat[i,1]<-parMat[i-1,1]
     
   }
   return(list(parMat,candMat,alphaMat,lpost,resultsList,curResultsList))
