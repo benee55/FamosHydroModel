@@ -7,6 +7,9 @@ Notes
 -- Big jump is from cycle 3 to 4 and cycle 4 to 5 
 --- Tempered values are 19.6 and 23.7 respectively 
 
+6/19
+1. Began runs where variance is fixed at posterior estimates from the first official run var=
+
 Possible Computer Experiments:
 1. Try rescaling parameters so that the proposals for MCMC lead to faster mixing
 2. Fix variance at 2000?
