@@ -14,8 +14,8 @@ doParallel::registerDoParallel(cl)
 # Values for runs
 runIndex<-1:1007
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
-  source("/run_validation/rWrapper_Continuous.R")
-  source("/run_FV/mcmc_source_Tr.R")
+  source("run_validation/rWrapper.R")
+  source("run_FV/mcmc_source_Tr.R")
   load(file="output_FV/mhParameters_4.RData")
   inputDir<-"/glade/scratch/sanjib/validation/input/Famos"
   outputDir<-"/glade/scratch/sanjib/validation/output/Famos"
