@@ -40,7 +40,7 @@ extremeObs<-subsetFinalObs # Extreme Values
 fullParMat<-list()
 extremeOutput<-list()
 output<-list()
-for(k in 1:3){
+for(k in 1:4){
   load(paste("mhParameters_",k,".RData",sep=""))
   fullParMat[[k]]<-t(apply(parMat, 1, rep2orig))
   extremeOutput[[k]]<-matrix(NA,
@@ -56,7 +56,7 @@ for(k in 1:3){
   }
 }
 
-for(k in 1:3){
+for(k in 1:4){
   load(paste("mhParameters_",k,".RData",sep=""))
   # print(mean(acceptVect))
   print(mean(acceptVect!=0))
@@ -72,12 +72,12 @@ parNames<-c("S2",
 par(mfrow=c(3,4), mar=c(2,2,2,2))
 for(k in 2:ncol(fullParMat[[1]])){
 dens<-list()
-for(h in 1:3){dens[[h]]<-density(fullParMat[[h]][,k])}
+for(h in 1:4){dens[[h]]<-density(fullParMat[[h]][,k])}
 plot(dens[[1]], 
-     xlim=range(dens[[1]]$x , dens[[2]]$x , dens[[3]]$x , boundMat[k-1,]) ,  
-     ylim=range(dens[[1]]$y , dens[[2]]$y , dens[[3]]$y ), 
+     xlim=range(dens[[1]]$x , dens[[2]]$x , dens[[3]]$x , dens[[4]]$x , boundMat[k-1,]) ,  
+     ylim=range(dens[[1]]$y , dens[[2]]$y , dens[[3]]$y , dens[[4]]$y ), 
      main=parNames[k])
-for(j in 1:3){lines((dens[[j]]), col=j)}
+for(j in 1:4){lines((dens[[j]]), col=j)}
 }
 
 load("../output_validation/handTuneResults.RData")
@@ -101,10 +101,12 @@ for(k in 1:ncol(extremeOutput[[1]])){
 library(vioplot)
 par(mfrow=c(5,5), mar=c(2,2,2,2))
 for(i in 1:21){
-  vioplot(extremeOutput[[3]][,i], ylim=range(extremeOutput[[3]][,i],extremeObs[i],4950.55, na.rm=TRUE), 
+  vioplot(extremeOutput[[4]][,i], 
+          ylim=range(extremeOutput[[4]][,i],extremeObs[i],modelRun[[1]][i],4950.55, na.rm=TRUE), 
           main = extremeDate[i])
-  points(x=1, y=extremeObs[i], col="blue" ,pch=16)
+  
   points(x=1, y=modelRun[[1]][i], col="red" ,pch=16)
+  points(x=1, y=extremeObs[i], col="blue" ,pch=16)
   abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
 

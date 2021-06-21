@@ -40,10 +40,11 @@ load("handTuneResults.RData")
 handTuneOutput<-outputMat[[1]]
 rm(modelRun, outputMat)
 # ADD FAMOS
+rm(list=ls())
 load("preCalibrationResults1.RData")
+class(outputMat)
+outputMat[1,]
 dim(outputMat)
-outputMat
-
 famosOutput<-outputMat[[1]]
 dim(famosOutput)
 
