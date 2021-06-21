@@ -15,7 +15,6 @@ doParallel::registerDoParallel(cl)
 runIndex<-((jobIndex-1)*(nprocs))+(1:(nprocs))
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("run_validation/rWrapper.R")
-  source("run/mcmc_source_Tr.R")
   load(file="precalibration/output/mhParameters_0.RData")
   inputDir<-"/glade/scratch/sanjib/validation/input/precalibration"
   outputDir<-"/glade/scratch/sanjib/validation/output/precalibration"
