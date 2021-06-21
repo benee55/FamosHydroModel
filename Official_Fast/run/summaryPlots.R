@@ -45,6 +45,25 @@ parNames<-c("S2",
             "PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" , 
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
+boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
+                c(0 , 2), # ADIMP 0.5=original maximum
+                c(-50 , -0.1), # UZTWM
+                c(-70 , -0.1), # LZTWM
+                c(-100 , -0.1), # LZFSM
+                c(-100 , -0.1), # LZFPM Old -120
+                c(-3.8 , -0.1), # LZSK
+                c(0.5 , 1.5), # snow_SCF
+                c(-3.5 , -0.1), # REXP
+                c(-3.5 , -0.1), # UZK
+                c(0.5,4.5), # rutpix_Q0CHN
+                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25
+
+par(mfrow=c(3,4), mar=c(2,2,2,2))
+for(k in 1:ncol(fullParMat[[6]][,-1])){
+  d1<-density(fullParMat[[6]][,k+1])
+  plot(d1, xlim=range(d1$x,boundMat[k,]), main=parNames[k+1])
+  abline(v=boundMat[k,], col="red")
+}
 
 par(mfrow=c(4,4), mar=c(2,2,2,2))
 for(k in 1:ncol(fullParMat[[1]])){
@@ -73,6 +92,8 @@ for(k in 1:ncol(extremeOutput[[1]])){
 
 
 # Plot Violin Plots
+load("../output_validation/handTuneResults.RData")
+
 library(vioplot)
 par(mfrow=c(5,5), mar=c(2,2,2,2))
 for(i in 1:21){
@@ -80,6 +101,7 @@ for(i in 1:21){
           main = extremeDate[i])
   points(x=1, y=extremeObs[i], col="red" ,pch=16)
   abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+  points(x=1, y=modelRun[[1]][i], col="blue" ,pch=16)
 }
 
 

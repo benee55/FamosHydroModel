@@ -115,7 +115,7 @@ mcmcManual_tempered<-function(iter,
                               initResults,
                               parNames,
                               additional=FALSE){
-
+  
   # Initialize Values
   n=length(obs)
   names(init)<-parNames
@@ -136,22 +136,22 @@ mcmcManual_tempered<-function(iter,
   curResultsList<-list();curResultsList[[1]]<-initResults[[2]]
   #Begin MCMC
   for(i in 2:iter){
-
-   # Propose on the log scale from the multivariate truncated normal
+    
+    # Propose on the log scale from the multivariate truncated normal
     candMat[i,]<-c(parMat[i-1,1] , rtmvnorm(n = 1,mean = parMat[i-1,-1],
                                             sigma = propCov,
                                             lower = boundMat[,1],upper = boundMat[,2]) )
-
-      
+    
+    
     curResults<-try({logPosterior_temper(par=as.numeric(candMat[i,]),
-                                    priorPar = priorPar,
-                                    obs = obs,
-                                    inputDir = inputDir,
-                                    outputDir = outputDir,
-                                    j=jobNum , 
-                                    temper=temper)},silent = TRUE)
+                                         priorPar = priorPar,
+                                         obs = obs,
+                                         inputDir = inputDir,
+                                         outputDir = outputDir,
+                                         j=jobNum , 
+                                         temper=temper)},silent = TRUE)
     if (inherits(curResults, "try-error")){curResults<-list(-1e10,NA)}
-        ############################################################################################################################
+    ############################################################################################################################
     # account for asymmetric proposal
     # Do some simulations to make sure this working properly
     adj1<-log(pmvnorm(upper= boundMat[,2],lower=boundMat[,1],mean=as.numeric(parMat[i-1,-1]),sigma=propCov))[1]#previous
@@ -277,62 +277,62 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
 
 combineMH<-function(cycle,ens,stage){
   setwd("/glade/scratch/sanjib/runA/output/")
-fileDirLoad<-list.files(pattern =  paste("MCMC_",cycle,"_",stage,"_",sep=""))
-ens<-length(fileDirLoad)
-orderNum<-sapply(fileDirLoad,function(x) as.numeric(strsplit(x,split="_|[/.]")[[1]][4])) # need to order it by numerical JobNum
-fileDirLoad<-fileDirLoad[order(orderNum)]
-
-weightVect<-vector("numeric")
-resultsList<-list()
-
-# Load Files
-for(i in 1:length(fileDirLoad)){
-  load(fileDirLoad[i])
-
-  if(i==1){
-    parMat<-matrix(NA,nrow=ens,ncol=ncol(amcmc.out[[1]]))
-    parMat[1,]<-amcmc.out[[1]][nrow(amcmc.out[[1]]),]
-    
-    # Total particles
-    if(stage==1){ # If first stage create new matrix
-      TotalParMat<-amcmc.out[[1]]
-    }else{ # just append if later stages
-      load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/totalParticles_",cycle,".RData",sep="")) 
-      TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
-    }
+  fileDirLoad<-list.files(pattern =  paste("MCMC_",cycle,"_",stage,"_",sep=""))
+  ens<-length(fileDirLoad)
+  orderNum<-sapply(fileDirLoad,function(x) as.numeric(strsplit(x,split="_|[/.]")[[1]][4])) # need to order it by numerical JobNum
+  fileDirLoad<-fileDirLoad[order(orderNum)]
   
-    acceptVect<-vector("numeric")
-    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
-    kMCMC<-length(amcmc.out[[5]])
+  weightVect<-vector("numeric")
+  resultsList<-list()
+  
+  # Load Files
+  for(i in 1:length(fileDirLoad)){
+    load(fileDirLoad[i])
     
-  }else{
-    parMat[i,]<-amcmc.out[[1]][nrow(amcmc.out[[1]]),]
-    TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
-    acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
-    kMCMC<-length(amcmc.out[[5]])
-    
+    if(i==1){
+      parMat<-matrix(NA,nrow=ens,ncol=ncol(amcmc.out[[1]]))
+      parMat[1,]<-amcmc.out[[1]][nrow(amcmc.out[[1]]),]
+      
+      # Total particles
+      if(stage==1){ # If first stage create new matrix
+        TotalParMat<-amcmc.out[[1]]
+      }else{ # just append if later stages
+        load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/totalParticles_",cycle,".RData",sep="")) 
+        TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
+      }
+      
+      acceptVect<-vector("numeric")
+      acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
+      kMCMC<-length(amcmc.out[[5]])
+      
+    }else{
+      parMat[i,]<-amcmc.out[[1]][nrow(amcmc.out[[1]]),]
+      TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
+      acceptVect[i]<-accRateFunc(amcmc.out[[1]][,2])
+      kMCMC<-length(amcmc.out[[5]])
+      
+    }
+    resultsList[[i]]<-amcmc.out[[5]][[kMCMC]]
+    weightVect[i]<-amcmc.out[[4]][[kMCMC]]
   }
-  resultsList[[i]]<-amcmc.out[[5]][[kMCMC]]
-  weightVect[i]<-amcmc.out[[4]][[kMCMC]]
-}
-
-#Initial Results for next run
-initResultsList<-list(weightVect,resultsList)
-
-
-# Save 
-# total particles
-save(TotalParMat,
-     file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/totalParticles_",cycle,".RData",sep=""))
-
-# Final Particles
-save(parMat,acceptVect,initResultsList,
-     file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/mhParameters_",cycle,".RData",sep=""))
+  
+  #Initial Results for next run
+  initResultsList<-list(weightVect,resultsList)
+  
+  
+  # Save 
+  # total particles
+  save(TotalParMat,
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/totalParticles_",cycle,".RData",sep=""))
+  
+  # Final Particles
+  save(parMat,acceptVect,initResultsList,
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/mhParameters_",cycle,".RData",sep=""))
 }
 ########################################################################################################################
 # Combine Total Particles Function
 combineTotalParticles<-function(cycle){
-
+  
   if(cycle==1){
     load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output/totalParticles_",cycle,".RData",sep=""))
     masterTotalParticles<-TotalParMat
@@ -368,7 +368,7 @@ genPropMat<-function(cycle,scale){
     #####################################################################################################################
     CovMat<-cov(TotalParMat[,-1])*((2.38^2)/ncol(TotalParMat[,-1]))*scale # Optimal proposal from Rosenthal et al. (2008)
   }
-   return(CovMat)
+  return(CovMat)
 }
 
 

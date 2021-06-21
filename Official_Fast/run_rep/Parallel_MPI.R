@@ -82,19 +82,19 @@ rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
 foreach::foreach(jobNum=1:ens) %dopar% {
   setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/")
   source("run_rep/mcmc_source_Tr.R")
-                   ################################################################################
-                   load(paste("output_rep/rsParameters_",cycle,".RData",sep=""))
-                   # MCMC
+  ################################################################################
+  load(paste("output_rep/rsParameters_",cycle,".RData",sep=""))
+  # MCMC
   niter.mcmc = niter
   par.init<-parMat[jobNum,]
   load(paste("output_rep/temperVal_",cycle,".RData",sep=""))
   MCMCtemperVal<-temperVal$cumulative
   temperVal<-temperVal$incremental
-                   ##############################
-                   ##############################
-                   # Generate prorposal matrix for first sample
-                   ##############################
-                   ##############################
+  ##############################
+  ##############################
+  # Generate prorposal matrix for first sample
+  ##############################
+  ##############################
   if(cycle==1){
     CovMat<-genPropMat(cycle=cycle,scale=1)
   }else{
@@ -114,12 +114,12 @@ foreach::foreach(jobNum=1:ens) %dopar% {
                                  initResults=initResults,
                                  parNames=parNames)
   
-                   ##################
-                   save(amcmc.out,MCMCtemperVal,temperVal,
-                        file=paste("/glade/scratch/sanjib/runA_rep/output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
-                   ################################################################################
-                   rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
-                 }
+  ##################
+  save(amcmc.out,MCMCtemperVal,temperVal,
+       file=paste("/glade/scratch/sanjib/runA_rep/output/MCMC_",cycle,"_1_",jobNum,".RData",sep=""))
+  ################################################################################
+  rm(list=setdiff(ls(), c("ens","cycle","niter","inputDir","outputDir")))
+}
 
 
 ####################################################################################################

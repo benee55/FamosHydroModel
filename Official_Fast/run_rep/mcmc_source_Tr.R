@@ -46,9 +46,6 @@ parNames<-c("S2",
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" , 
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
 
-priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
-                boundMat)
-
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
   c(par[1],par[-1]*(boundMat[,2]-boundMat[,1])/10+boundMat[,1])
 }
@@ -56,6 +53,10 @@ rep2orig<-function(par){ # Convert from reparameterized to original parameters
 orig2rep<-function(par){ # Convert from original parameters to reparameterized
   c(par[1],10*(par[-1]-boundMat[,1])/(boundMat[,2]-boundMat[,1]))
 }
+
+priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
+                cbind(rep(0,12),rep(10,12)))
+
 
 ##################################################################################################################
 # Observations
@@ -87,12 +88,13 @@ logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   
 # Posterior 
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){
-  par<-rep2orig(par) # Reparameterize
+  
   lPri<-logPrior( par = par , priorPar = priorPar )
   if(lPri==-Inf){
     return(-1e10)
   }else{
-    llhd<-logLikelihood_temper(par = par, obs = obs , j = j , inputDir = inputDir , outputDir = outputDir , temper=temper)
+    usePar<-rep2orig(par) # Reparameterize
+    llhd<-logLikelihood_temper(par = usePar, obs = obs , j = j , inputDir = inputDir , outputDir = outputDir , temper=temper)
     lpostVal<-lPri+llhd[[1]]
     output<-llhd[[2]]
     return(list(lpostVal,output))
