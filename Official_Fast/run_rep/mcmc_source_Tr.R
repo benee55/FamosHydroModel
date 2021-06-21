@@ -46,12 +46,13 @@ parNames<-c("S2",
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" , 
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
 
+originalBoundMat<-boundMat
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
-  c(par[1],par[-1]*(boundMat[,2]-boundMat[,1])/10+boundMat[,1])
+  c(par[1],par[-1]*(originalBoundMat[,2]-originalBoundMat[,1])/10+originalBoundMat[,1])
 }
 
 orig2rep<-function(par){ # Convert from original parameters to reparameterized
-  c(par[1],10*(par[-1]-boundMat[,1])/(boundMat[,2]-boundMat[,1]))
+  c(par[1],10*(par[-1]-originalBoundMat[,1])/(originalBoundMat[,2]-originalBoundMat[,1]))
 }
 
 priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
