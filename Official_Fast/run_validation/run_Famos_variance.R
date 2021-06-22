@@ -1,4 +1,3 @@
-
 library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/Official_Fast")
 
@@ -13,14 +12,13 @@ doParallel::registerDoParallel(cl)
 # Values for runs
 runIndex<-1:1007
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
-  load(file="output_rep/mhParameters_4.RData")
-  source("run_rep/mcmc_source_Tr.R")
-  inputDir<-"/glade/scratch/sanjib/validation/input/Famos_rep"
-  outputDir<-"/glade/scratch/sanjib/validation/output/Famos_rep"
-  jobPar<-rep2orig(parMat[jobNum,])
   source("run_validation/rWrapper.R")
+  load(file="output/mhParameters_6.RData")
+  inputDir<-"/glade/scratch/sanjib/validation/input/Famos_variance"
+  outputDir<-"/glade/scratch/sanjib/validation/output/Famos_variance"
+  jobPar<-parMat[jobNum,]
   modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
 
-save(outputMat,file ="output_validation/famosResults_rep.RData")
+save(outputMat,file ="output_validation/famosResults_variance.RData")
 

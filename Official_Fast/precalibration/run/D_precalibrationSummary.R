@@ -126,6 +126,7 @@ extremeModelOuput<-modelOutput[obsInd,]
 MSE<-apply(extremeModelOuput,2,function(x){mean((x-extremeObs)^2)})
 goodRuns<-which(MSE<quantile(MSE, probs=0.05, na.rm = TRUE))
 goodModelOutput<-modelOutput[modelStart:modelEnd,goodRuns] # Trimmed Data
+save(goodRuns, file="~/Dropbox/FamosHydroModel/Official_Fast/output_validation/precalibration_goodRuns.RData")
 ############################################################################################################
 ############################################################################################################
 # Figures
