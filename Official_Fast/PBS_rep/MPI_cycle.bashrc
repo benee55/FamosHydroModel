@@ -1,7 +1,7 @@
 #!/bin/bash
 
 niter=6
-ens=1007
+ens=2015
 for args in `seq 1 4`;
 do
     if [ "${args}" -eq "1" ]; then
