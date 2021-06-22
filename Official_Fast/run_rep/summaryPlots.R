@@ -80,6 +80,8 @@ plot(dens[[1]],
 for(j in 1:4){lines((dens[[j]]), col=j)}
 }
 
+
+
 load("../output_validation/handTuneResults.RData")
 # Plot Model Output
 par(mfrow=c(5,5), mar=c(2,2,2,2))
@@ -110,7 +112,12 @@ for(i in 1:21){
   abline(h=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
 
-
+par(mfrow=c(3,4), mar=c(2,2,2,2))
+for(k in 1:ncol(fullParMat[[4]][,-1])){
+  d1<-density(fullParMat[[4]][,k+1])
+  plot(d1, xlim=range(d1$x,boundMat[k,]), main=parNames[k+1])
+  abline(v=boundMat[k,], col="red")
+}
 
 # Plot Model Output
 par(mfrow=c(5,5), mar=c(2,2,2,2))

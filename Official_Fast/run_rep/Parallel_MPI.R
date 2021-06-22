@@ -98,7 +98,8 @@ foreach::foreach(jobNum=1:ens) %dopar% {
   if(cycle==1){
     CovMat<-genPropMat(cycle=cycle,scale=1)
   }else{
-    CovMat<-genPropMat(cycle=cycle,scale=0.01)
+    # CovMat<-genPropMat(cycle=cycle,scale=0.01) # Famos_2khigh
+    CovMat<-genPropMat(cycle=cycle,scale=0.5)
   }
   # Note that we use a different function. This finds a good proposal based on the sample cov of particles form current cycle.
   initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]])
