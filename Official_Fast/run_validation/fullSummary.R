@@ -48,7 +48,7 @@ load("handTuneResults.RData")
 handTuneOutput<-outputMat[[1]]
 rm(modelRun, outputMat)
 # ADD FAMOS
-load("famosResults_rep.RData")
+load("famosResults.RData")
 famosOutput<-matrix(unlist(outputMat[1,]), nrow=length(outputMat[1,]), ncol=length(handTuneOutput), byrow = TRUE)
 
 

@@ -1,4 +1,4 @@
-#PBS -l select=28:ncpus=36:mpiprocs=36
+#PBS -l select=56:ncpus=36:mpiprocs=36
 #PBS -N Official
 #PBS -A UPSU0040
 #PBS -l walltime=2:00:00
