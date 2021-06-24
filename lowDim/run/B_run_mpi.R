@@ -2,10 +2,12 @@ library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim")
 
 # Parallelize
-nprocs <-mpi.universe.size() - 1
+# nprocs <-mpi.universe.size() - 1
+nprocs <-4
 print(nprocs)
 
-mp_type = "MPI"
+# mp_type = "MPI"
+mp_type = "PSOCK"
 cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 load(file="input/design.RData")

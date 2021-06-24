@@ -32,14 +32,14 @@ input-data =      sac_PCTIM=ADD_PCTIM
 input-data =      sac_ADIMP=ADD_ADIMP
 input-data =      sac_RIVA=0.0
 input-data =      sac_SIDE=0.0 sac_RSERV=0.3 sac_EFC=0.0
-input-data =      sac_UZTWM=ADD_UZTWM 
-input-data =      sac_LZTWM=ADD_LZTWM
-input-data =      sac_LZFSM=ADD_LZFSM 
-input-data =      sac_LZFPM=ADD_LZFPM
-input-data =      sac_LZSK=ADD_LZSK
+input-data =      sac_UZTWM=-0.7 
+input-data =      sac_LZTWM=-0.7
+input-data =      sac_LZFSM=-1.3 
+input-data =      sac_LZFPM=-1.2
+input-data =      sac_LZSK=-2.3
 input-data =      sac_UZFWM=-1.5
-input-data =      sac_REXP=ADD_REXP
-input-data =      sac_UZK=ADD_UZK
+input-data =      sac_REXP=-1.5
+input-data =      sac_UZK=-1.3
 
 input-data = peadj_JAN=-0.3              
 input-data = peadj_FEB=-0.4              
@@ -60,7 +60,7 @@ input-data =      areac3=1.0 areac4=1.0
 input-data =      uztwc=0.5   uzfwc=0.0  lztwc=0.5
 input-data =	    lzfsc=0.0  lzfpc=0.5  adimpc=0.5    
 
-input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=ADD_snow_SCF
+input-data =      snow_PXTMP=0.01 snow_PLWHC=0.05 snow_TIPM=0.1 snow_SCF=1.0
 input-data =      snow_NMF=0.15 snow_MBASE=0.0 snow_PGM=0.0 snow_LAEC=0.0
 input-data =      snow_SI=0.0 snow_ADC1=0.05 snow_ADC2=0.15 snow_ADC3=0.29
 input-data =      snow_ADC4=0.41 snow_ADC5=0.51 snow_ADC6=0.60 snow_ADC7=0.65

@@ -6,7 +6,7 @@ outputDir<-"/glade/scratch/sanjib/validation/output/handTune"
 jobPar<-c(2, # Variance - Not important in this evaluation 
           0 , # PCTIM 
               0.1 , # ADIMP 
-              0.7 , # UZTWM
+              -0.7 , # UZTWM
               -0.7 , # LZTWM
               -1.3 , # LZFSM
               -1.2 , # LZFPM

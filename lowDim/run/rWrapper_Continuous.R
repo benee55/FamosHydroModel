@@ -16,7 +16,7 @@ intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_Q0CHN" , "ADD_QMCHN")
 
 # Replace placeholders with values
-readInputText  <- readLines("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/precalibration/input/calsnow_template.card") # Read Template
+readInputText  <- readLines("/glade/u/home/sanjib/FamosHydroModel/lowDim/input/calsnow_template.card") # Read Template
 readInputText  <- gsub(pattern = "ADD_output", replace = paste(outputDir,"/output",j,sep=""), # Replace output directory
                        x = readInputText)
 
