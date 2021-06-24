@@ -155,3 +155,33 @@ legend("topright" , legend=c("Observations" , "Model Output" , "Extreme Points" 
 sqrt(summary(fullParMat[[6]][,1]))
 load("mhParameters_6.RData")
 mean(acceptVect)     
+# Which model runs are above activation?
+greater5k<-apply(modelOutput[extremeIndex,],2,function(x){sum(x>5000)})
+largeModelIndex<-which(greater5k>20)
+summary(largeModelIndex)
+largeParMat<-parMat[largeModelIndex,-1]
+
+
+# Parameters
+boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
+                c(0 , 2), # ADIMP 0.5=original maximum
+                c(-50 , -0.1), # UZTWM
+                c(-70 , -0.1), # LZTWM
+                c(-100 , -0.1), # LZFSM
+                c(-100 , -0.1), # LZFPM Old -120
+                c(-3.8 , -0.1), # LZSK
+                c(0.5 , 1.5), # snow_SCF
+                c(-3.5 , -0.1), # REXP
+                c(-3.5 , -0.1), # UZK
+                c(0.5,4.5), # rutpix_Q0CHN
+                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25 
+parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
+            "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" , 
+            "REXP" , "UZK" , "Q0CHN" , "QMCHN")
+par(mfrow=c(3,4), mar=c(2,2,2,2))
+for(k in 1:ncol(largeParMat)){
+  d1<-density(largeParMat[,k])
+  plot(d1, xlim=range(d1$x,boundMat[k,]), main=parNames[k])
+  abline(v=boundMat[k,], col="red")
+}
+
