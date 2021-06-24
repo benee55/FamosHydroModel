@@ -1,5 +1,3 @@
-jobIndex <- as.numeric(commandArgs(trailingOnly=TRUE))
-
 library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim")
 
