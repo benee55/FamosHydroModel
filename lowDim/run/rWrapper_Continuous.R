@@ -72,7 +72,7 @@ readOutput<-function(j,dir){
 # Combine Run File + Read
 modelEval<-function( par, j , inputDir , outputDir){
   pt<-proc.time()
-  writeInput( par = par[-1] , j = j , dir = inputDir , outputDir=outputDir)  # Write Input
+  writeInput( par = par , j = j , dir = inputDir , outputDir=outputDir)  # Write Input
   writeOutput( j = j ,dir = outputDir) # Write Output
   runHydroModel( j = j , dir = inputDir) # Run Model
   output<-readOutput( j = j , dir = outputDir)
@@ -88,7 +88,7 @@ modelEval<-function( par, j , inputDir , outputDir){
 ####################################################################################################
 # Combine Run File + Read
 modelEval_only<-function( par, j , inputDir , outputDir){
-  writeInput( par = par[-1] , j = j ,  dir = inputDir)  # Write Input
+  writeInput( par = par , j = j ,  dir = inputDir)  # Write Input
   writeOutput( j = j , dir = outputDir) # Write Output
   runHydroModel( j = j , dir = inputDir) # Run Model
 }
