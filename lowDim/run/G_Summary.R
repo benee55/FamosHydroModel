@@ -16,7 +16,7 @@ for(k in 1:21){
   predTest[,k]<-apply(testMat, 1, predict, object=gpEmulator[[k]])
   CMpredTest[,k]<-apply(testMat, 1, predict, object=gpEmulator_CM[[k]])
 }
-
+rm(gpEmulator_CM)
 load("output/GPEmulator_projection.RData")
 for(k in 1:18){
   print(k)
@@ -40,10 +40,22 @@ dateVect<-as.Date(dateVect, format = "%Y-%m-%d")
 
 # observation Index
 extremeDate<-dateVect[obsInd] # Extreme Dates
-# PLot Results
+validationDate<-dateVect[validationInd] # Extreme Dates
+
+# PLot Results - Projection
 par(mfrow=c(5,4), mar=c(2,2,2,2))
 for(i in 1:18){
   d1<-density(predTest_proj[,i])
+  plot(d1, xlim=range(d1$x,subsetFinalValidation[i],4950.55, na.rm = TRUE), 
+       main = validationDate[i])
+  abline(v=subsetFinalValidation[i], col="blue" ,pch=16)
+  abline(v=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+}
+
+# PLot Results - Model Fitting
+par(mfrow=c(5,5), mar=c(2,2,2,2))
+for(i in 1:21){
+  d1<-density(predTest[,i])
   plot(d1, xlim=range(d1$x,subsetFinalValidation[i],4950.55, na.rm = TRUE), 
        main = extremeDate[i])
   abline(v=subsetFinalValidation[i], col="blue" ,pch=16)
