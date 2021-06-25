@@ -1,22 +1,31 @@
 
 rm(list=ls())
-# setwd("~/Dropbox/FamosHydroModel/lowDim/")
+setwd("~/Dropbox/FamosHydroModel/lowDim/")
 
 # Try out Emulator
-load("output/GPEmulator_Full.RData")
+
 load("output/mcmcResults.RData")
 sampID<-sample(50000:100000, 1000)
 testMat<-amcmc.out$samples[sampID,1:4]
 # PRedict on test parameters
-predTest_CM<-predTest<-matrix(NA, nrow=nrow(testMat) , ncol=18)
-for(k in 1:18){
+CMpredTest<-predTest<-matrix(NA, nrow=nrow(testMat) , ncol=21)
+CMpredTest_proj<-predTest_proj<-matrix(NA, nrow=nrow(testMat) , ncol=18)
+load("output/GPEmulator_Full.RData")
+for(k in 1:21){
   print(k)
   predTest[,k]<-apply(testMat, 1, predict, object=gpEmulator[[k]])
-  predTest_CM[,k]<-apply(testMat, 1, predict, object=gpEmulator_CM[[k]])
+  CMpredTest[,k]<-apply(testMat, 1, predict, object=gpEmulator_CM[[k]])
+}
+
+load("output/GPEmulator_projection.RData")
+for(k in 1:18){
+  print(k)
+  predTest_proj[,k]<-apply(testMat, 1, predict, object=gpEmulator[[k]])
+  CMpredTest_proj[,k]<-apply(testMat, 1, predict, object=gpEmulator_CM[[k]])
 }
 
 
-save(predTest,predTest_CM , file="output/finalEmulationResults.RData")
+save(predTest,CMpredTest , predTest_proj , CMpredTest_proj, file="output/finalEmulationResults.RData")
 
 
 #load observations
@@ -34,7 +43,7 @@ extremeDate<-dateVect[obsInd] # Extreme Dates
 # PLot Results
 par(mfrow=c(5,4), mar=c(2,2,2,2))
 for(i in 1:18){
-  d1<-density(predTest[,i])
+  d1<-density(predTest_proj[,i])
   plot(d1, xlim=range(d1$x,subsetFinalValidation[i],4950.55, na.rm = TRUE), 
        main = extremeDate[i])
   abline(v=subsetFinalValidation[i], col="blue" ,pch=16)
