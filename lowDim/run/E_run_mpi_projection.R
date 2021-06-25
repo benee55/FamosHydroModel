@@ -25,5 +25,5 @@ outputMat<-foreach::foreach(jobNum=1:ens , .combine = "cbind") %dopar% {
   modelEval(par = jobPar , j = jobNum+2000 , inputDir =inputDir , outputDir = outputDir)
 }
 
-save(outputMat,file = "output/modelRuns.RData")
+save(outputMat,file = "output/modelRuns_projection.RData")
 
