@@ -16,7 +16,7 @@ load("input/design.RData")
 # Build Emulator via paralellization
 # Install on cheyenne by loading gnu module
 library(snow);library(snowfall);library(mlegp)
-sfInit(parallel=TRUE, cpus=5, type='PSOCK')
+sfInit(parallel=TRUE, cpus=7, type='PSOCK')
 # How to do zero-mean GP?
 gpEmulator_CM<-mlegp(X=parMat,
                   Z=modelRuns,
@@ -43,16 +43,16 @@ save(gpEmulator,gpEmulator_CM, modelRuns, parMat,
 load("output/GPEmulator_Full.RData")
 # First parameter
 testSeq<-seq(0,5, length.out = 100)
-resVect<-vector("numeric")
+resVect_CM<-resVect<-vector("numeric")
 for(j in 1:length(testSeq)){
-  print(j)
-  jobPar<-c(testSeq[j],as.numeric(parMat[1,-1]))
+  # print(j)
+  jobPar<-c(testSeq[j],2,3.5,1.1)
   resVect[j]<-predict(object = gpEmulator[[1]], newData = jobPar)
+  resVect_CM[j]<-predict(object = gpEmulator_CM[[1]], newData = jobPar)
 }
-
-plot.ts(resVect)
-, newData = matrix(testPar,nrow=1))
-
+par(mfrow=c(1,2))
+plot(x=testSeq, y=resVect , typ="l" , ylim=range(resVect , resVect_CM));
+lines(x=testSeq , y=resVect_CM, col="red")
 
 summary(parMat)
 
