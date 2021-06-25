@@ -7,8 +7,8 @@ nprocs <-mpi.universe.size() - 1
 # nprocs <-4
 print(nprocs)
 
-# mp_type = "MPI"
-mp_type = "PSOCK"
+mp_type = "MPI"
+# mp_type = "PSOCK"
 cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 load(file="input/design.RData")
