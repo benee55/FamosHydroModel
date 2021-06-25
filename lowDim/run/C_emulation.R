@@ -18,26 +18,43 @@ load("input/design.RData")
 library(snow);library(snowfall);library(mlegp)
 sfInit(parallel=TRUE, cpus=5, type='PSOCK')
 # How to do zero-mean GP?
-gpEmulator<-mlegp(X=parMat,
+gpEmulator_CM<-mlegp(X=parMat,
                   Z=modelRuns,
                   constantMean = 1,
                   nugget = 0,
                   parallel = TRUE)
+
+save(gpEmulator_CM, modelRuns, parMat, 
+     file="output/GPEmulator_Full.RData")  
+# How to do zero-mean GP?
+gpEmulator<-mlegp(X=parMat,
+                  Z=modelRuns,
+                  constantMean = 0,
+                  nugget = 0,
+                  parallel = TRUE)
 sfStop()
-muVect<-sigma2Vect<-vector("numeric")
-for(i in 1:21){
-  sigma2Vect[i]<-gpEmulator[[i]]$sig2
-  muVect[i]<-gpEmulator[[i]]$mu[1]
-}
 
-# predict(gpEmulator[[1]], newData = matrix(par,nrow=1))
-
-
-save(gpEmulator,sigma2Vect,muVect,modelRuns, parMat, 
+save(gpEmulator,gpEmulator_CM, modelRuns, parMat, 
      file="output/GPEmulator_Full.RData")  
 
 
 
+# Try out Emulator
+load("output/GPEmulator_Full.RData")
+# First parameter
+testSeq<-seq(0,5, length.out = 100)
+resVect<-vector("numeric")
+for(j in 1:length(testSeq)){
+  print(j)
+  jobPar<-c(testSeq[j],as.numeric(parMat[1,-1]))
+  resVect[j]<-predict(object = gpEmulator[[1]], newData = jobPar)
+}
+
+plot.ts(resVect)
+, newData = matrix(testPar,nrow=1))
+
+
+summary(parMat)
 
 #load observations
 load("input/fullObservations.RData")
