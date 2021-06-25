@@ -1,9 +1,10 @@
-library(snow);library(Rmpi);library(doParallel);library(foreach)
+library(snow);library(doParallel);library(foreach)
+library(Rmpi);
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim")
 
 # Parallelize
-# nprocs <-mpi.universe.size() - 1
-nprocs <-4
+nprocs <-mpi.universe.size() - 1
+# nprocs <-4
 print(nprocs)
 
 # mp_type = "MPI"
@@ -12,6 +13,7 @@ cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 load(file="input/design.RData")
 ens<-nrow(parMat); rm(parMat)
+# ens<-4
 # Values for runs
 outputMat<-foreach::foreach(jobNum=1:ens , .combine = "cbind") %dopar% {
   source("run/rWrapper_Continuous.R")

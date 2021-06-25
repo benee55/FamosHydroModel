@@ -53,7 +53,7 @@ famosOutput<-matrix(unlist(outputMat[1,]), nrow=length(outputMat[1,]), ncol=leng
 
 
 # Plot Extreme Dates
-par(mfrow=c(4,5))
+par(mfrow=c(4,5), mar=c(2,2,2,2))
 for(k in 1:ncol(famosOutput)){
   d1<-density(famosOutput[,k])
   d2<-density(modelOutput[goodRuns,k])

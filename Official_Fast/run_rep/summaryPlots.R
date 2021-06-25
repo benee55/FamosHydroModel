@@ -1,5 +1,5 @@
 rm(list=ls()) 
-setwd("~/Dropbox/FamosHydroModel/Official_Fast/output_rep/")
+setwd("~/Dropbox/FamosHydroModel/Official_Fast/output_rep2khigh/")
 
 load("../input/fullObservations.RData") # Load Full observation
 
