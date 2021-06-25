@@ -22,7 +22,7 @@ outputMat<-foreach::foreach(jobNum=1:ens , .combine = "cbind") %dopar% {
   inputDir<-"/glade/scratch/sanjib/lowDim/input"
   outputDir<-"/glade/scratch/sanjib/lowDim/output"
   jobPar<-testMat[jobNum,]
-  modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
+  modelEval(par = jobPar , j = jobNum+1000 , inputDir =inputDir , outputDir = outputDir)
 }
 
 save(outputMat,file = "output/testModelRuns.RData")
