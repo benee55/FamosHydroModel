@@ -27,7 +27,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
 
 rownames(boundMat)<-parNames
 colnames(boundMat)<-c("lower","upper")  
-parNamesc("S2",parNames)
+parNames=c("S2",parNames)
 
 originalBoundMat<-boundMat
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
