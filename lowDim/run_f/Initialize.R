@@ -50,7 +50,7 @@ logLikelihood_temper<-function(par, obs , temper , output, obsInd){
 
 for(jobNum in 1:nrow(parMat)){
   jobPar<-parMat[jobNum,]
-  llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[,jobNum] , obsInd=obsInd)
+  llhd_t<-logLikelihood_temper(par =jobPar, obs = obs ,  temper = 1 , output = modelOutput[jobNum,] , obsInd=obsInd)
   save(jobPar,llhd_t,file=paste("/glade/scratch/sanjib/run_f/output/PF_",cycle,"_",jobNum,".RData",sep=""))
 }
 
