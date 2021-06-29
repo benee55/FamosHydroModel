@@ -28,7 +28,7 @@ niter<-args[3] # Number of MCMC iterations
 # cycle=1 ; ens=1007 ; niter=6
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim/")
-source("run_rep/mcmc_source_Tr.R")
+source("run_f/mcmc_source_Tr.R")
 inputDir<-"/glade/scratch/sanjib/run_f/input"
 outputDir<-"/glade/scratch/sanjib/run_f/output"
 ####################################################################################
