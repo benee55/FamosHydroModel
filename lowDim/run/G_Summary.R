@@ -42,22 +42,26 @@ dateVect<-as.Date(dateVect, format = "%Y-%m-%d")
 extremeDate<-dateVect[obsInd] # Extreme Dates
 validationDate<-dateVect[validationInd] # Extreme Dates
 
+load("../Official_Fast/output_validation/handTuneResults.RData")
+handTuneOutput<-outputMat[[1]]
 # PLot Results - Projection
-par(mfrow=c(5,4), mar=c(2,2,2,2))
+par(mfrow=c(4,5), mar=c(2,2,2,2))
 for(i in 1:18){
   d1<-density(predTest_proj[,i])
-  plot(d1, xlim=range(d1$x,subsetFinalValidation[i],4950.55, na.rm = TRUE), 
+  plot(d1, xlim=range(d1$x,subsetFinalValidation[i],handTuneOutput[i], na.rm = TRUE), 
        main = validationDate[i])
   abline(v=subsetFinalValidation[i], col="blue" ,pch=16)
-  abline(v=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+  abline(v=handTuneOutput[i], col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
 
+load("../Official_Fast/output_validation/handTuneResults.RData")
+handTuneOutput<-modelRun[[1]]
 # PLot Results - Model Fitting
 par(mfrow=c(5,5), mar=c(2,2,2,2))
 for(i in 1:21){
   d1<-density(predTest[,i])
-  plot(d1, xlim=range(d1$x,subsetFinalValidation[i],4950.55, na.rm = TRUE), 
+  plot(d1, xlim=range(d1$x,subsetFinalObs[i],handTuneOutput[i], na.rm = TRUE), 
        main = extremeDate[i])
-  abline(v=subsetFinalValidation[i], col="blue" ,pch=16)
-  abline(v=4950.55, col="red" ,lwd=1 , lty=2) # ACtion Stage
+  abline(v=subsetFinalObs[i], col="blue" ,pch=16)
+  abline(v=handTuneOutput[i], col="red" ,lwd=1 , lty=2) # ACtion Stage
 }
