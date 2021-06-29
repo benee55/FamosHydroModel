@@ -2,7 +2,6 @@
 
 rm(list=ls())
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim/precalibration")
-setwd("~/Dropbox/FamosHydroModel/lowDim/precalibration")
 source("../run/rWrapper_Continuous.R")
 source("../run_f/mcmc_source_Tr.R")
 
