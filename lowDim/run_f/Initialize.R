@@ -31,7 +31,7 @@ for(i in 1:14){
 load("precalibration/mhParameters_0.RData")
 parMat<-parMat[1:ncol(modelOutput),]
 parMat[,1]<-1825.215^2 # Results from First Calibration
-parMat<-t(apply(parMat, 1, orig2rep))
+parMat<-t(apply(parMat, 1, orig2rep)) # Reparameterize
 save(parMat,file="output_f/mhParameters_0.RData")
 
 # Functions to compute posterior
@@ -56,11 +56,7 @@ temperVal$incremental<-0
 save(temperVal,file="output_f/temperVal_0.RData")
 
 # Generate Covariance matrix for proposal
-if(FALSE){
-llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs[1:2], mean = x[obsInd[1:2]] , sd = 1825.215, log = TRUE))})
-}else{
-  llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs, mean = x[obsInd] , sd = 1825.215, log = TRUE))})
-}
+llhd<-apply(modelOutput, 2, function(x){sum(dnorm(x = obs, mean = x[obsInd] , sd = 1825.215, log = TRUE))})
 # 
 covIndex<-which(llhd>quantile(llhd,probs = 0.9))
 keepParMat<-parMat[covIndex,-1]

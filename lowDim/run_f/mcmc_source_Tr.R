@@ -27,7 +27,7 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
 
 rownames(boundMat)<-parNames
 colnames(boundMat)<-c("lower","upper")  
-parNames<-c("S2",parNames)
+parNamesc("S2",parNames)
 
 originalBoundMat<-boundMat
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
@@ -45,6 +45,9 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
 # Observations
 load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 ##################################################################################################################
+# Load Source for RWrapper and Forward Model 
+source("/glade/u/home/sanjib/FamosHydroModel/lowDim/run/rWrapper_Continuous.R")  
+##################################################################################################################
 # Priors 
 logPrior<-function(par , priorPar){
   lpriorVal<-sum(dunif(x = par[-1] , min = priorPar[-1,1] , max = priorPar[-1,2] , log = TRUE),
@@ -53,29 +56,27 @@ logPrior<-function(par , priorPar){
 
 # Likelihood
 logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
-  # Add TRYCatch here 
-  
   output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
   sigma2<-par[1] # Variance Parameter
   lenOut<-length(output[[1]])
   llhd<-temper*sum(dnorm(x=obs[1:lenOut], mean = output[[1]] , sd= sqrt(sigma2), log = TRUE)) # COmpute Likelihood
   return(list(llhd,output))
 }
-  
+
 # Posterior 
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){
+  
   lPri<-logPrior( par = par , priorPar = priorPar )
   if(lPri==-Inf){
     return(-1e10)
   }else{
-    llhd<-logLikelihood_temper(par = par, obs = obs , j = j , inputDir = inputDir , outputDir = outputDir , temper=temper)
+    usePar<-rep2orig(par) # Reparameterize
+    llhd<-logLikelihood_temper(par = usePar, obs = obs , j = j , inputDir = inputDir , outputDir = outputDir , temper=temper)
     lpostVal<-lPri+llhd[[1]]
     output<-llhd[[2]]
     return(list(lpostVal,output))
   }
 }
-
-
 #######################################################################################################
 # Function to Calculate New Likelihood with respect to tempering 
 calcPF<-function(cycle,jobNum,llhdTemper,mcmcTemper,initResults, priorPar){
@@ -223,7 +224,7 @@ optimizeWeights<-function(weightVect,cumulTemp,ens,prop){
 ########################################################################
 # Function to calculate weights + resample
 combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
-  setwd("/glade/scratch/sanjib/runA_rep/output/")
+  setwd("/glade/scratch/sanjib/run_f/output/")
   fileDirLoad<-list.files(pattern = paste("PF_",cycle,sep=""))
   orderNum<-sapply(fileDirLoad,function(x) as.numeric(strsplit(x,split="_|[/.]")[[1]][3])) # Need to order it by numerical JobNum
   fileDirLoad<-fileDirLoad[order(orderNum)]
@@ -247,7 +248,7 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   temperVal<-list();
   temperVal$cumulative<-cumulTemp+optimList[[1]]
   temperVal$incremental<-optimList[[1]]
-  save(temperVal,file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/temperVal_",cycle,".RData",sep=""))
+  save(temperVal,file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/temperVal_",cycle,".RData",sep=""))
   weights<-optimList[[2]]$weights
   # Weight 
   reSampleInd<-sample(x=1:ensFiles,size = ens,replace = TRUE,prob = weights) # Note that this allows for subsampling
@@ -258,14 +259,14 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   # Save final files
   save(parMat,parWeightMat,weightVect,weights,reSampleInd,
        initResultsList,optimList,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/rsParameters_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/rsParameters_",cycle,".RData",sep=""))
 }
 ########################################################################
 ########################################################################
 # Function to combine Mutation output 
 
 combineMH<-function(cycle,ens,stage){
-  setwd("/glade/scratch/sanjib/runA_rep/output/")
+  setwd("/glade/scratch/sanjib/run_f/output/")
   fileDirLoad<-list.files(pattern =  paste("MCMC_",cycle,"_",stage,"_",sep=""))
   ens<-length(fileDirLoad)
   orderNum<-sapply(fileDirLoad,function(x) as.numeric(strsplit(x,split="_|[/.]")[[1]][4])) # need to order it by numerical JobNum
@@ -286,7 +287,7 @@ combineMH<-function(cycle,ens,stage){
       if(stage==1){ # If first stage create new matrix
         TotalParMat<-amcmc.out[[1]]
       }else{ # just append if later stages
-        load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/totalParticles_",cycle,".RData",sep="")) 
+        load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep="")) 
         TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
       }
       
@@ -312,29 +313,29 @@ combineMH<-function(cycle,ens,stage){
   # Save 
   # total particles
   save(TotalParMat,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/totalParticles_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep=""))
   
   # Final Particles
   save(parMat,acceptVect,initResultsList,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/mhParameters_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/mhParameters_",cycle,".RData",sep=""))
 }
 ########################################################################################################################
 # Combine Total Particles Function
 combineTotalParticles<-function(cycle){
   
   if(cycle==1){
-    load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/totalParticles_",cycle,".RData",sep=""))
+    load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep=""))
     masterTotalParticles<-TotalParMat
   }else{
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/totalParticles_1.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_1.RData")
     masterTotalParticles<-TotalParMat
     for(i in 2:cycle){# Loop Through all Total particles files
-      load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/totalParticles_",i,".RData",sep=""))
+      load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",i,".RData",sep=""))
       masterTotalParticles<-rbind(masterTotalParticles,TotalParMat)  
     }
     
   }
-  save(masterTotalParticles,file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/masterTotalParticles.RData")
+  save(masterTotalParticles,file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/masterTotalParticles.RData")
 }
 
 ########################################################################
@@ -342,14 +343,14 @@ combineTotalParticles<-function(cycle){
 # This uses the scaling factor from Rosenthal et. al (2008)
 ########################################################################
 genPropMat<-function(cycle,scale){
-  load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/rsParameters_",cycle,".RData",sep=""))
+  load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/rsParameters_",cycle,".RData",sep=""))
   
   # Covariance Matrix
   if(cycle==1){
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/BeginCovMat_Tr.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/BeginCovMat_Tr.RData")
     CovMat<-CovMat*scale # Optimal proposal from Rosenthal et al. (2008)
   }else{
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep/masterTotalParticles.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/masterTotalParticles.RData")
     TotalParMat<-rbind(masterTotalParticles,parMat)
     uniqueID<-!duplicated(TotalParMat[,2])
     TotalParMat<-TotalParMat[uniqueID,]

@@ -16,7 +16,7 @@ runIndex<-((jobIndex-1)*(nprocs))+(1:(nprocs))
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run/rWrapper_Continuous.R")
   source("../run_f/mcmc_source_Tr.R")
-  load(file="mhParameters_0.RData")
+  load(file="../precalibration/mhParameters_0.RData")
   inputDir<-"/glade/scratch/sanjib/precalibrationLowDim/input"
   outputDir<-"/glade/scratch/sanjib/precalibrationLowDim/output"
   jobPar<-parMat[jobNum,]
