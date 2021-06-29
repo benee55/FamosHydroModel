@@ -248,7 +248,7 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   temperVal<-list();
   temperVal$cumulative<-cumulTemp+optimList[[1]]
   temperVal$incremental<-optimList[[1]]
-  save(temperVal,file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/temperVal_",cycle,".RData",sep=""))
+  save(temperVal,file=paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/temperVal_",cycle,".RData",sep=""))
   weights<-optimList[[2]]$weights
   # Weight 
   reSampleInd<-sample(x=1:ensFiles,size = ens,replace = TRUE,prob = weights) # Note that this allows for subsampling
@@ -259,7 +259,7 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
   # Save final files
   save(parMat,parWeightMat,weightVect,weights,reSampleInd,
        initResultsList,optimList,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/rsParameters_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/rsParameters_",cycle,".RData",sep=""))
 }
 ########################################################################
 ########################################################################
@@ -287,7 +287,7 @@ combineMH<-function(cycle,ens,stage){
       if(stage==1){ # If first stage create new matrix
         TotalParMat<-amcmc.out[[1]]
       }else{ # just append if later stages
-        load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep="")) 
+        load(paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/totalParticles_",cycle,".RData",sep="")) 
         TotalParMat<-rbind(TotalParMat,amcmc.out[[1]])
       }
       
@@ -313,29 +313,29 @@ combineMH<-function(cycle,ens,stage){
   # Save 
   # total particles
   save(TotalParMat,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/totalParticles_",cycle,".RData",sep=""))
   
   # Final Particles
   save(parMat,acceptVect,initResultsList,
-       file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/mhParameters_",cycle,".RData",sep=""))
+       file=paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/mhParameters_",cycle,".RData",sep=""))
 }
 ########################################################################################################################
 # Combine Total Particles Function
 combineTotalParticles<-function(cycle){
   
   if(cycle==1){
-    load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",cycle,".RData",sep=""))
+    load(paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/totalParticles_",cycle,".RData",sep=""))
     masterTotalParticles<-TotalParMat
   }else{
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_1.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/totalParticles_1.RData")
     masterTotalParticles<-TotalParMat
     for(i in 2:cycle){# Loop Through all Total particles files
-      load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/totalParticles_",i,".RData",sep=""))
+      load(paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/totalParticles_",i,".RData",sep=""))
       masterTotalParticles<-rbind(masterTotalParticles,TotalParMat)  
     }
     
   }
-  save(masterTotalParticles,file="/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/masterTotalParticles.RData")
+  save(masterTotalParticles,file="/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/masterTotalParticles.RData")
 }
 
 ########################################################################
@@ -343,14 +343,14 @@ combineTotalParticles<-function(cycle){
 # This uses the scaling factor from Rosenthal et. al (2008)
 ########################################################################
 genPropMat<-function(cycle,scale){
-  load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/rsParameters_",cycle,".RData",sep=""))
+  load(paste("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/rsParameters_",cycle,".RData",sep=""))
   
   # Covariance Matrix
   if(cycle==1){
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/BeginCovMat_Tr.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/BeginCovMat_Tr.RData")
     CovMat<-CovMat*scale # Optimal proposal from Rosenthal et al. (2008)
   }else{
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_f/masterTotalParticles.RData")
+    load("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f/masterTotalParticles.RData")
     TotalParMat<-rbind(masterTotalParticles,parMat)
     uniqueID<-!duplicated(TotalParMat[,2])
     TotalParMat<-TotalParMat[uniqueID,]
