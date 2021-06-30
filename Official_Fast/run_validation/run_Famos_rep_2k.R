@@ -11,7 +11,7 @@ cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 
 # Values for runs
-runIndex<-1:1007
+runIndex<-1:2015
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   load(file="output_rep/mhParameters_4.RData")
   source("run_rep/mcmc_source_Tr.R")
