@@ -12,7 +12,7 @@ writeInput<-function(par , # Parameters
                      dir, # Directory
                      outputDir #  OutputDirectory
                      ){
-intervalMat<-c("20030601T00","20080331T23") # 2003/06/01-2008/03/31
+  intervalMat<-c("20090101T00","20111001T23") # 2009 -2011
   writeLabel<-c("ADD_PCTIM" ,"ADD_ADIMP" , "ADD_Q0CHN" , "ADD_QMCHN")
 
 # Replace placeholders with values
@@ -56,13 +56,12 @@ readOutput<-function(j,dir){
   startInd<-89 #Row of first date
   flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
   dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
-  useDate<-c(c("190904","200904"),
-             c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
-             c("011205"),
-             c("280606" , "290606" , "300606"),
-             c("181106"),
-             c("160307" , "170307"),
-             c("080208" , "060308" , "090308" , "100308"))
+  useDate<-c("260110" , "270110" ,
+             "021210" , "031210" ,
+             "070311" , "080311" ,
+             "110311" , "120311" , "130311" , "140311" ,
+             "280411" , "290411" , "300411" ,
+             "080911" , "090911" , "100911" , "110911" , "300911")
   extremeFlow<-flow[which(dates%in%useDate)]
   return(list(extremeFlow,flow))
 }
@@ -107,13 +106,12 @@ readOutput_subset<-function(j,dir){
   startInd<-89 #Row of first date
   flow<-as.numeric(unlist(lapply(output[startInd:endInd],substr,start = 22 , stop = 35))) #Streamflow for specified dates
   dates<-unlist(lapply(output[startInd:endInd],substr,start = 11 , stop = 16)) #Streamflow for specified dates
-  useDate<-c(c("190904","200904"),
-             c("150105","160105", "300305" , "310305" , "030405" , "040405" ,"050405" , "060405"),
-             c("011205"),
-             c("280606" , "290606" , "300606"),
-             c("181106"),
-             c("160307" , "170307"),
-             c("080208" , "060308" , "090308" , "100308"))
+  useDate<-c("260110" , "270110" ,
+             "021210" , "031210" ,
+             "070311" , "080311" ,
+             "110311" , "120311" , "130311" , "140311" ,
+             "280411" , "290411" , "300411" ,
+             "080911" , "090911" , "100911" , "110911" , "300911")
   flow[which(dates%in%useDate)]
 }
 
