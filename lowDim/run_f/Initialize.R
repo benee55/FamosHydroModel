@@ -21,12 +21,12 @@ setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim/")
 for(i in 1:14){
   if(i==1){
     load(paste("precalibration/preCalibrationResults",i,".RData",sep=""))
-    bar<-unlist(outputMat[1,])
-    modelOutput<-matrix(bar, nrow=length(outputMat[1,]), ncol=length(outputMat[1,1][[1]]), byrow = TRUE)
+    bar<-unlist(outputMat[2,])
+    modelOutput<-matrix(bar, nrow=length(outputMat[2,]), ncol=length(outputMat[2,1][[1]]), byrow = TRUE)
   }else{
     load(paste("precalibration/preCalibrationResults",i,".RData",sep=""))
-    bar<-unlist(outputMat[1,])
-    foo<-matrix(bar, nrow=length(outputMat[1,]), ncol=length(outputMat[1,1][[1]]), byrow = TRUE)
+    bar<-unlist(outputMat[2,])
+    foo<-matrix(bar, nrow=length(outputMat[2,]),ncol=length(outputMat[2,1][[1]]), byrow = TRUE)
     modelOutput<-rbind(modelOutput,foo)
   }
 }
