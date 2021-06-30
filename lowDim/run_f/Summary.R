@@ -221,14 +221,22 @@ legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 p
        lwd=c(2,2,2,2,2,2) , cex=1 , bty = "n")
 for(k in 1:ncol(famosParMat)){
   d1<-density(famosParMat[,k])
-  d2<-density(emulationParMat[,k])
-  d3<-density(emulationParMat[,k])
   d4<-density(precalibrationParMat[,k])
-  plot(d1, main=parNames[k] , 
-       xlim=range(d1$x, d2$x ,d3$x, d4$x , handTuneParMat[k]), 
-       ylim=range(d1$y, d2$y,d3$y, d4$y))
-  lines(d2, col="red")
-  lines(d3, col="red", lty=2)
+  if(k %in% c(1,2,11,12)){
+    hk<-ifelse(k%in%c(1,2), k, k-8)
+    d2<-density(emulationParMat[,hk])
+    d3<-density(emulationParMat[,hk])
+    plot(d1, main=parNames[k] , 
+         xlim=range(d1$x, d2$x ,d3$x, d4$x , handTuneParMat[k],boundMat[k,]), 
+         ylim=range(d1$y, d2$y,d3$y, d4$y))  
+    lines(d2, col="red")
+    lines(d3, col="red", lty=2)
+  }else{
+plot(d1, main=parNames[k] , 
+         xlim=range(d1$x, d4$x , handTuneParMat[k],boundMat[k,]), 
+         ylim=range(d1$y, d4$y))
+
+  }
   lines(d4, col="gray")
   abline(v=handTuneParMat[k] , col="green")
   abline(v=boundMat[k,] , col="blue")
