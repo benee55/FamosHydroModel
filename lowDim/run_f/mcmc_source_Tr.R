@@ -18,6 +18,8 @@
 
 library(invgamma);
 library(mvtnorm);
+library(tmvtnorm)
+
 # Parameter Names
 parNames<-c("PCTIM" , "ADIMP" , "Q0CHN" , "QMCHN")
 boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum

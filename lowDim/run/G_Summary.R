@@ -1,11 +1,12 @@
 
 rm(list=ls())
+library(mlegp)
 setwd("~/Dropbox/FamosHydroModel/lowDim/")
 
 # Try out Emulator
 
 load("output/mcmcResults.RData")
-sampID<-sample(50000:100000, 1000)
+sampID<-round(seq(50000,100000, length.out = 10000))
 testMat<-amcmc.out$samples[sampID,1:4]
 # PRedict on test parameters
 CMpredTest<-predTest<-matrix(NA, nrow=nrow(testMat) , ncol=21)
@@ -25,7 +26,8 @@ for(k in 1:18){
 }
 
 
-save(predTest,CMpredTest , predTest_proj , CMpredTest_proj, file="output/finalEmulationResults.RData")
+save(testMat,
+     predTest,CMpredTest , predTest_proj , CMpredTest_proj, file="output/finalEmulationResults.RData")
 
 
 #load observations
