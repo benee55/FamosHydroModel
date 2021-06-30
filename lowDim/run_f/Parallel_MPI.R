@@ -25,7 +25,7 @@ print(args)
 cycle=args[1] # Cycle <- passed in through PBS file
 ens <-args[2] # Number of particles
 niter<-args[3] # Number of MCMC iterations
-# cycle=1 ; ens=1007 ; niter=6
+# cycle=1 ; ens=2015 ; niter=6
 ####################################################################################################
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim/")
 source("run_f/mcmc_source_Tr.R")

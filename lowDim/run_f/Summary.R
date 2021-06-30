@@ -163,7 +163,8 @@ intervalTable[5]<-mean(apply(rangeMat, 2, function(x){x[1]<x[3]&x[1]>x[2]}))
 comboTable<-t(rbind(rmspeTable, intervalTable))
 colnames(comboTable)<-c("rmspe" , "coverage")
 rownames(comboTable)<-c("Famous-12" , "Famous-4" , "Emulation-4" , "HandTune-12" , "Precalibration-12")
-comboTable
+library(xtable)
+print(xtable(comboTable))
 
 ##########################################################################################
 ##########################################################################################
@@ -183,29 +184,33 @@ extremeObs<-subsetFinalObs # Extreme Values
 validationDate<-dateVect[validationInd] # Extreme Dates
 validationObs<-subsetFinalValidation # Extreme Values
 
-
+png(file = "Projections.png", height = 750, width=1000)
 # Plot Extreme Dates
 par(mfrow=c(4,5), mar=c(2,2,2,2))
-plot.new()
-legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" , 
-                           "Precalibration - 12 par" , "Handtune - 12 par" , "Truth"), 
-       lty=c(1,1,2,3,1,1), col=c("black","red","red","gray","green","blue"), 
-       lwd=c(2,2,2,2,2,2) , cex=1, bty = "n")
+plot(x=1,y=1,typ="n")
+# legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" , 
+#                            "Precalibration - 12 par" , "Handtune - 12 par" , "Truth"), 
+#        lty=c(1,1,2,1,1,1), col=c("black","red","red","gray","green","blue"), 
+#        lwd=c(2,2,2,2,2,2) , cex=1.5, bty = "n")
+legend("center" , legend=c("Famous - 12 par","Emulation - 4 par" ,
+                           "Precalibration - 12 par" , "Handtune - 12 par" , "Truth"),
+       lty=c(1,2,1,1,1), col=c("black","red","gray","green","blue"),
+       lwd=c(2,2,2,2,2) , cex=1.5, bty = "n")
 for(k in 1:ncol(famosOutput)){
   d1<-density(famosOutput[,k])
-  d2<-density(emulationOutput[,k])
+  # d2<-density(emulationOutput[,k])
   d3<-density(emulationOutput[,k])
   d4<-density(precalibrationOutput[,k])
   plot(d1, main=validationDate[k] , 
        xlim=range(d1$x, d2$x ,d3$x, d4$x , validationObs[k] , handTuneOutput[k]), 
        ylim=range(d1$y, d2$y,d3$y, d4$y))
-  lines(d2, col="red")
+  # lines(d2, col="red")
   lines(d3, col="red", lty=2)
   lines(d4, col="gray")
   abline(v=validationObs[k] , col="blue")
   abline(v=handTuneOutput[k] , col="green")
 }
-
+dev.off()
 # Plot Parameters
 
 # Parameter Names
@@ -213,23 +218,28 @@ parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" ,
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
 
+png(file = "Parameters.png", height = 500, width=750)
 par(mfrow=c(4,4), mar=c(2,2,2,2))
-plot.new()
-legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" , 
+plot(x=1,y=1,typ="n")
+# legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" , 
+#                            "Precalibration - 12 par" , "Handtune - 12 par" , "Prior"), 
+#        lty=c(1,1,2,1,1,1), col=c("black","red","red","gray","green","blue"), 
+#        lwd=c(2,2,2,2,2,2) , cex=1 , bty = "n")
+legend("center" , legend=c("Famous - 12 par" , "Emulation - 4 par" , 
                            "Precalibration - 12 par" , "Handtune - 12 par" , "Prior"), 
-       lty=c(1,1,2,3,1,1), col=c("black","red","red","gray","green","blue"), 
-       lwd=c(2,2,2,2,2,2) , cex=1 , bty = "n")
+       lty=c(1,2,1,1,1), col=c("black","red","gray","green","blue"), 
+       lwd=c(2,2,2,2,2) , cex=1 , bty = "n")
 for(k in 1:ncol(famosParMat)){
   d1<-density(famosParMat[,k])
   d4<-density(precalibrationParMat[,k])
   if(k %in% c(1,2,11,12)){
     hk<-ifelse(k%in%c(1,2), k, k-8)
-    d2<-density(emulationParMat[,hk])
+    # d2<-density(emulationParMat[,hk])
     d3<-density(emulationParMat[,hk])
     plot(d1, main=parNames[k] , 
-         xlim=range(d1$x, d2$x ,d3$x, d4$x , handTuneParMat[k],boundMat[k,]), 
-         ylim=range(d1$y, d2$y,d3$y, d4$y))  
-    lines(d2, col="red")
+         xlim=range(d1$x, d3$x, d4$x , handTuneParMat[k],boundMat[k,]), 
+         ylim=range(d1$y, d3$y, d4$y))  
+    # lines(d2, col="red")
     lines(d3, col="red", lty=2)
   }else{
 plot(d1, main=parNames[k] , 
@@ -242,3 +252,4 @@ plot(d1, main=parNames[k] ,
   abline(v=boundMat[k,] , col="blue")
 }
 
+dev.off()

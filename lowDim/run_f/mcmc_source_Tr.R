@@ -41,7 +41,7 @@ orig2rep<-function(par){ # Convert from original parameters to reparameterized
 }
 
 priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
-                cbind(rep(0,12),rep(10,12)))
+                cbind(rep(0,4),rep(10,4)))
 
 ##################################################################################################################
 # Observations
