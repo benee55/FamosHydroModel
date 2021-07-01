@@ -48,11 +48,13 @@ boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
                 c(-3.5 , -0.1), # UZK
                 c(0.5,4.5), # rutpix_Q0CHN
                 c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25 
-rep2orig<-function(par){ # Convert from reparameterized to original parameters
+rep2orig<-function(par,boundMat){ # Convert from reparameterized to original parameters
   c(par[1],par[-1]*(boundMat[,2]-boundMat[,1])/10+boundMat[,1])
 }
-famosParMat<-t(apply(parMat,1,rep2orig))[,-1]
+famosParMat<-t(apply(parMat,1,rep2orig,boundMat=boundMat))[,-1]
 ### 2. Famous 4 Parameter
+load("~/Dropbox/FamosHydroModel/lowDim/output_f/mhParameters_4.RData")
+famos4ParMat<-t(apply(parMat,1,rep2orig,boundMat=boundMat[c(1,2,11,12),]))[,-1]
 
 ### 3. Emulation-Calibration
 load("lowDim/output/finalEmulationResults.RData")
@@ -221,25 +223,25 @@ parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" ,
 png(file = "Parameters.png", height = 500, width=750)
 par(mfrow=c(4,4), mar=c(2,2,2,2))
 plot(x=1,y=1,typ="n")
-# legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" , 
+legend("center" , legend=c("Famous - 12 par","Famous - 4 par" , "Emulation - 4 par" ,
+                           "Precalibration - 12 par" , "Handtune - 12 par" , "Prior"),
+       lty=c(1,1,2,1,1,1), col=c("black","red","red","gray","green","blue"),
+       lwd=c(2,2,2,2,2,2) , cex=1 , bty = "n")
+# legend("center" , legend=c("Famous - 12 par" , "Emulation - 4 par" , 
 #                            "Precalibration - 12 par" , "Handtune - 12 par" , "Prior"), 
-#        lty=c(1,1,2,1,1,1), col=c("black","red","red","gray","green","blue"), 
-#        lwd=c(2,2,2,2,2,2) , cex=1 , bty = "n")
-legend("center" , legend=c("Famous - 12 par" , "Emulation - 4 par" , 
-                           "Precalibration - 12 par" , "Handtune - 12 par" , "Prior"), 
-       lty=c(1,2,1,1,1), col=c("black","red","gray","green","blue"), 
-       lwd=c(2,2,2,2,2) , cex=1 , bty = "n")
+#        lty=c(1,2,1,1,1), col=c("black","red","gray","green","blue"), 
+#        lwd=c(2,2,2,2,2) , cex=1 , bty = "n")
 for(k in 1:ncol(famosParMat)){
   d1<-density(famosParMat[,k])
   d4<-density(precalibrationParMat[,k])
   if(k %in% c(1,2,11,12)){
     hk<-ifelse(k%in%c(1,2), k, k-8)
-    # d2<-density(emulationParMat[,hk])
+    d2<-density(famos4ParMat[,hk])
     d3<-density(emulationParMat[,hk])
     plot(d1, main=parNames[k] , 
          xlim=range(d1$x, d3$x, d4$x , handTuneParMat[k],boundMat[k,]), 
          ylim=range(d1$y, d3$y, d4$y))  
-    # lines(d2, col="red")
+    lines(d2, col="red")
     lines(d3, col="red", lty=2)
   }else{
 plot(d1, main=parNames[k] , 
