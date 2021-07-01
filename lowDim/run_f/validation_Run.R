@@ -22,5 +22,5 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c
   modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
 
-save(outputMat,file = paste("validationResults",jobIndex,".RData",sep=""))
+save(outputMat,file = paste("validationResults.RData",sep=""))
 
