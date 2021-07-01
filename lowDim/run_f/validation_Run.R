@@ -1,4 +1,3 @@
-jobIndex <- as.numeric(commandArgs(trailingOnly=TRUE))
 
 library(snow);library(Rmpi);library(doParallel);library(foreach)
 setwd("/glade/u/home/sanjib/FamosHydroModel/lowDim/output_f")
@@ -12,7 +11,7 @@ cl <- parallel::makeCluster(spec = nprocs, type=mp_type)
 doParallel::registerDoParallel(cl)
 
 # Values for runs
-runIndex<-((jobIndex-1)*(nprocs))+(1:(nprocs))
+runIndex<-1:2015
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run_f/rWrapper_validation.R")
   source("../run_f/mcmc_source_Tr.R")
