@@ -98,6 +98,10 @@ load("Official_Fast/output_validation/precalibration_goodRuns.RData")
 precalibrationOutput<-modelOutput[goodRuns,]
 load("Official_Fast/precalibration/output/mhParameters_0.RData")
 precalibrationParMat<-parMat[goodRuns,-1]
+
+
+
+
 ##########################################################################################
 ##########################################################################################
 # Point Estimation: RMSPE for Validation 
@@ -255,3 +259,12 @@ plot(d1, main=parNames[k] ,
 }
 
 dev.off()
+
+
+##########################################################################################
+##########################################################################################
+# Save files (for Iman)
+names(handTuneOutput)<-colnames(precalibrationOutput)<-colnames(emulationOutput)<-colnames(famosOutput)<-names(validationObs)<-validationDate
+save(validationDate , validationObs , 
+     famosOutput ,  emulationOutput , precalibrationOutput , handTuneOutput,
+     file="resultsStremflow.RData") 
