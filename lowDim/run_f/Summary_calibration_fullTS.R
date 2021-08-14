@@ -37,8 +37,14 @@ for(k in 1:length(initResultsList[[2]])){
   famosOutput[k,]<-initResultsList[[2]][[k]][[2]]
 }
 
-### 3. Emulation-Calibration
-###### Need to re-run Emulation Runs
+### 3. Famous Four Parameter
+load("lowDim/output_f/mhParameters_4.RData")
+famosOutput4Par<-matrix(NA,
+                    nrow=length(initResultsList[[2]]), 
+                    ncol=length(initResultsList[[2]][[1]][[2]]), byrow = TRUE)
+for(k in 1:length(initResultsList[[2]])){
+  famosOutput4Par[k,]<-initResultsList[[2]][[k]][[2]]
+}
 
 ###  4. Hand Tune
 load("Official_Fast/output_validation/handTuneResults.RData")
@@ -69,6 +75,6 @@ load("Official_Fast/input/fullObservations.RData") # Load Full observation
 ##########################################################################################
 # Save files (for Iman and Sanjib)
 names(handTuneOutput)<-colnames(precalibrationOutput)<-colnames(famosOutput)<-dateVect
-save(dateVect , subsetFinalObs , 
+save(dateVect , subsetFinalObs , famosOutput4Par , 
      famosOutput , precalibrationOutput , handTuneOutput,
      file="Analysis/resultsStremflow_calibration_full.RData") 

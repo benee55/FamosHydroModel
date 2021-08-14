@@ -12,6 +12,7 @@ doParallel::registerDoParallel(cl)
 
 # Values for runs
 runIndex<-1:2015
+print("Begin")
 outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c("mvtnorm","tmvtnorm","invgamma")) %dopar% {
   source("../run_f/rWrapper_validation.R")
   source("../run_f/mcmc_source_Tr.R")
@@ -21,6 +22,6 @@ outputMat<-foreach::foreach(jobNum=runIndex , .combine = "cbind" , .packages = c
   jobPar<-parMat[jobNum,]
   modelEval(par = jobPar , j = jobNum , inputDir =inputDir , outputDir = outputDir)
 }
-
+print('finish')
 save(outputMat,file = paste("validationResults.RData",sep=""))
 

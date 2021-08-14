@@ -48,7 +48,7 @@ priorPar<-rbind(c(0.01,0.01), # Inverse Gamma Hyperparameters
 load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 ##################################################################################################################
 # Load Source for RWrapper and Forward Model 
-source("/glade/u/home/sanjib/FamosHydroModel/lowDim/run_f/rWrapper_Continuous.R")  
+# source("/glade/u/home/sanjib/FamosHydroModel/lowDim/run_f/rWrapper_Continuous.R")  
 ##################################################################################################################
 # Priors 
 logPrior<-function(par , priorPar){
