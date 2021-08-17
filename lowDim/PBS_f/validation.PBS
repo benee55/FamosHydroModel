@@ -15,7 +15,7 @@ export TMPDIR=/glade/scratch/$USER/temp
 mkdir -p $TMPDIR
 
 module load gnu/9.1.0
-module load openmpi/4.0.5
+module load openmpi/3.1.4
 module load R/4.0.2
 module load rmpi
 
