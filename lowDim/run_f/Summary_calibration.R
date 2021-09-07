@@ -145,6 +145,7 @@ save(extremeDate , extremeObs ,
      file="Analysis/resultsStremflow_calibration.RData") 
 
 save(famosParMat , 
+     famos4ParMat,
      emulationParMat , 
      handTuneParMat , 
      precalibrationParMat,

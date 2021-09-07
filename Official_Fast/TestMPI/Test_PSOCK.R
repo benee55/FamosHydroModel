@@ -9,6 +9,7 @@ print("Made Cluster")
 doParallel::registerDoParallel(cl)
 print("Registered Cluster")
 outputMat<-foreach::foreach(jobNum=1:ns, .combine = "c") %dopar% {
+  sleep(2)
   jobNum
 }
 print("Parallelized Operations")

@@ -1,9 +1,9 @@
-#PBS -l select=56:ncpus=36:mpiprocs=36
-#PBS -N Test
+#PBS -l select=1:ncpus=36
+#PBS -N Validation
 #PBS -A UPSU0040
-#PBS -l walltime=02:00:00
+#PBS -l walltime=01:00:00
 #PBS -j oe
-#PBS -q regular
+#PBS -q economy
 
 cd $PBS_O_WORKDIR
 cd ../run_f
@@ -11,13 +11,8 @@ cd ../run_f
 echo " "
 echo " "
 echo "Job started on `hostname` at `date`"
-export TMPDIR=/glade/scratch/$USER/temp
-mkdir -p $TMPDIR
 
-module load gnu/9.1.0
-module load openmpi/3.1.4
-module load R/4.0.2
-module load rmpi
+module load R
 
-mpirun -n 1 Rscript validation_Run.R
+Rscript validation_Run.R $args
 echo "Job ended on `hostname` at `date`"

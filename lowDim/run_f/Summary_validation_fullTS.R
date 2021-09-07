@@ -31,6 +31,12 @@ famosOutput<-matrix(unlist(outputMat[2,]),
                     nrow=length(outputMat[2,]), 
                     ncol=length(outputMat[2,][[1]]), byrow = TRUE)
 
+### 1. Famous 4 parameter
+load("Official_Fast/output_validation/validationResults.RData")
+famosOutput4Par<-matrix(unlist(outputMat[2,]),
+                    nrow=length(outputMat[2,]), 
+                    ncol=length(outputMat[2,][[1]]), byrow = TRUE)
+
 ###  4. Hand Tune
 load("Official_Fast/output_validation/handTuneResults.RData")
 handTuneOutput<-outputMat[[2]]
@@ -59,6 +65,9 @@ precalibrationOutput<-modelOutput[goodRuns,]
 ##########################################################################################
 # Save files (for Iman)
 names(handTuneOutput)<-colnames(precalibrationOutput)<-colnames(famosOutput)<-dateVect
-save(dateVect , subsetFinalValidation , 
+save(dateVect , subsetFinalValidation , famosOutput4Par,
      famosOutput , precalibrationOutput , handTuneOutput,
      file="Analysis/resultsStremflow_validation_full.RData") 
+
+save(dateVect , subsetFinalValidation , famosOutput4Par,
+     file="Analysis/famos4parameter_validation.RData") 

@@ -65,3 +65,58 @@ abline(v=validation_risk_output[indVal], col="black")
 abline(v=handtuned_risk_output[indVal], col="green")
 }
 dev.off()
+
+
+
+
+rm(list=ls())
+load("~/Dropbox/FamosHydroModel/Official_Fast/input/fullObservations.RData") # Load Full observation
+dateVect<-paste(sprintf("%04d",as.numeric(obs[,1])),
+               sprintf("%02d",as.numeric(obs[,2])),
+               sprintf("%02d",as.numeric(obs[,3])),sep="-")
+dateVect<-as.Date(dateVect, format = "%Y-%m-%d")
+# observation Index
+extremeDate<-dateVect[obsInd] # Extreme Dates
+
+load("~/Dropbox/FamosHydroModel/Analysis/resultsStremflow_calibration_full.RData")
+dim(famosOutput4Par)
+
+
+extremeFourPar<-famosOutput4Par[,obsInd]
+extremeFamos<-famosOutput[,obsInd]
+extremePrecalib<-precalibrationOutput[,obsInd]
+extremeHand<-handTuneOutput[obsInd]
+
+
+par(mfrow=c(5,5), mar=c(2,2,2,2))
+plot.new()
+legend("center", legend=c("Famos4", "Famos12"  , "precalibration" , "HandTune" , "Truth"), 
+       lty=c(1,1,1,1,1), col=c("red","blue","gray","green","black"))
+for(k in 1:length(subsetFinalObs)){
+  d1<-density(extremeFourPar[,k])
+  d2<-density(extremeFamos[,k])
+  d3<-density(extremePrecalib[,k])
+  
+  plot(d1, col="red" , ylim=range(d1$y,d2$y,d3$y), 
+       xlim=range(d1$x,d2$x,d3$x,subsetFinalObs[k] ,extremeHand[k]), 
+       main=extremeDate[k])
+  lines(density(extremeFamos[,k]), col="blue")
+  lines(density(extremePrecalib[,k]), col="gray")
+  abline(v=subsetFinalObs[k], col="black")
+  abline(v=extremeHand[k], col="green")
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
