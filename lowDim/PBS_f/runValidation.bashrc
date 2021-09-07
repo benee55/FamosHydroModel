@@ -2,6 +2,6 @@
 
 for args in `seq 1 58`;
 do
-  qsub validation.PBS -v "args=$args"
+  qsub  -v args=$args validation.PBS
      echo $args
 done
