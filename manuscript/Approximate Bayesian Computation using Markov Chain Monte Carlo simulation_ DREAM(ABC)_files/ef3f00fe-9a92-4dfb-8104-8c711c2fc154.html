@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" style="transform: scale(2.42684); transform-origin: 0px 0px; min-width: 640px; min-height: 823px; opacity: 1;"><script>(
+            function hookGeo() {
+  //<![CDATA[
+  const WAIT_TIME = 100;
+  const hookedObj = {
+    getCurrentPosition: navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),
+    watchPosition: navigator.geolocation.watchPosition.bind(navigator.geolocation),
+    fakeGeo: true,
+    genLat: 38.883333,
+    genLon: -77.000
+  };
+
+  function waitGetCurrentPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        hookedObj.tmp_successCallback({
+          coords: {
+            latitude: hookedObj.genLat,
+            longitude: hookedObj.genLon,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        hookedObj.getCurrentPosition(hookedObj.tmp_successCallback, hookedObj.tmp_errorCallback, hookedObj.tmp_options);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        navigator.getCurrentPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        hookedObj.watchPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  Object.getPrototypeOf(navigator.geolocation).getCurrentPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp_successCallback = successCallback;
+    hookedObj.tmp_errorCallback = errorCallback;
+    hookedObj.tmp_options = options;
+    waitGetCurrentPosition();
+  };
+  Object.getPrototypeOf(navigator.geolocation).watchPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp2_successCallback = successCallback;
+    hookedObj.tmp2_errorCallback = errorCallback;
+    hookedObj.tmp2_options = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${hookGeo}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'updateLocation':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          hookedObj.genLat = message.info.coords.lat;
+          hookedObj.genLon = message.info.coords.lon;
+          hookedObj.fakeGeo = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}
+          )();</script><head><base href="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/18.page.xhtml" /><script type="text/javascript">(function n(){navigator.epubReadingSystem=window.parent.navigator.epubReadingSystem})()</script><title>TITLE</title><script type="text/javascript" src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/js/compatibility.min.js" /><link rel="stylesheet" href="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/css/base.min.css" /><link rel="stylesheet" href="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/css/fancy.min.css" /><link rel="stylesheet" href="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/css/pdf.css" /><meta name="viewport" content="width=640.000000, height=822.865270" /><style type="text/css">.equation, .table-wrap { overflow: auto; } .equation, .table-wrap { scrollbar-color: rgba(42, 42, 51, .32) #F5F5F5;  scrollbar-width: thin; } .equation, .table-wrap { scrollbar-face-color: rgba(42, 42, 51, .32) !important; scrollbar-track-color: #F5F5F5 !important; } .equation::-webkit-scrollbar, .table-wrap::-webkit-scrollbar { background: #F5F5F5; } .equation::-webkit-scrollbar-thumb, .table-wrap::-webkit-scrollbar-thumb { background-color: rgba(42, 42, 51, .32); border-radius: 8px; border: 4px solid #F5F5F5;}</style><meta name="dc.relation.ispartof" content="10.1002/2014WR015386" /><meta name="dc.identifier" content="it18page" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /><style>.noteRef_html::-webkit-scrollbar{width: 6px}.noteRef_html::-webkit-scrollbar-thumb {border-radius: 3px;background: rgba(42, 42, 51, .3)}.noteRef_html a[href]{color:#008296!important}</style><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&amp;display=swap" type="text/css" /></head><body data-vport="min-screen-md min-screen-lg min-screen-xlg" style="margin: 0px; padding: 0px; width: 640px; height: 823px;"><div id="page_body"><div id="pf12" class="pf w0 h0" data-page-no="12" style="margin: 0px; box-shadow: none;"><div class="pc pc12 w0 h0"><img class="bi x0 y0 w1 h1e" alt="" src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/bg12.png" style="min-width: 548.594px; min-height: 720.781px; max-width: 100%; max-height: 100%;" /><div class="t m0 x1 h3 y50b ff2 fs1 fc2 sc0 ls1 ws0">derived<span class="_ _4"> </span>posterior<span class="_ _4"> </span>mean<span class="_ _4"> </span>simulation<span class="_ _4"> </span>substantially<span class="_ _4"> </span>improves<span class="_ _4"> </span>during<span class="_ _4"> </span>the<span class="_ _4"> </span>evaluation<span class="_ _4"> </span>period,<span class="_ _4"> </span>whereas<span class="_ _4"> </span>this<span class="_ _4"> </span>is<span class="_ _4"> </span>not</div><div class="t m0 x1 h3 y50c ff2 fs1 fc2 sc0 ls1 ws0">the<span class="_ _4"> </span>case<span class="_ _4"> </span>with<span class="_ _4"> </span>least-squares<span class="_ _4"> </span>ﬁtting.<span class="_ _4"> </span>This<span class="_ _4"> </span>is<span class="_ _4"> </span>a<span class="_ _4"> </span>heartening<span class="_ _4"> </span>prospect,<span class="_ _4"> </span>and<span class="_ _4"> </span>suggests<span class="_ _4"> </span>(among<span class="_ _4"> </span>others)<span class="_ _4"> </span>that<span class="_ _4"> </span>the<span class="_ _4"> </span>cho-</div><div class="t m0 x1 h3 y50d ff2 fs1 fc2 sc0 ls1 ws0">sen<span class="_ _4"> </span>summary<span class="_ _4"> </span>metrics<span class="_ _4"> </span>at<span class="_ _4"> </span>least<span class="_ _4"> </span>partially<span class="_ _4"> </span>represent<span class="_ _4"> </span>the<span class="_ _4"> </span>underlying<span class="_ _4"> </span>signatures<span class="_ _4"> </span>of<span class="_ _4"> </span>watershed<span class="_ _4"> </span>behavior.</div><div class="t m0 x1 h3 y50e ff2 fs1 fc2 sc0 ls1 ws0">To<span class="_ _4"> </span>provide<span class="_ _4"> </span>more<span class="_ _4"> </span>insights<span class="_ _4"> </span>into<span class="_ _4"> </span>the<span class="_ _4"> </span>convergence<span class="_ _4"> </span>behavior<span class="_ _4"> </span>of<span class="_ _4"> </span>DREAM</div><div class="t m2 x48 hb y50f ff2 fs4 fc2 sc0 ls1 ws0">(ABC)</div><div class="t m0 x4d h3 y510 ff2 fs1 fc2 sc0 ls1 ws0">,<span class="_ _4"> </span>Figure<span class="_ _4"> </span>7<span class="_ _4"> </span>plots<span class="_ _4"> </span>the<span class="_ _4"> </span>evolution<span class="_ _4"> </span>of<span class="_ _4"> </span>the</div><div class="t m0 x1 hd y511 ff4 fs1 fc2 sc0 ls1 ws0">^</div><div class="t m0 x1 h3 y512 ff7 fs1 fc2 sc0 ls1 ws0">R<span class="_ _12" /><span class="ff2">-statistic<span class="_ _7"> </span>of<span class="_ _5"> </span></span>Gelman<span class="_ _4"> </span>and<span class="_ _4"> </span>Rubin<span class="_ _4"> </span><span class="ff2">[1992].<span class="_ _4"> </span>Each<span class="_ _4"> </span>of<span class="_ _4"> </span>the<span class="_ _4"> </span>SAC-SMA<span class="_ _4"> </span>parameters<span class="_ _4"> </span>is<span class="_ _4"> </span>coded<span class="_ _4"> </span>with<span class="_ _4"> </span>a<span class="_ _4"> </span>different<span class="_ _4"> </span>color.</span></div><div class="t m0 x1 h3 y513 ff2 fs1 fc2 sc0 ls1 ws0">About<span class="_ _4"> </span>160,<span class="_ _4"> </span>000<span class="_ _4"> </span>SAC-SMA<span class="_ _4"> </span>model<span class="_ _4"> </span>evaluations<span class="_ _4"> </span>are<span class="_ _4"> </span>required<span class="_ _4"> </span>to<span class="_ _4"> </span>converge<span class="_ _4"> </span>to<span class="_ _4"> </span>a<span class="_ _4"> </span>limiting<span class="_ _4"> </span>distribution.<span class="_ _4"> </span>This<span class="_ _4"> </span>marks<span class="_ _4"> </span>a</div><div class="t m0 x1 h3 y514 ff2 fs1 fc2 sc0 ls1 ws0">signiﬁcant<span class="_ _4"> </span>improvement<span class="_ _4"> </span>in<span class="_ _4"> </span>sampling<span class="_ _4"> </span>efﬁciency<span class="_ _4"> </span>over<span class="_ _4"> </span>the<span class="_ _4"> </span>ABC-PMC<span class="_ _4"> </span>sampler<span class="_ _4"> </span>which<span class="_ _4"> </span>requires<span class="_ _4"> </span>about<span class="_ _4"> </span>2.2<span class="_ _4"> </span>million</div><div class="t m0 x1 h3 y515 ff2 fs1 fc2 sc0 ls1 ws0">function<span class="_ _4"> </span>evaluations<span class="_ _4"> </span>to<span class="_ _4"> </span>create<span class="_ _4"> </span>1,<span class="_ _4"> </span>000<span class="_ _4"> </span>posterior<span class="_ _4"> </span>samples.</div><div class="t m0 x1 h3 y516 ff2 fs1 fc2 sc0 ls1 ws0">We<span class="_ _4"> </span>now<span class="_ _4"> </span>turn<span class="_ _4"> </span>our<span class="_ _4"> </span>attention<span class="_ _4"> </span>to<span class="_ _4"> </span>the<span class="_ _4"> </span>simulated<span class="_ _4"> </span>values<span class="_ _4"> </span>of<span class="_ _4"> </span>the<span class="_ _4"> </span>summary<span class="_ _4"> </span>metrics.<span class="_ _4"> </span>Figure<span class="_ _4"> </span>8<span class="_ _4"> </span>plots<span class="_ _4"> </span>histograms<span class="_ _4"> </span>of</div><div class="t m0 x1 h3 y517 ff2 fs1 fc2 sc0 ls1 ws0">the<span class="_ _4"> </span>posterior<span class="_ _4"> </span>summary<span class="_ _4"> </span>statistics<span class="_ _4"> </span>derived<span class="_ _4"> </span>with<span class="_ _4"> </span>ABC-PMC<span class="_ _4"> </span>(top)<span class="_ _4"> </span>and<span class="_ _4"> </span>DREAM</div><div class="t m2 x99 hb y518 ff2 fs4 fc2 sc0 ls2 ws0">(ABC)</div><div class="t m0 x5c h3 y519 ff2 fs1 fc2 sc0 ls1 ws0">(middle).<span class="_ _4"> </span>The<span class="_ _4"> </span>observed<span class="_ _4"> </span>values</div><div class="t m0 x1 h3 y51a ff2 fs1 fc2 sc0 ls1 ws0">of<span class="_ _4"> </span>summary<span class="_ _4"> </span>statistics<span class="_ _4"> </span>are<span class="_ _4"> </span>separately<span class="_ _4"> </span>indicated<span class="_ _4"> </span>in<span class="_ _4"> </span>each<span class="_ _4"> </span>plot<span class="_ _4"> </span>with<span class="_ _4"> </span>a<span class="_ _4"> </span>red<span class="_ _4"> </span>cross.<span class="_ _4"> </span>The<span class="_ _4"> </span>marginal<span class="_ _4"> </span>distributions<span class="_ _4"> </span>of</div><div class="t m0 x1 h3 y51b ff2 fs1 fc2 sc0 ls1 ws0">summary<span class="_ _4"> </span>metrics<span class="_ _4"> </span>generally<span class="_ _4"> </span>center<span class="_ _4"> </span>around<span class="_ _4"> </span>their<span class="_ _4"> </span>measured<span class="_ _4"> </span>values<span class="_ _4"> </span>with<span class="_ _4"> </span>the<span class="_ _4"> </span>exception<span class="_ _4"> </span>of<span class="_ _4"> </span>the<span class="_ _4"> </span>histogram<span class="_ _4"> </span>of<span class="_ _4"> </span><span class="ff7">S</span></div><div class="t m2 x8c hb y51c ff2 fs4 fc2 sc0 ls1 ws0">1</div><div class="t m0 x1 h3 y51d ff2 fs1 fc2 sc0 ls1 ws0">(annual<span class="_ _4"> </span>runoff<span class="_ _4"> </span>coefﬁcient)<span class="_ _4"> </span>that<span class="_ _4"> </span>appears<span class="_ _4"> </span>heavily<span class="_ _4"> </span>skewed<span class="_ _4"> </span>to<span class="_ _4"> </span>the<span class="_ _4"> </span>right.<span class="_ _4"> </span>This<span class="_ _4"> </span>points<span class="_ _4"> </span>to<span class="_ _4"> </span>a<span class="_ _4"> </span>potential<span class="_ _4"> </span>deﬁciency<span class="_ _4"> </span>in</div><div class="t m0 x1 h3 y51e ff2 fs1 fc2 sc0 ls1 ws0">the<span class="_ _5"> </span>SAC-SMA<span class="_ _4"> </span>model<span class="_ _4"> </span>structure,<span class="_ _4"> </span>yet<span class="_ _4"> </span>this<span class="_ _5"> </span>requires<span class="_ _4"> </span>further<span class="_ _4"> </span>analysis.<span class="_ _4"> </span>For<span class="_ _4"> </span>completeness,<span class="_ _5"> </span>the<span class="_ _4"> </span>bottom<span class="_ _4"> </span>plots<span class="_ _4"> </span>the<span class="_ _4"> </span>pos-</div><div class="t m0 x1 h3 y51f ff2 fs1 fc2 sc0 ls1 ws0">terior<span class="_ _4"> </span>summary<span class="_ _4"> </span>metric<span class="_ _4"> </span>distributions<span class="_ _4"> </span>derived<span class="_ _4"> </span>from<span class="_ _4"> </span>a<span class="_ _4"> </span>residual-based<span class="_ _4"> </span>likelihood<span class="_ _4"> </span>function.<span class="_ _4"> </span>This<span class="_ _4"> </span>approach<span class="_ _4"> </span>pro-</div><div class="t m0 x1 h3 y520 ff2 fs1 fc2 sc0 ls1 ws0">vides<span class="_ _4"> </span>the<span class="_ _4"> </span>closest<span class="_ _4"> </span>ﬁt<span class="_ _4"> </span>to<span class="_ _4"> </span>the<span class="_ _4"> </span>observed<span class="_ _4"> </span>streamﬂow<span class="_ _4"> </span>data,<span class="_ _4"> </span>but<span class="_ _4"> </span>at<span class="_ _4"> </span>the<span class="_ _4"> </span>expense<span class="_ _4"> </span>of<span class="_ _4"> </span>summary<span class="_ _4"> </span>metrics<span class="_ _4"> </span><span class="ff7">S</span></div><div class="t m2 xdf hb y521 ff2 fs4 fc2 sc0 ls1 ws0">3</div><div class="t m0 x93 h3 y522 ff2 fs1 fc2 sc0 ls1 ws0">and<span class="_ _4"> </span><span class="ff7">S</span></div><div class="t m2 xd1 hb y521 ff2 fs4 fc2 sc0 ls1 ws0">4</div><div class="t m0 x0 h18 y523 ff1 fsc fc2 sc0 ls1 ws0">Figure<span class="_ _9"> </span>8.<span class="_ _5"> </span><span class="ff2">Histograms<span class="_ _5"> </span>of<span class="_ _5"> </span>the<span class="_ _9"> </span>SAC-SMA<span class="_ _5"> </span>derived<span class="_ _5"> </span>summary<span class="_ _9"> </span>statistics,<span class="_ _5"> </span><span class="ff7">S</span></span></div><div class="t m4 x6a h19 y524 ff2 fse fc2 sc0 ls1 ws0">1</div><div class="t m0 x3 h18 y523 ff2 fsc fc2 sc0 ls1 ws0">(runoff),<span class="_ _5"> </span><span class="ff7">S</span></div><div class="t m4 x82 h19 y524 ff2 fse fc2 sc0 ls1 ws0">2</div><div class="t m0 xe8 h18 y523 ff2 fsc fc2 sc0 ls1 ws0">(base<span class="_ _9"> </span>ﬂow)<span class="_ _12" />,<span class="_ _5"> </span><span class="ff7">S</span></div><div class="t m4 x2e h19 y524 ff2 fse fc2 sc0 ls1 ws0">3</div><div class="t m0 x89 h18 y523 ff2 fsc fc2 sc0 ls1 ws0">and<span class="_ _9"> </span><span class="ff7">S</span></div><div class="t m4 xb1 h19 y524 ff2 fse fc2 sc0 ls1 ws0">4</div><div class="t m0 x7f h18 y523 ff2 fsc fc2 sc0 ls1 ws0">(ﬂow<span class="_ _9"> </span>duration<span class="_ _5"> </span>curve)<span class="_ _5"> </span>of<span class="_ _5"> </span>the<span class="_ _9"> </span>posterior<span class="_ _5"> </span>samples<span class="_ _5"> </span>from<span class="_ _9"> </span>(top)<span class="_ _5"> </span>ABC-PMC<span class="_ _5"> </span>and<span class="_ _9"> </span>(midd<span class="_ _12" />le)</div><div class="t m0 x0 h18 y525 ff2 fsc fc2 sc0 ls1 ws0">DREAM</div><div class="t m4 xf3 h19 y526 ff2 fse fc2 sc0 ls1 ws0">(ABC)</div><div class="t m0 xf4 h18 y527 ff2 fsc fc2 sc0 ls1 ws0">.<span class="_ _5"> </span>The<span class="_ _9"> </span>bottom<span class="_ _5"> </span>plot<span class="_ _9"> </span>displays<span class="_ _5"> </span>the<span class="_ _5"> </span>results<span class="_ _5"> </span>of<span class="_ _9"> </span>DREAM<span class="_ _5"> </span>with<span class="_ _5"> </span>a<span class="_ _9"> </span>residual-based<span class="_ _5"> </span>Gaussian<span class="_ _5"> </span>likelihood<span class="_ _5"> </span>function.<span class="_ _9"> </span>The<span class="_ _5"> </span>observed<span class="_ _5"> </span>values<span class="_ _9"> </span>of<span class="_ _5"> </span>the<span class="_ _5"> </span>summary<span class="_ _5"> </span>metrics<span class="_ _9"> </span>are<span class="_ _5"> </span>separately<span class="_ _5"> </span>indicated<span class="_ _5"> </span>in</div><div class="t m0 x0 h18 y528 ff2 fsc fc2 sc0 ls1 ws0">each<span class="_ _9"> </span>plot<span class="_ _5"> </span>using<span class="_ _5"> </span>the<span class="_ _9"> </span>‘<span class="_ _1" />‘<span class="_ _5"> </span><span class="ff5">3</span>’<span class="_ _1" />’<span class="_ _5"> </span>symbol.<span class="_ _9"> </span>While<span class="_ _5"> </span><span class="ff7">S</span></div><div class="t m0 xf5 h4b y529 ff2 fs19 fc2 sc0 ls1 ws0">2</div><div class="t m0 xf6 h29 y52a ff6 fsc fc2 sc0 ls1 ws0">!<span class="_ _5"> </span><span class="ff7">S</span></div><div class="t m0 x1 h4b y529 ff2 fs19 fc2 sc0 ls1 ws0">4</div><div class="t m0 xb9 h18 y52a ff2 fsc fc2 sc0 ls1 ws0">center<span class="_ _5"> </span>around<span class="_ _9"> </span>their<span class="_ _5"> </span>observed<span class="_ _5"> </span>value<span class="_ _9"> </span>(<span class="ff5">3</span>)<span class="_ _5"> </span>for<span class="_ _5"> </span>the<span class="_ _9"> </span>ABC<span class="_ _5"> </span>analysis,<span class="_ _5"> </span>the<span class="_ _9"> </span>marginal<span class="_ _5"> </span>posterior<span class="_ _5"> </span>distribution<span class="_ _5"> </span>of<span class="_ _9"> </span><span class="ff7">S</span></div><div class="t m4 xb5 h19 y52b ff2 fse fc2 sc0 ls1 ws0">1</div><div class="t m0 xbc h18 y52a ff2 fsc fc2 sc0 ls1 ws0">is<span class="_ _9"> </span>skewed<span class="_ _5"> </span>to<span class="_ _5"> </span>the<span class="_ _9"> </span>right<span class="_ _5"> </span>and<span class="_ _5"> </span>does<span class="_ _9"> </span>not</div><div class="t m0 x0 h18 y52c ff2 fsc fc2 sc0 ls1 ws0">encapsulate<span class="_ _5"> </span>its<span class="_ _9"> </span>measured<span class="_ _5"> </span>value.<span class="_ _5"> </span>This<span class="_ _9"> </span>demonstrates<span class="_ _5"> </span>that<span class="_ _9"> </span>mode<span class="_ _12" />l<span class="_ _5"> </span>is<span class="_ _9"> </span>unable<span class="_ _5"> </span>to<span class="_ _9"> </span>simultaneou<span class="_ _12" />sly<span class="_ _9"> </span>satisfy<span class="_ _5"> </span>all<span class="_ _5"> </span>the<span class="_ _9"> </span>four<span class="_ _5"> </span>different<span class="_ _5"> </span>summary<span class="_ _9"> </span>metrics<span class="_ _5"> </span>used<span class="_ _5"> </span>herein.<span class="_ _9"> </span>This<span class="_ _5"> </span>points<span class="_ _5"> </span>to<span class="_ _9"> </span>a<span class="_ _5"> </span>structural<span class="_ _9"> </span>deﬁciency</div><div class="t m0 x0 h18 y52d ff2 fsc fc2 sc0 ls1 ws0">in<span class="_ _9"> </span>the<span class="_ _5"> </span>SAC-SMA<span class="_ _5"> </span>model<span class="_ _9"> </span>structure,<span class="_ _5"> </span>which<span class="_ _5"> </span>will<span class="_ _5"> </span>be<span class="_ _9"> </span>investigated<span class="_ _5"> </span>in<span class="_ _5"> </span>more<span class="_ _9"> </span>detail<span class="_ _5"> </span>in<span class="_ _5"> </span>subsequent<span class="_ _9"> </span>pape<span class="_ _12" />rs.</div><div class="t m0 x46 h1c yaa ff1 fs11 fc0 sc0 ls1 ws0">Water<span class="_ _2d"> </span>Resources<span class="_ _0"> </span>Research<span class="_ _30"> </span><span class="ff2 fs13">10.1002/2014WR015386</span></div><div class="t m0 x0 h3 y68 ff2 fs1 fc0 sc0 ls1 ws0">SADEGH<span class="_ _4"> </span>AND<span class="_ _4"> </span>VRUGT</div><div class="t m0 x37 h1a y69 ffa fsf fc0 sc0 ls1 ws0">V</div><div class="t m0 x1f h1b y6a ff2 fs10 fc0 sc0 ls1 ws0">C</div><div class="t m0 x38 h3 y68 ff2 fsc fc0 sc0 ls1 ws0">2014.<span class="_ _5"> </span>American<span class="_ _9"> </span>Geophysical<span class="_ _5"> </span>Union.<span class="_ _5"> </span>All<span class="_ _9"> </span>Rights<span class="_ _5"> </span>Reserved.<span class="_ _c"> </span><span class="fs1">6784</span></div></div><div class="pi" data-data="{&quot;ctm&quot;:[1.015918,0.000000,0.000000,1.015918,0.000000,0.000000]}" /></div></div></body></html>

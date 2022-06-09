@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386 -->
+<html xmlns:m="http://www.w3.org/1998/Math/MathML" id="simpleViewer"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/analytics.js"></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/263124174624252" async=""></script><script async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/fbevents.js"></script><script async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/uwt.js"></script><script type="text/javascript" async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/f.txt"></script><script>(function(){function hookGeo() {
+  //<![CDATA[
+  const WAIT_TIME = 100;
+  const hookedObj = {
+    getCurrentPosition: navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),
+    watchPosition: navigator.geolocation.watchPosition.bind(navigator.geolocation),
+    fakeGeo: true,
+    genLat: 38.883333,
+    genLon: -77.000
+  };
+
+  function waitGetCurrentPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        hookedObj.tmp_successCallback({
+          coords: {
+            latitude: hookedObj.genLat,
+            longitude: hookedObj.genLon,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        hookedObj.getCurrentPosition(hookedObj.tmp_successCallback, hookedObj.tmp_errorCallback, hookedObj.tmp_options);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        navigator.getCurrentPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        hookedObj.watchPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  Object.getPrototypeOf(navigator.geolocation).getCurrentPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp_successCallback = successCallback;
+    hookedObj.tmp_errorCallback = errorCallback;
+    hookedObj.tmp_options = options;
+    waitGetCurrentPosition();
+  };
+  Object.getPrototypeOf(navigator.geolocation).watchPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp2_successCallback = successCallback;
+    hookedObj.tmp2_errorCallback = errorCallback;
+    hookedObj.tmp2_options = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${hookGeo}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'updateLocation':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          hookedObj.genLat = message.info.coords.lat;
+          hookedObj.genLon = message.info.coords.lon;
+          hookedObj.fakeGeo = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}hookGeo();})()</script>
+        <title>Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM(ABC)</title>
+        
+
+
+
+
+    
+    <meta name="dc.identifier" content="10.1002/2014WR015386">
+
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/readium-all.css" rel="stylesheet" type="text/css">
+
+<link rel="stylesheet" href="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/app.css" type="text/css">
+
+<style rel="text/css">
+    @import url("/templates/jsp/cloudReader/css/d.css");
+</style>
+<link href="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/css" rel="stylesheet" media="all" onload="this.media=&#39;all&#39;">
+<script type="text/javascript">
+    window.LIT = window.LIT || {};
+    LIT.Reader = LIT.Reader || {};
+    LIT.Reader.LogEnabled = false;
+    window.READER_OFFLINE = navigator && navigator.onLine === false;
+    
+    var verifyOfflineMode = function () {
+        
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            window.READER_OFFLINE = xhr.readyState === 4 && xhr.status !== 200;
+            if (window.READER_OFFLINE && true) {
+                
+                fetch('/cloud-reader/dist/scripts/mathjax/MathJax.min.js').then(function (res) {
+                    res.text().then(function (txt) {
+                        LIT.Reader.MathJaxUrl = window.URL.createObjectURL(new Blob([txt], {'type': 'text/javascript'}));
+                    })
+                })
+            }
+        };
+        xhr.open("HEAD", "/templates/jsp/images/singlePixel.gif?t=" + new Date().getTime());
+        
+        xhr.setRequestHeader("Cache-Control", "no-cache,must-revalidate,max-age=0");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        xhr.send();
+    };
+    
+    verifyOfflineMode();
+
+    var path = (window.location && window.location.pathname) ? window.location.pathname : '';
+
+    
+    path = path.replace(/(.*)\/.*\.[x]?html$/, "$1");
+
+    
+    path = path.charAt(path.length - 1) === '/'
+        ? path.substr(0, path.length - 1)
+        : path;
+
+    
+    var readerResourcesPath = "/cloud-reader/dist";
+
+    var HTTPServerRootFolder =
+        window.location ? (
+            window.location.protocol
+            + "//"
+            + window.location.hostname
+            + (window.location.port ? (':' + window.location.port) : '')
+            + readerResourcesPath
+        ) : ''
+    ;
+</script>
+        
+
+
+
+
+
+
+
+<script type="text/javascript">
+    
+    var eReaderPage = true;
+    var readerAtmEventName = "ereader.fullview";
+    var readerAtmEventData = {"eventData":{"site":{"ip":"100.36.244.52","environment":"LIVE","website":"agupubs.onlinelibrary.wiley.com","websiteCode":"agupubs","serverDate":"2021-10-27"},"identities":[{"type":"SmartGroupUser","uuid":"b238ab85-6bb4-49e4-84ca-a0d9f3ee5a35"},{"type":"BasicGroup","uuid":"84aa8781-b32a-4f06-979c-30f3ab78ad73"},{"type":"SmartGroupUser","uuid":"eabce89b-65c2-4a09-ab7c-bd2b3fea2f10"},{"type":"RegionUser","uuid":"3c5060a1-6620-438f-862b-902a4d4cd4ac"},{"type":"BasicGroup","uuid":"b2f59a00-e5f8-40f1-8e75-8c7dd6bce0ba"},{"type":"BasicGroup","uuid":"e623deab-c83b-41e3-84a2-d9f1d46c5f17"},{"type":"ReferrerUser","uuid":"5a52f27c-b57e-4a2d-8de6-c4f2e0fa8465"},{"type":"SmartGroupUser","uuid":"a86d27d2-6bcd-4b94-bca5-fe16f4882855"},{"type":"SmartGroupUser","uuid":"da88d808-3f7b-4bde-9210-10862b6d121b"},{"type":"SmartGroupUser","uuid":"8c72a733-117a-4bc9-a682-13475f13e6a3"},{"type":"SmartGroupUser","uuid":"756fc162-8722-461f-a077-ebffec4f4fae"},{"type":"SmartGroupUser","uuid":"cf9c85b9-7f3b-4309-aeaa-c41669cabe3b"},{"type":"SmartGroupUser","uuid":"db8b8d10-1aed-4809-b3ee-70938c569014"},{"type":"SmartGroupUser","uuid":"cdce41c2-a8de-4a64-a4d9-a85caaaa2314"},{"type":"RegionUser","uuid":"f77aa5fd-6816-433e-8f6b-5706f463f4ae"},{"type":"SmartGroupUser","uuid":"39f911ce-44b6-4dba-9978-8b2e947a8eb0"},{"type":"BasicGroup","uuid":"c62f6a8d-8b0e-4a8c-ace7-645ca96979b6"},{"type":"SmartGroupUser","uuid":"b7acda8c-ce18-451b-a68d-e14b72f9b5b8"},{"type":"BasicGroup","uuid":"197fe835-5b5f-4f4e-b8e9-a74d68491a84"},{"type":"SmartGroupUser","uuid":"b2dbfe27-ecae-4bb6-bb0d-d75e5caa3762"},{"type":"BasicGroup","uuid":"fd99905c-4b60-4cb9-b576-5529f7a031dd","customerRecords":[{"customerDomain":"ALM-CU","customerNumber":"TESTOHIOSTATECOCHRANE"}]},{"type":"SmartGroupUser","uuid":"ab743440-628f-4964-9216-9983ad3beadf"},{"type":"SmartGroupUser","uuid":"a4187e00-f28e-4754-9a0f-1eb306fb0679"}],"publication":{"item":{"title":"Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM\u003csub\u003e(ABC)\u003c/sub\u003e","doi":"10.1002/2014WR015386","access":"free","earliestDate":"2014-07-21","formats":["Abstract","Cited by","First page image","Full text","PDF","References"],"topics":[{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Management, Policy \u0026 Planning","topicUri":"en40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Groundwater \u0026 Hydrogeology","topicUri":"es71"},{"taxonomyUri":"global-subject-codes","topicLabel":"Hydrological Sciences","topicUri":"es70"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Science","topicUri":"en60"},{"taxonomyUri":"global-subject-codes","topicLabel":"EARTH SCIENCE","topicUri":"es"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resources","topicUri":"ce42"},{"taxonomyUri":"global-subject-codes","topicLabel":"ENVIRONMENTAL STUDIES","topicUri":"en"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Engineering","topicUri":"ce40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Public Health General","topicUri":"he50"},{"taxonomyUri":"global-subject-codes","topicLabel":"GIS, Remote Sensing \u0026 Cartography","topicUri":"ge60"},{"taxonomyUri":"global-subject-codes","topicLabel":"CIVIL ENGINEERING \u0026 CONSTRUCTION","topicUri":"ce"},{"taxonomyUri":"global-subject-codes","topicLabel":"HEALTH \u0026 HEALTH CARE","topicUri":"he"},{"taxonomyUri":"global-subject-codes","topicLabel":"GEOGRAPHY","topicUri":"ge"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resource Management","topicUri":"es73"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Estimation and Forecasting","topicUri":"adb93e45-271e-3060-9294-e6d4652c5298"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Statistical Methods: Inferential","topicUri":"51d50a9a-82c1-34d9-b7f2-c15a9210af79"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Hydrology","topicUri":"65e440c3-7c1c-3c8a-98a5-8f657c07b60b"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Modeling","topicUri":"7490e49f-ce85-3c68-906a-426c4ee84d08"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Uncertainty Assessment","topicUri":"7834fd2e-37fe-3b42-93f4-c7a3b78a43d6"},{"taxonomyUri":"2dc820d3-3443-3933-98f0-0c9f57556905","topicLabel":"Informatics","topicUri":"352e1e37-c7b8-3609-8d36-e9d6f17930de"}]},"group":{"doi":"10.1002/wrcr.v50.8","access":"free","volume":"50","issue":"8","coverDate":"2014-08-01","topics":[{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Management, Policy \u0026 Planning","topicUri":"en40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Groundwater \u0026 Hydrogeology","topicUri":"es71"},{"taxonomyUri":"global-subject-codes","topicLabel":"Hydrological Sciences","topicUri":"es70"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Science","topicUri":"en60"},{"taxonomyUri":"global-subject-codes","topicLabel":"EARTH SCIENCE","topicUri":"es"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resources","topicUri":"ce42"},{"taxonomyUri":"global-subject-codes","topicLabel":"ENVIRONMENTAL STUDIES","topicUri":"en"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Engineering","topicUri":"ce40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Public Health General","topicUri":"he50"},{"taxonomyUri":"global-subject-codes","topicLabel":"GIS, Remote Sensing \u0026 Cartography","topicUri":"ge60"},{"taxonomyUri":"global-subject-codes","topicLabel":"CIVIL ENGINEERING \u0026 CONSTRUCTION","topicUri":"ce"},{"taxonomyUri":"global-subject-codes","topicLabel":"HEALTH \u0026 HEALTH CARE","topicUri":"he"},{"taxonomyUri":"global-subject-codes","topicLabel":"GEOGRAPHY","topicUri":"ge"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resource Management","topicUri":"es73"}]},"series":{"title":"Water Resources Research","doi":"10.1002/(ISSN)1944-7973","access":"unknown","code":"19447973","issn":"0043-1397","eissn":"1944-7973","topics":[{"taxonomyUri":"gpt-sitename","topicLabel":"wly.earth.sci_000045","topicUri":"wly.earth.sci_000045"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Management, Policy \u0026 Planning","topicUri":"en40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Groundwater \u0026 Hydrogeology","topicUri":"es71"},{"taxonomyUri":"global-subject-codes","topicLabel":"Hydrological Sciences","topicUri":"es70"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Science","topicUri":"en60"},{"taxonomyUri":"global-subject-codes","topicLabel":"EARTH SCIENCE","topicUri":"es"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resources","topicUri":"ce42"},{"taxonomyUri":"global-subject-codes","topicLabel":"ENVIRONMENTAL STUDIES","topicUri":"en"},{"taxonomyUri":"global-subject-codes","topicLabel":"Environmental Engineering","topicUri":"ce40"},{"taxonomyUri":"global-subject-codes","topicLabel":"Public Health General","topicUri":"he50"},{"taxonomyUri":"global-subject-codes","topicLabel":"GIS, Remote Sensing \u0026 Cartography","topicUri":"ge60"},{"taxonomyUri":"global-subject-codes","topicLabel":"CIVIL ENGINEERING \u0026 CONSTRUCTION","topicUri":"ce"},{"taxonomyUri":"global-subject-codes","topicLabel":"HEALTH \u0026 HEALTH CARE","topicUri":"he"},{"taxonomyUri":"global-subject-codes","topicLabel":"GEOGRAPHY","topicUri":"ge"},{"taxonomyUri":"global-subject-codes","topicLabel":"Water Resource Management","topicUri":"es73"},{"taxonomyUri":"gpt-zonename","topicLabel":"water-resources-research_WRCR","topicUri":"water-resources-research_wrcr"}]}},"tokens":{"tokenUsed":false}}};
+    
+    var digitalData = window.digitalData ? digitalData : {};
+    digitalData.event = digitalData.event || [];
+</script>
+<script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/satelliteLib-c1ac050bbdc647f13a62578e71f0d817f8a6cbb5.js"></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/AppMeasurement.min.js" async=""></script>
+        
+
+
+
+
+
+    <style type="text/css"></style><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/js" async="true"></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC98520b4f5a114a749f840842120e53c0-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RCab4fcd0849cd455d8ca245a2eab14a3c-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC8ca40e7e29e34f7bbd82f60296efd00d-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/f(1).txt"></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC6e4e9fb26c37495b937e35b1cd336268-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RCbdd867df82b64bc3a9fa77d7ffada36e-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC68b80b4008274d8f86257e5c557a90b9-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC94e314a8a6aa47dab5df82d75e37733f-source.min.js" async=""></script><script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/RC33a53d17861d4e31b03c89ef49413e2b-source.min.js" async=""></script></head>
+    
+    <body data-new-gr-c-s-check-loaded="14.1035.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1035.0">
+        
+
+
+
+
+
+
+
+
+
+<noscript>
+    <div id="alert_box" class="popup_container full noScript">
+        <div class="popup_content">
+            <div class="flex-container">
+                <div class="text">
+                    <span class="popupIcon icon material-icons" data-type="">error_outline</span>
+                    <div>
+                        <h1 class="popupTitle">JavaScript disabled</h1>
+                        <p class="popupDescription">You have to enable JavaScript in your browser's settings in order to use the eReader.</p>
+                        
+                            <p class="popupDescription">Or try downloading the content offline</p>
+                            <a href="/doi/pdfdirect/10.1002/2014WR015386?download=true" target="_blank" class="btn--bordered__light">DOWNLOAD</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
+        <nav id="app-navbar" class="navbar isFixed" role="banner" aria-label="Toolbar"><div class="btn-group navbar-left">
+        <div class="grouped hide-lg lpanel_toggle_wrapper">
+    <button id="leftPanelmobile" class="l-panel--trigger btn with-transparency" title="Publication Info [i]" type="button" tabindex="0" accesskey="i">
+        <span class="icon material-icons" aria-hidden="true">menu</span>
+        <span class="icon material-icons expanded" aria-hidden="true">close</span>
+    </button>
+</div>
+<div id="readium-left-panel" class="tabs" aria-label="" role="navigation"><div class="lpbutton show-lg">
+    <div class="l-panel--button-container">
+        <button class="l-panel--trigger btn--rounded btn with-transparency" id="leftPanelbtn" title="Publication Info [i]" aria-label="Toggle left panel" data-tooltip-position="right" type="button" tabindex="0" accesskey="i">
+            <span class="icon reader-double-arrow flip-horizontal" aria-hidden="true"></span>
+        </button>
+
+            <button class="btn--rounded btn--cta__light btn" id="infoDesktop" title="Details" aria-label="Toggle Details panel" data-tooltip-position="right" data-trigger="#info" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons" aria-hidden="true">info
+                    
+                    
+                </span>
+            </button>
+            <button class="btn--rounded btn--cta__light btn" id="chaptersDesktop" title="Outline" aria-label="Toggle Outline panel" data-tooltip-position="right" data-trigger="#chapters" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons" aria-hidden="true">list
+                    
+                    
+                </span>
+            </button>
+            <button class="btn--rounded btn--cta__light btn" id="filesDesktop" title="Materials" aria-label="Toggle Materials panel" data-tooltip-position="right" data-trigger="#files" type="button" tabindex="0" accesskey="">
+                <span class="icon reader-material-folder" aria-hidden="true">
+                    
+                    
+                </span>
+            </button>
+            <button class="btn--rounded btn--cta__light btn" id="linksDesktop" title="Links" aria-label="Toggle Links panel" data-tooltip-position="right" data-trigger="#links" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons rotate-135" aria-hidden="true">link
+                    
+                    
+                </span>
+            </button>
+    </div>
+</div>
+
+<div class="overflow-container">
+    <div class="extra_actions show-sm-flex">
+        <button class="l-panel--trigger btn--action__text btn with-transparency" type="button" tabindex="0" accesskey="">
+            <span class="tab-text">CLOSE</span>
+        </button>
+    </div>
+
+    <div class="l-panel-tabs-container">
+        <div class="pubDetails hide-lg">
+            <h4 class="pub_type">article</h4>
+            <h3 class="pub_title js__book-title" title="Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM(ABC)">Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM(ABC)</h3>
+        </div>
+
+        <ul class="drawerMenu dark slider" role="menu">
+            <li class="list-item d-block" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="info" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">info</span>
+                    <span class="tab-text">Details</span>
+                </button>
+
+                <div id="info-tab-pane" class="submenu"><div class="paddedPane">
+    <div class="stickify show-lg">
+        <h3 class="primaryTitle">Details</h3>
+    </div>
+
+
+    <div class="item-info">
+        <div class="metadata">
+   <div class="cover"><img src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr.v50.8.cover.gif" alt="Cover Image" class="cover"></div>
+   <h6>ARTICLE</h6>
+   <h4 class="title">Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM<sub>(ABC)</sub></h4>
+   <div class="authors"><span class="author">Mojtaba Sadegh, </span><span class="author">Jasper A. Vrugt</span></div><a href="https://agupubs.onlinelibrary.wiley.com/action/showCitFormats?doi=10.1002%2F2014WR015386&amp;mobileUi=0" class="btn btn--secondary citation_btn " target="_blank" accesskey="c" aria-label="export citation">
+    <span class="icon material-icons">format_quote</span>
+    <span class="text">CITE</span>
+</a>
+
+   <div class="publication-details">
+      <div class="copyright">© 2014. American Geophysical Union. All Rights Reserved.</div><a class="" target="_blank" accesskey="c" aria-label="doi" href="https://doi.org/10.1002/2014WR015386">https://doi.org/10.1002/2014WR015386</a><div class="details-section">
+         <div class="details-entry"><span class="details-label">Published in</span><span class="details-value">Water Resources Research</span></div>
+         <div class="details-entry"><span class="details-label" style="">Publisher</span><span class="details-value">John Wiley &amp; Sons, Ltd</span></div>
+         <div class="issn">
+            <div class="details-entry"><span class="details-label">ISSN</span><span class="details-value">0043-1397</span></div>
+         </div>
+         <div class="details-entry"><span class="details-label">eISSN</span><span class="details-value">1944-7973</span></div>
+         <p class="received-date">
+            </p><div class="details-entry"><span class="details-label">Received</span><span class="details-value">29 January 2014</span></div>
+         <p></p>
+         <div class="details-entry"><span class="details-label">Accepted</span><span class="details-value">16 July 2014</span></div>
+         <div class="details-entry"><span class="details-label">Published</span><span class="details-value">19 September 2014</span></div>
+         <div class="details-entry"><span class="details-label">Volume</span><span class="details-value">50</span></div>
+         <div class="details-entry"><span class="details-label">Issue</span><span class="details-value">8</span></div>
+         <div class="details-entry"><span class="details-label">Pages</span><span class="details-value">6767
+                    -
+                    6787</span></div>
+      </div>
+   </div>
+   <div class="abstract">
+      <h6>Abstract</h6>
+      <p>The quest for a more powerful method for model evaluation has inspired Vrugt and Sadegh (2013) to introduce “likelihood-free” inference as vehicle for diagnostic model evaluation. This class of methods is also referred to as Approximate Bayesian Computation (ABC) and relaxes the need for a residual-based likelihood function in favor of one or multiple different summary statistics that exhibit superior diagnostic power. Here we propose several methodological improvements over commonly used ABC sampling methods to permit inference of complex system models. Our methodology entitled DREAM<sub>(ABC)</sub> uses the DiffeRential Evolution Adaptive Metropolis algorithm as its main building block and takes advantage of a continuous fitness function to efficiently explore the behavioral model space. Three case studies demonstrate that DREAM<sub>(ABC)</sub> is at least an order of magnitude more efficient than commonly used ABC sampling methods for more complex models. DREAM<sub>(ABC)</sub> is also more amenable to distributed, multi-processor, implementation, a prerequisite to diagnostic inference of CPU-intensive system models.</p>
+   </div>
+</div>
+        
+    </div>
+</div></div>
+            </li>
+
+            <li class="list-item d-block" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="chapters" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                    <span class="back-btn btn--action__text">
+                        <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                        BACK
+                    </span>
+                    <span class="icon material-icons" aria-hidden="true">list</span>
+                    <span class="tab-text">Outline</span>
+                </button>
+
+                <div id="readium-toc-body" class="submenu"><div class="paddedPane">
+    <div class="stickify show-lg">
+        <h3 class="primaryTitle">Outline</h3>
+    </div>
+<h2 xmlns="http://www.w3.org/1999/xhtml">Table of Contents</h2>
+      <nav xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">
+         <ol>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+            <li>
+               <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/1.page.xhtml" tabindex="-1">l</a>
+            </li>
+         </ol>
+      </nav></div>
+</div>
+            </li>
+
+            <li class="list-item show-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="files" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">perm_media</span>
+                    <span class="tab-text">Materials</span>
+                </button>
+                <div id="files-tab-pane" class="submenu"><div class="paddedPane scrollToTop">
+    <div class="stickify">
+        <h3 class="primaryTitle">Materials</h3>
+        <ul class="tab-nav active" role="tablist">
+            <!-- if changes are made in these files, update left-panel-mobile.html -->
+            <li role="tab">
+                <a class="figures active" href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#figures-tab-pane" role="tab" aria-controls="figures-tab-pane" aria-disabled="false" aria-selected="true" tabindex="0">
+                    <span class="tab-text">FIGURES</span>
+                    <span class="icon material-icons pull-right hidden-desktop" aria-hidden="true" aria-labelledby="">navigate_next</span>
+                </a>
+            </li>
+            <li role="tab">
+                <a class="supplementary" href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#supplementary-tab-pane" aria-selected="false" role="tab" aria-controls="supplementary-tab-pane" aria-disabled="false" tabindex="0">
+                    <span class="tab-text">SUPPLEMENTS</span>
+                    <span class="icon material-icons pull-right hidden-desktop" aria-hidden="true" aria-labelledby="">navigate_next</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div class="panels" data-vport="1024" data-panel-desktop="figures">
+            <div id="figures-tab-pane" class="tab-pane active" role="tabpanel" aria-label="" aria-hidden="false" tabindex="0"><div>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0001" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0001" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/4cf624bd-bd78-4eee-85a2-8fd8df2e9253/wrcr21058-fig-0001-m.png" data-lg-src="/cms/asset/777dc085-4dc5-4112-8dbc-e1f652628668/wrcr21058-fig-0001-m.jpg" data-type="image" alt="Figure 1">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 1</alt></span>
+<p class="hasText">Conceptual overview of approximate Bayesian computation (ABC) for a hypothetical one‐dimensional parameter estimation problem. First, N samples are drawn from a user‐defined prior distribution, 
+<img alt="wrcr21058-math-0025.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0025.gif">. Then, this ensemble is evaluated with the model and creates N model simulations. If the distance between the observed and simulated data, 
+<img alt="wrcr21058-math-0026.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0026.gif"> is smaller than or equal to some nominal value, ϵ then 
+<img alt="wrcr21058-math-0027.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0027.gif"> is retained, otherwise the simulation is discarded. The accepted samples are then used to approximate the posterior parameter distribution, 
+<img alt="wrcr21058-math-0028.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0028.gif">. Note that for sufficiently complex models and large data sets the probability of happening upon a simulation run that yields precisely the same simulated values as the observations will be very small, often unacceptably so. Therefore, 
+<img alt="wrcr21058-math-0029.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0029.gif"> is typically defined as a distance between summary statistics of the simulated, 
+<img alt="wrcr21058-math-0030.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0030.gif"> and observed, 
+<img alt="wrcr21058-math-0031.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0031.gif"> data, respectively. Modified after Sunnåker et al. [].</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/777dc085-4dc5-4112-8dbc-e1f652628668/wrcr21058-fig-0001-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0002" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0002" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/5b90b4b8-31d2-4940-9728-a32b54bc5d4a/wrcr21058-fig-0002-m.png" data-lg-src="/cms/asset/d0700d45-edbf-441d-becd-264361ab1cd5/wrcr21058-fig-0002-m.jpg" data-type="image" alt="Figure 2">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 2</alt></span>
+<p class="hasText">One‐dimensional mixture distribution (solid black line) and histogram of the posterior samples derived from (a) Rejection sampling (ABC‐REJ), (b) Population Monte Carlo sampling (ABC‐PMC), and (c) MCMC simulation with DREAM(ABC).</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/d0700d45-edbf-441d-becd-264361ab1cd5/wrcr21058-fig-0002-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0003" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0003" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/654fc3ce-7968-4452-914e-d34ea70efb86/wrcr21058-fig-0003-m.png" data-lg-src="/cms/asset/68c89a91-9206-465f-8aa2-e821e35e6e55/wrcr21058-fig-0003-m.jpg" data-type="image" alt="Figure 3">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 3</alt></span>
+<p class="hasText">Two‐dimensional scatter plots of the posterior samples, “ +” generated with (a) Population Monte Carlo sampling, and (b) MCMC simulation with DREAM(ABC). The true values of μ1 and μ2 are indicated with a cross, “ ×.” The ABC‐PMC samples are very dispersed and significantly overestimate the actual width of the target distribution.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/68c89a91-9206-465f-8aa2-e821e35e6e55/wrcr21058-fig-0003-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0004" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0004" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/3cb32ae5-9eb0-4c21-a91e-e93e28722154/wrcr21058-fig-0004-m.png" data-lg-src="/cms/asset/86cee865-7af1-4437-b8cf-9433571f81e0/wrcr21058-fig-0004-m.jpg" data-type="image" alt="Figure 4">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 4</alt></span>
+<p class="hasText">Trace plots of the 
+<img alt="wrcr21058-math-0234.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0234.gif">‐statistic of the sampled Markov chains with DREAM(ABC) for the 20‐dimensional bivariate normal distribution. Each parameter is coded with a different color. The dashed line denotes the default threshold used to diagnose convergence to a limiting distribution.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/86cee865-7af1-4437-b8cf-9433571f81e0/wrcr21058-fig-0004-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0005" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0005" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/d6025406-2b44-44b4-82ea-76133d4ce16b/wrcr21058-fig-0005-m.png" data-lg-src="/cms/asset/48a4c023-5f67-4e80-88a2-ebb5d3609c9c/wrcr21058-fig-0005-m.jpg" data-type="image" alt="Figure 5">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 5</alt></span>
+<p class="hasText">Marginal distributions of PCTIM, ADIMP, LZFSM, LZFPM, and LZPK derived from the posterior samples created with (top) ABC‐PMC and (middle) DREAM(ABC). The histograms of the five SAC‐SMA parameters occupy almost their entire prior distribution, which suggests that they are not particularly well identifiable by calibration against the observed annual base flow index, annual runoff coefficient, and flow duration curve, respectively. The results of both ABC sampling methods are in good (visual) agreement, which inspires confidence in the ability of DREAM(ABC) to correctly sample the underlying target distribution. (bottom) Histograms of the SAC‐SMA parameters derived using a classical residual‐based (Gaussian) likelihood function. The SAC‐SMA parameters are much better resolved, but these results cannot be justified given (amongst others) a lack of treatment of rainfall data errors.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/48a4c023-5f67-4e80-88a2-ebb5d3609c9c/wrcr21058-fig-0005-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0006" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0006" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/4697f6f9-eabd-464b-9ff3-29863d53fd57/wrcr21058-fig-0006-m.png" data-lg-src="/cms/asset/efe9a7b3-8130-43ad-9b26-7c800336eda5/wrcr21058-fig-0006-m.jpg" data-type="image" alt="Figure 6">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 6</alt></span>
+<p class="hasText">95% posterior simulation uncertainty ranges (gray region) of the SAC‐SMA model for a selected portion of the evaluation data set of the French Broad watershed. The top two plots display the results of diagnostic model evaluation using (a) ABC‐PMC, and (b) DREAM(ABC), whereas the bottom plot depicts the results of DREAM with a classical residual‐based Gaussian likelihood function. The observed discharge values are indicated with the red dots. The SAC‐SMA simulation intervals derived from ABC‐PMC and DREAM(ABC) are very similar and encapsulate a large part of the discharge observations. The 
+<img alt="wrcr21058-math-0254.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0254.gif"> uncertainty ranges, on the other hand, exhibit a much lower coverage, but closer track the observed discharge data.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/efe9a7b3-8130-43ad-9b26-7c800336eda5/wrcr21058-fig-0006-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0007" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0007" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/5f49064e-a858-44a9-9da9-cf53fac1c55a/wrcr21058-fig-0007-m.png" data-lg-src="/cms/asset/5c070525-2266-405b-b11b-48b958117007/wrcr21058-fig-0007-m.jpg" data-type="image" alt="Figure 7">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 7</alt></span>
+<p class="hasText">Evolution of the 
+<img alt="wrcr21058-math-0255.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0255.gif">‐statistic for the parameters of the SAC‐SMA model using DREAM(ABC) and discharge data from the French Broad watershed. Each of the parameters is coded with a different color. The dashed line denotes the default threshold used to diagnose convergence to a limiting distribution.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/5c070525-2266-405b-b11b-48b958117007/wrcr21058-fig-0007-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0008" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0008" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/1ac9e345-8e53-4f18-ad87-4777fbe46fba/wrcr21058-fig-0008-m.png" data-lg-src="/cms/asset/de212546-d931-4768-917f-e09ed106585d/wrcr21058-fig-0008-m.jpg" data-type="image" alt="Figure 8">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 8</alt></span>
+<p class="hasText">Histograms of the SAC‐SMA derived summary statistics, S1 (runoff), S2 (base flow), S3 and S4 (flow duration curve) of the posterior samples from (top) ABC‐PMC and (middle) DREAM(ABC). The bottom plot displays the results of DREAM with a residual‐based Gaussian likelihood function. The observed values of the summary metrics are separately indicated in each plot using the “ ×” symbol. While 
+<img alt="wrcr21058-math-0260.gif" class="section_image" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/wrcr21058-math-0260.gif"> center around their observed value (×) for the ABC analysis, the marginal posterior distribution of S1 is skewed to the right and does not encapsulate its measured value. This demonstrates that model is unable to simultaneously satisfy all the four different summary metrics used herein. This points to a structural deficiency in the SAC‐SMA model structure, which will be investigated in more detail in subsequent papers.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/de212546-d931-4768-917f-e09ed106585d/wrcr21058-fig-0008-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    <figure class="article__tabFigure openInViewer material-fig not-streamed" data-type="figure" data-streamed="" data-graphical-abstract-image="false" data-id="wrcr21058-fig-0009" data-link="">
+        <p class="figure__title">
+    
+    
+    
+        </p>
+
+        <div class="figure__media">
+            <button aria-label="Open  in viewer" data-tooltip-position="bottom" class="figure__image-btn">
+                <img id="wrcr21058-fig-0009" class="figure__image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzkzJyBoZWlnaHQ9JzI4MCcgdmlld0JveD0nMCAwIDM5MyAyODAnIGZpbGw9J25vbmUnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zyc+PHBhdGggZmlsbC1ydWxlPSdldmVub2RkJyBjbGlwLXJ1bGU9J2V2ZW5vZGQnIGQ9J00zOTEuNzUgMEgwVjI4MEgzOTEuNzVWMFpNMjQ3LjUxNCA3NEMyNTUuNjE4IDc0IDI2Mi4xODEgODAuNTYzNSAyNjIuMTgxIDg4LjY2NjVWMTkxLjMzM0MyNjIuMTgxIDE5OS40MzcgMjU1LjYxOCAyMDYgMjQ3LjUxNCAyMDZIMTQ0Ljg0OEMxMzYuNzQ0IDIwNiAxMzAuMTgxIDE5OS40MzcgMTMwLjE4MSAxOTEuMzMzVjg4LjY2NjVDMTMwLjE4MSA4MC41NjM1IDEzNi43NDQgNzQgMTQ0Ljg0OCA3NEgyNDcuNTE0Wk0xODguODQ4IDE3My4wMzdMMTcwLjUxNCAxNTFMMTQ0Ljg0OCAxODRIMjQ3LjUxNEwyMTQuNTE0IDE0MEwxODguODQ4IDE3My4wMzdaJyB0cmFuc2Zvcm09J3RyYW5zbGF0ZSgwLjc1KScgZmlsbD0nIzQxNDE0Qyc+PC9wYXRoPjwvc3ZnPg==" data-src="/cms/asset/8c994070-91e5-46a9-b069-5a8cb116ed4f/wrcr21058-fig-0009-m.png" data-lg-src="/cms/asset/f7373f79-5107-4c96-91a3-730aae990280/wrcr21058-fig-0009-m.jpg" data-type="image" alt="Figure 9">
+            </button>
+    
+    
+    
+    
+    
+        </div>
+
+        <div class="figure__caption hasDescription">
+            <div class="truncatable">
+                <figcaption>
+                    <span class="title hasText"><span class="label"><alt>Figure 9</alt></span>
+<p class="hasText">Two‐dimensional scatter plots of the posterior samples, “+” generated with DREAM(ABC) for six different pairs of parameters of the SAC‐SMA model. We restrict our attention to the (a) PCTIM‐LZPK, (b) LZSK‐LZPK, (c) PCTIM‐LZFPM, (d) PCTIM‐LZSK, (e) LZPK‐PFREE, and (f) ADIMP‐LZPK space, respectively. The bivariate posterior samples occupy a well‐defined hypercube interior to the prior distribution.</p></span>
+                </figcaption>
+    
+    
+    
+                <div class="figure__details">
+    
+    
+                </div>
+            </div>
+            <div class="figure__actions">
+                <a class="btn btn--light media__download" href="https://agupubs.onlinelibrary.wiley.com/cms/asset/f7373f79-5107-4c96-91a3-730aae990280/wrcr21058-fig-0009-m.jpg" download="" target="_blank" aria-label="Download ">
+                    <span class="icon material-icons">get_app</span>
+                </a>
+    
+            </div>
+        </div>
+    </figure>
+    
+</div></div>
+        </div>
+        <div class="panels" data-vport="1024" data-panel-desktop="supplements">
+            <div id="supplementary-tab-pane" class="tab-pane has-error" role="tabpanel" aria-hidden="true" aria-label="" tabindex="0"><div class="paddedPane error-pane">
+    <div class="panel-error">
+        <span class="error-icon icon material-icons" data-type="content">image</span>
+        <div class="error-text">Supplementary materials are not available for display.</div>
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div></div>
+            </li>
+            <li class="list-item d-block hide-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="figures" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">image</span>
+                    <span class="tab-text">Figures</span>
+                </button>
+                <div class="submenu hide-lg">
+                    <div class="paddedPane">
+                        <div data-vport="1024" data-panel-mobile="figures"></div>
+                    </div>
+                </div>
+            </li>
+            <li class="list-item d-block hide-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="supplementary" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">perm_media</span>
+                    <span class="tab-text">Supplements</span>
+                </button>
+                <div class="submenu hide-lg">
+                    <div class="paddedPane">
+                        <div data-vport="1024" data-panel-mobile="supplements"></div>
+                    </div>
+                </div>
+            </li>
+
+
+            <li class="list-item show-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="links" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons rotate-135" aria-hidden="true">link</span>
+                    <span class="tab-text">Links</span>
+                </button>
+                <div id="links-tab-pane" class="submenu"><div class="paddedPane">
+    <div class="stickify">
+        <h3 class="primaryTitle">Links</h3>
+        <ul class="tab-nav active" role="tablist">
+            <!-- if changes are made in these files, update left-panel-mobile.html -->
+            <li role="tab">
+                <a class="references" href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#references-tab-pane" role="tab" aria-controls="references-tab-pane" aria-disabled="false" aria-selected="false" tabindex="0">
+                    <span class="tab-text">REFERENCES</span>
+                    <span class="icon material-icons pull-right hidden-desktop" aria-hidden="true" aria-labelledby="">navigate_next</span>
+                </a>
+            </li>
+            <li role="tab">
+                <a class="citations" href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#citations-tab-pane" aria-selected="false" role="tab" aria-controls="citations-tab-pane" aria-disabled="false" tabindex="0">
+                    <span class="tab-text">CITED BY</span>
+                    <span class="icon material-icons pull-right hidden-desktop" aria-hidden="true" aria-labelledby="">navigate_next</span>
+                </a>
+            </li>
+            <li role="tab">
+                <a class="recommended" href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#recommended-tab-pane" aria-selected="false" role="tab" aria-controls="recommended-tab-pane" aria-disabled="false" tabindex="0">
+                    <span class="tab-text">RECOMMENDED</span>
+                    <span class="icon material-icons pull-right hidden-desktop" aria-hidden="true" aria-labelledby="">navigate_next</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content has-tabs">
+        <div class="panels" data-vport="1024" data-panel-desktop="ref">
+            <div id="references-tab-pane" class="tab-pane" role="tabpanel" aria-label="" aria-hidden="true" tabindex="0">
+                
+            </div>
+        </div>
+        <div class="panels" data-vport="1024" data-panel-desktop="cit">
+            <div id="citations-tab-pane" class="tab-pane" role="tabpanel" aria-hidden="true" aria-label="" tabindex="0"></div>
+        </div>
+        <div class="panels" data-vport="1024" data-panel-desktop="recommended">
+            <div id="recommended-tab-pane" class="tab-pane" role="tabpanel" aria-hidden="true" aria-label="" tabindex="0">
+                
+            </div>
+        </div>
+    </div>
+</div></div>
+            </li>
+            <li class="list-item d-block hide-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="references" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons rotate-135" aria-hidden="true">link</span>
+                    <span class="tab-text">References</span>
+                </button>
+                <div class="submenu hide-lg">
+                    <div class="paddedPane">
+                        <div data-vport="1024" data-panel-mobile="ref"></div>
+                    </div>
+                </div>
+            </li>
+            <li class="list-item d-block hide-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="citations" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">format_quote</span>
+                    <span class="tab-text">Cited by</span>
+                </button>
+                <div class="submenu hide-lg">
+                    <div class="paddedPane">
+                        <div data-vport="1024" data-panel-mobile="cit"></div>
+                    </div>
+                </div>
+            </li>
+            <li class="list-item d-block hide-lg" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+                <button id="recommended" class="drawerMenu--trigger list-button toggle-submenu btn" type="button" tabindex="0" accesskey="">
+                <span class="back-btn btn--action__text">
+                    <span class="icon material-icons hidden-desktop" aria-hidden="true">navigate_before</span>
+                    BACK
+                </span>
+                    <span class="icon material-icons" aria-hidden="true">more_horiz</span>
+                    <span class="tab-text">Recommended</span>
+                </button>
+                <div class="submenu hide-lg">
+                    <div class="paddedPane">
+                        <div data-vport="1024" data-panel-mobile="recommended"></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+        <div class="grouped hide-sm"><a aria-label="View in website" class="open-in-website js__fullSite btn btn--light" href="https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2014WR015386" id="" target="_blank" title="" data-tooltip-position="">
+    <span class="icon material-icons">open_in_new</span>    <span class="tab-text">View in Publisher's site</span>
+</a>
+</div>
+</div>
+
+
+<div class="btn-group navbar-center">
+        <div class="dropdown-widget paging grouped" data-persist="">
+    <button id="" class="dropdown-trigger btn btn--light fxl" title="Select page [p]" aria-label="Select node" data-tooltip-position="" aria-haspopup="true" type="button" tabindex="0" accesskey="p" aria-expanded="false" data-original-title="Select node [p]">
+        <span class="d-none d-md-inline-block pagination_button_text">Page</span><span class="cpage">17</span><span class="separator">/</span><span class="allpages">21</span><span class="animated_arrow_down"></span>
+    </button>
+    <div id="" class="dropdown-content dropdown-list medium" aria-label="" aria-labelledby="">
+        <div class="dropdown-content-wrapper scrollToTop">
+            <ul role="list">
+    <li class="list-item">
+        <button class="nodeTraverse next list-button btn" type="button" tabindex="0" accesskey="">
+            <span class="icon material-icons" aria-hidden="true">skip_next</span>
+            <span class="tab-text">Next</span>
+        </button>
+    </li>
+    <li class="list-item">
+        <button class="nodeTraverse previous list-button btn" type="button" tabindex="0" accesskey="">
+            <span class="icon material-icons" aria-hidden="true">skip_previous</span>
+            <span class="tab-text">Previous</span>
+        </button>
+    </li>
+    <li class="list-item">
+        <button class="js__paging-first list-button btn" type="button" tabindex="0" accesskey="">
+            <span class="icon reader-previous" aria-hidden="true"></span>
+            <span class="tab-text">Go to start</span>
+        </button>
+    </li>
+    <li class="list-item">
+        <button class="js__paging-last list-button btn" type="button" tabindex="0" accesskey="">
+            <span class="icon reader-next" aria-hidden="true"></span>
+            <span class="tab-text">Go to the end</span>
+        </button>
+    </li>
+    <li class="list-item content-item">
+        <div class="page-selector">
+                    <span class="list_title">GO TO PAGE
+                        
+                    </span>
+            <div role="group" aria-label="Go to specified page">
+                <input type="number" name="page-select" value="" id="page_num" min="0" max="21" placeholder="Number" aria-label="page number" data-no-tooltip="">
+                <button id="gotopage" class="js__paging-select btn--cta__light btn" title="Go to specified page" data-alt-title="Go to specified node" type="button" tabindex="0" accesskey="">
+                    <span class="icon reader-double-arrow flip-horizontal" aria-hidden="true"></span>
+                </button>
+                <div class="errors"></div>
+            </div>
+        </div>
+    </li>
+    <li class="list-item reflow content-item">
+        <div class="row content-wrapper infoRow">
+            <span class="icon material-icons">info_outlined</span>
+            <p>Nodes are locations in the document that facilitate reading from beginning to end. You can
+                navigate node
+                by node or select one to jump to.</p>
+        </div>
+    </li>
+</ul>
+
+        </div>
+    </div>
+</div>
+
+        <div class="dropdown-widget grouped reading_options settings-dialog reading-options-navbar fxl" data-persist="">
+    <button id="readingOptionsBtn" class="dropdown-trigger btn btn--light" title="Reading options [r]" aria-label="Select node" data-tooltip-position="" aria-haspopup="true" type="button" tabindex="0" accesskey="r" aria-expanded="false">
+        <span class="icon material-icons reflow" aria-hidden="true">format_size</span><span class="icon reader-reading-options fxl" aria-hidden="true"></span>
+    </button>
+    <div id="" class="dropdown-content dropdown-list slim" aria-label="" aria-labelledby="readingOptionsBtn">
+        <div class="dropdown-content-wrapper scrollToTop">
+            <div class="options-fields reflow">
+    <div class="option-field option-alignment">
+        <span class="option-title">Alignment</span>
+        <div class="option-items">
+            <div class="toggle-btn-group can-unchecked" role="radiogroup" aria-label="Text alignment" tabindex="0">
+                <input type="radio" id="align-left" name="justify" value="auto" aria-label="Align left">
+                <label for="align-left">
+                    <span class="icon material-icons">format_align_left</span>
+                </label>
+                <input type="radio" id="align-justify" name="justify" value="justify" aria-label="Justify">
+                <label for="align-justify">
+                    <span class="icon material-icons">format_align_justify</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="option-field option-font-size">
+        <span class="option-title">Font Size</span>
+        <div class="option-items" role="group" aria-label="Font size">
+            <button class="btn btn--rounded btn--secondary__light font-btn minus" aria-label="Decrease" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons" aria-hidden="true">remove</span>
+            </button>
+            <button class="btn btn--rounded btn--secondary__light font-btn plus" aria-label="Increase" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons" aria-hidden="true">add</span>
+            </button>
+            <input type="hidden" id="font-size-input" value="100">
+        </div>
+    </div>
+
+    <div class="option-field options-hyphenation">
+        <div class="toggle-checkbox">
+            <input class="light" type="checkbox" name="hyphenate" id="hyphenate-checkbox">
+            <label class="option-title" for="hyphenate-checkbox">Hyphenation</label>
+        </div>
+    </div>
+
+    <div class="options-return-defaults">
+        <button class="btn btn-link" type="button" tabindex="0" accesskey="">
+            <i class="material-icons icon" aria-hidden="true">close</i>
+            Return to default styles
+        </button>
+    </div>
+</div>
+<div class="options-fields">
+    <div class="option-field option-reading-flow">
+        <span class="option-title">Reading Flow</span>
+        <div class="option-items">
+            <div class="toggle-btn-group" role="radiogroup" aria-label="Reading flow">
+                <input type="radio" id="flow-vertical" name="scrolling" value="continuous" aria-label="Vertical continuous scroll">
+                <label for="flow-vertical">
+                    <span class="icon material-icons">swap_vert</span>
+                </label>
+                <input type="radio" id="flow-horizontal" name="scrolling" value="auto" aria-label="Horizontal paginated">
+                <label for="flow-horizontal">
+                    <span class="icon material-icons">swap_horiz</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="option-field d-none d-md-block option-columns">
+        <span class="option-title reflow">Columns</span>
+        <span class="option-title fxl">Pages</span>
+        <div class="option-items">
+            <div class="toggle-btn-group" role="radiogroup" aria-label="Columns count">
+                <input type="radio" id="columns-single" disabled="" name="display-format" value="single" aria-label="single">
+                <label for="columns-single">
+                    <span class="icon material-icons reflow">view_headline</span>
+                    <span class="icon reader-reading-options fxl" aria-hidden="true"></span>
+                </label>
+                <input type="radio" id="columns-default" disabled="" name="display-format" value="auto" aria-label="Double">
+                <label for="columns-default">
+                    <span class="icon material-icons reflow">vertical_split</span>
+                    <span class="icon material-icons fxl">chrome_reader_mode</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<div class="btn-group navbar-right">
+    <div class="left">
+        <div class="zoom-wrapper fxl grouped left d-none d-md-flex">
+
+    <button class="zoom-btn width btn--light btn" title="Fit Width [h]" aria-label="fit width " type="button" tabindex="0" accesskey="h">
+        <span class="icon material-icons" aria-hidden="true">fullscreen</span>
+    </button>
+    <button class="zoom-btn height d-none btn--light btn" title="Fit Height [h]" aria-label="fit height" type="button" tabindex="0" accesskey="h">
+        <span class="icon material-icons" aria-hidden="true">fullscreen_exit</span>
+    </button>
+
+    <input tabindex="0" type="text" value="100%" disabled="" class="d-none">
+    <button class="zoom-btn out btn--light btn" title="Zoom Out [z]" aria-label="zoom out" type="button" tabindex="0" accesskey="z">
+        <span class="icon material-icons" aria-hidden="true">remove_circle_outline</span>
+    </button>
+    <button class="btn zoom-btn in btn--light" title="Zoom In [x]" aria-label="zoom in" type="button" tabindex="0" accesskey="x">
+        <span class="icon material-icons" aria-hidden="true">add_circle_outline</span>
+    </button>
+</div>
+<div></div>
+
+    </div>
+    <div class="grouped center">
+        <div class="dropdown-widget search" data-persist="true">
+    <button id="" class="dropdown-trigger btn btn--light search-trigger" title="Search [s]" aria-label="Search document" data-tooltip-position="" aria-haspopup="true" type="button" tabindex="0" accesskey="s" aria-expanded="false">
+        <span class="icon material-icons" aria-hidden="true">search</span>
+    </button>
+    <div id="" class="dropdown-content " aria-label="" aria-labelledby="">
+        <div class="dropdown-content-wrapper scrollToTop">
+            <div class="row">
+    <div class="topRow">
+        <form method="post" action="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386#" role="search">
+            <div class="fieldWithButton">
+                <input class="search-field" placeholder="Search this document...">
+                <button type="submit" class="btn--cta__light small submit">
+                    <span class="d-none d-md-inline-block">SEARCH</span>
+                    <span class="d-inline-block d-md-none icon material-icons">search</span>
+                </button>
+            </div>
+        </form>
+        <button type="button" class="close-search-btn d-inline-flex btn dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+            <span class="d-inline-block icon material-icons">close</span>
+        </button>
+    </div>
+    <div class="results"></div>
+</div>
+
+        </div>
+    </div>
+</div>
+<div class="d-inline-flex clipboard share-access-navbar"><button id="shareTrigger" class="btn shareAccessUrl btn--light" title="Share access [j]" aria-label="share access" data-tooltip-position="" type="button" tabindex="0" accesskey="j">
+    <span class="icon material-icons" aria-hidden="true">group_add</span>
+</button>
+<div class="d-none"><button class="shareAccessUrlClip btn" type="button" tabindex="0" accesskey="">Copy Access</button></div>
+</div><div class="dropdown-widget " data-persist="">
+    <button id="settings_button" class="dropdown-trigger btn btn--light rpanel_toggle" title="More [o]" aria-label="view more options" data-tooltip-position="bottom" aria-haspopup="true" type="button" tabindex="0" accesskey="o" aria-expanded="false">
+        <span class="icon material-icons" aria-hidden="true">more_horiz</span>
+    </button>
+    <div id="readium-right-panel" class="dropdown-content dropdown-list wide" aria-label="" aria-labelledby="settings_button">
+        <div class="dropdown-content-wrapper scrollToTop">
+            <ul class="drawerMenu slider" role="menu">
+            <li class="list-item print" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+    <button id="" class="btn drawerMenu--trigger list-button" title="Print document" aria-label="Print document" data-tooltip-position="" type="button" tabindex="0" accesskey="">
+    <span class="icon material-icons" aria-hidden="true">print</span><span class="tab-text">Print document</span>
+</button>
+
+
+</li>
+
+        <li class="separator offlineSeparator" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">Offline reading</li>
+
+<li class="list-item offline_library general" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+    <div class="offline drawerMenu--trigger list-button trigger" data-disable-offline="true" aria-disabled="false">
+
+        <div class="icons stack-icons">
+            <span class="icon idle reader-offline_pin"></span>
+            <svg class="adding removing progress-ring" height="24" width="24" viewBox="0 0 24 24">
+                <circle class="progress-ring__track" stroke-width="2" fill="transparent" r="10" cx="12" cy="12"></circle>
+                <circle class="progress-ring__circle" transform="rotate(-90 12 12)" stroke-dashoffset="0" stroke-dasharray="0" stroke-width="2" fill="transparent" r="10" cx="12" cy="12"></circle>
+            </svg>
+            <button class="cancel adding btn" type="button" tabindex="0" accesskey="">
+                <span class="icon material-icons" aria-hidden="true">stop</span>
+            </button>
+            <span class="icon material-icons done">offline_pin</span>
+        </div>
+
+        <button class="general btn idle" type="button" tabindex="0" accesskey="">
+            <span class="tab-text">Save for offline reading</span>
+        </button>
+        <span class="adding tab-text">Saving for offline reading</span>
+        <div class="desc idle adding">
+            &nbsp;•&nbsp;
+            <span class="file-desc">1.1 MB</span>
+        </div>
+        <div class="done">
+            <span class="tab-text">Saved for offline reading</span>
+            <button class="remove btn" type="button" tabindex="0" accesskey="">Remove</button>
+        </div>
+
+        <div class="removing">
+            <span class="tab-text">Removing from offline documents</span>
+        </div>
+    </div>
+</li>
+
+<li class="list-item offline_documents " role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+    <a href="https://agupubs.onlinelibrary.wiley.com/reader/library" class="drawerMenu--trigger list-button btn" target="_blank" aria-label="View Offline documents">
+        <span class="icon material-icons">library_books</span>
+        <span class="tab-text">View Offline documents</span>
+    </a>
+</li>
+
+        <li class="list-item user_id" role="menuitem" aria-haspopup="true" aria-expanded="false" aria-disabled="false">
+    
+<a href="https://agupubs.onlinelibrary.wiley.com/action/showLogin?redirectUri=%2Fdoi%2Fepdf%2F10.1002%2F2014WR015386" class="btn--action__text-secondary">Login</a>
+<span class="btn--action__text-secondary no-hover">/</span>
+<a href="https://agupubs.onlinelibrary.wiley.com/action/registration?redirectUri=%2Fdoi%2Fepdf%2F10.1002%2F2014WR015386" class="btn--action__text-secondary">Register</a>
+
+</li>
+
+
+</ul>
+
+        </div>
+    </div>
+</div>
+
+    </div>
+    <div class="grouped right">
+        <a aria-label="Download PDF • 1.2 MB" class="navbar-download btn btn--cta_roundedColored" href="https://agupubs.onlinelibrary.wiley.com/doi/pdfdirect/10.1002/2014WR015386?download=true" id="" target="_blank" title="Download [g]" accesskey="g" data-tooltip-position="bottom" data-single-download="true" data-download-files-key="pdf">
+    <span class="icon material-icons">get_app</span>
+</a>
+
+    </div>
+</div>
+
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="0.7857142857142858" aria-valuemin="1" aria-valuemax="100" style="width: 1508.57px;"></div>
+</div>
+</nav>
+        <div id="app-container"><div id="reading-area" role="main" class="isFixed scroll">
+    <div id="epub-reader-container">
+        <div id="epub-reader-frame" style="overflow: hidden;">
+        <div id="reflowable-book-frame" class="clearfix book-frame reflowable-book-frame"><div id="scrolled-content-frame" tabindex="-1" style="overflow: auto; width: 100%; height: 100%; position: relative; inset: 0px;" class="middleCfi"><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/14.page.xhtml" data-index="13" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/14.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/2a5f82bc-add5-4d3c-a7f2-c5054b5f65a9.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/15.page.xhtml" data-index="14" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/15.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/98c64622-cadd-43e6-8c23-ae3f2af8a707.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/16.page.xhtml" data-index="15" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/16.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/225d8388-49de-49a1-9950-6fbbf0b86725.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/17.page.xhtml" data-index="16" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/17.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/61f12a8e-19cc-4b4c-b769-4e6eb0193a0d.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/18.page.xhtml" data-index="17" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/18.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/ef3f00fe-9a92-4dfb-8104-8c711c2fc154.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/19.page.xhtml" data-index="18" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/19.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/9b83d5aa-2dd4-4613-b91a-fb571f234706.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div><div class="content-doc-frame customScaled" style="transform: none; height: 1997.29px; width: 1553.18px; left: 0px; top: 0px;"><div class="scaler" style="height: 1997.29px; width: 1553.18px; transform: scale(1); transform-origin: 0px 0px;"><div class="page-loading-bar" style="visibility: visible; display: none;"><div class="page-loading-bar_back"><div class="page-loading-bar_front" style="width: 100%;"></div></div></div><iframe enable-annotation="enable-annotation" allowfullscreen="allowfullscreen" scrolling="no" class="iframe-fixed visible" tabindex="-1" style="border-bottom: 1px dashed silver; border-top: 1px dashed silver; visibility: visible; width: 1553.18px;" data-src="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/20.page.xhtml" data-index="19" data-baseuri="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" data-loaduri="https://agupubs.onlinelibrary.wiley.com/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf/OEBPS/pages/20.page.xhtml" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/3a158663-dd70-45ea-99fd-939de7b9ac17.html" data-viewport-width="640" data-viewport-height="823" current-scale="2.4268382352941176" title="EPUB" aria-label="EPUB"></iframe></div></div></div></div></div>
+    </div>
+</div>
+    
+<div id="readium-page-btns" role="region" aria-label="Page Navigation"><!-- Left page -->
+<button tabindex="0" id="left-page-btn" class="page-switch-overlay-icon" type="button" title="Previous Page [left] / [up]" aria-label="Previous Page" style="">
+<!-- img aria-hidden="true" src="images/pagination1.svg" -->
+<span class="material-icons" aria-hidden="true">chevron_left</span>
+</button>
+  
+<!-- Right page -->
+<button tabindex="0" id="right-page-btn" class="page-switch-overlay-icon" type="button" title="Next Page [right] / [down]" aria-label="Next Page" style="">
+<!-- img aria-hidden="true" src="images/pagination1.svg" -->
+<span class="material-icons" aria-hidden="true">chevron_right</span>
+</button>
+</div></div>
+        <script type="text/javascript">
+            var readerConfig = {"user":{"isLoggedIn":false,"loginLink":"/action/showLogin?redirectUri\u003d%2Fdoi%2Fepdf%2F10.1002%2F2014WR015386","registerLink":"https://agupubs.onlinelibrary.wiley.com/action/registration?redirectUri\u003d%2Fdoi%2Fepdf%2F10.1002%2F2014WR015386"},"readingProgress":{"syncProgress":false,"syncUrl":"/reader/saveProgress","retrieveUrl":"/reader/retrieveProgress"},"doi":"10.1002/2014WR015386","title":"Approximate Bayesian Computation using Markov Chain Monte Carlo simulation: DREAM(ABC)","epubConfig":{"overrideEpubUrlParam":true,"epubUrl":"/reader/content/15debfc3990/10.1002/2014WR015386/format/pdf"},"epubActions":{"offline":{"available":true,"fileSize":"1.1 MB","simultaneousRetrievalsLimit":1},"download":{"files":{"pdf":{"shortCode":"pdf","name":"PDF","available":true,"size":"1.2 MB","url":"/doi/pdfdirect/10.1002/2014WR015386?download\u003dtrue","doi":"10.1002/2014WR015386"}}},"print":true,"shareAccess":true,"preview":false,"rental":false,"print_pdf_pages":50},"displayOptions":{"displayFormat":"auto","displayMode":"scroll-continuous"},"annotationsConfig":{"enabled":false},"materialTabs":{"figuresSuppressed":false,"mediaSuppressed":true,"tablesSuppressed":true,"supplementsSuppressed":false,"linkOutUrl":"/doi/suppl/10.1002/2014WR015386","supplementsLinkOut":false,"openDownloadLinkInNewTab":false},"analyticsConfig":{"enabled":true,"providers":[{"enabled":true,"name":"atm","siteId":"","version":"","url":""}]},"waterMarkConfig":{"enabled":true,"defaultMessage":"19447973, 2014, 50, Downloaded from https://agupubs.onlinelibrary.wiley.com. By AGU Journals- on XXX. Re-use and distribution is strictly not permitted, except for Open Access articles","optionalMessage":"","location":"right/left"},"metadataUrl":"/doi/reader/metadata/10.1002/2014WR015386","referencesUrl":"/doi/reader/references/10.1002/2014WR015386","citedByUrl":"/doi/reader/citedBy/10.1002/2014WR015386","figuresUrl":"/doi/reader/figures/10.1002/2014WR015386","tablesUrl":"/doi/reader/tables/10.1002/2014WR015386","mediaUrl":"/doi/reader/media/10.1002/2014WR015386","recommendationsUrl":"/doi/reader/recommended/10.1002/2014WR015386","siteUrl":"/doi/10.1002/2014WR015386","searchUrl":"/reader/search","currentUrl":"https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386","permissionsUrl":"/action/availableUsageRights","consumePermissionsUrl":"/action/consumeUsage","format":"pdf","publicationType":"article","citationsExportUrl":"/action/showCitFormats?doi\u003d10.1002%2F2014WR015386\u0026mobileUi\u003d0","dbStoreName":"readerOfflineStore","shareAccessUrl":"/action/generateShareUrl","readerSettingsLocalStorageKey":"article_reader_settings","recommendedEnabled":true,"permissionsEnabled":false,"isDragAndDropEnabled":false,"isOfflineSupportedForBrowser":true,"isOfflineDisabled":false,"isDownloadDisabled":false,"isShareDisabled":false,"isPrintDisabled":false,"nodeNavigationDisabled":false,"navigationMode":"PAGEBREAK","usageRightsEnabled":true,"print_pdf_pages":0,"authorizeSharing":"/action/authorizeSharing","shareMode":false,"sharedAccessConfig":{"alwaysDisplaySharingTermsPopup":false,"shareSponsorLink":"https://onlinelibrary.wiley.com/researchers/tools-resources/sharing","hasButton":true,"shareSponsorMessage":"Some features may be limited or disabled","shareMediaMessage":"Some features may be limited or disabled","isShared":false,"isPermissionEnabled":false,"isShareBannerEnabled":false,"isGetAccessButtonVisible":true,"getAccessUrl":"/doi/full/10.1002/2014WR015386"},"inDocAdsEnabled":true,"suspendAdsInSinglePagePdfs":true,"adsImpressionDuration":0,"campaignUrl":"/action/showReaderCampaign?doi\u003d10.1002%2F2014WR015386","eventsConfig":{"readerEventsAnalyticsUrl":"/action/readerEventsAnalytics?doi\u003d10.1002%2F2014WR015386\u0026format\u003dpdf","adImpressionDuration":5000,"episodeRemainingTime":300000,"enabled":true,"allowedNumOfEventsPerReq":50,"excludedEvents":"read,openLeftMenu"},"content_buffer_size":2000,"isPrintSupportedForBrowser":true,"isMaterialDownloadable":true,"isEpubLazyLoadingEnabled":true,"isPdfLazyLoadingEnabled":true,"loadedPagesLimit":7,"maxPdfKeepSize":20,"switchFormats":{"enabled":false,"current":"pdf","available":{"pdf":{"name":"pdf","url":"/doi/epdf/10.1002/2014WR015386"}}},"supplementsUrl":"/action/showReaderSupplements?doi\u003d10.1002%2F2014WR015386","tabsSuppressionConfig":{"materialsSuppressed":false,"notesSuppressed":true,"linksSuppressed":false,"infosSuppressed":false},"fetchFiguresFromEpub":false,"mediaPlayersConfig":{"enabled":false,"player":{"enabled":false,"name":"flowplayer","css":"//releases.flowplayer.org/6.0.5/commercial/skin/functional.css","key":"$471173155739872","playerScript":"//releases.flowplayer.org/6.0.5/flowplayer.min.js"}},"adsInclusionEnabled":true,"helpEnabled":false,"profileConfig":{"activeProfile":"DEFAULT","printSuppressed":false,"offlineSuppressed":false,"downloadSuppressed":false,"switchFormatsSuppressed":true,"materialsSuppressed":false,"notesSuppressed":true,"linksSuppressed":false,"infoSuppressed":false,"siteLinkOutSuppressed":false,"accessSharingSuppressed":false},"isReadingFlowEnabled":true,"showCrossmarkButton":false,"restrictContent":false,"restrictCopying":false,"isScitrusHelpGuideEnabled":false,"referencesNumberingSupported":true,"freeToReadConfig":{"learnMoreLink":"","bannerMessage":"Downloading and printing are disabled.","isFreeToRead":false,"isBannerEnabled":true,"isGetAccessButtonVisible":true,"accessUrl":"/doi/ftr/10.1002/2014WR015386"},"doiMappingConfig":{"enabled":false},"termsAndConditionsUrl":"https://onlinelibrary.wiley.com/termsAndConditions"};
+            readerConfig.libraryPath='/reader/library';
+        </script>
+        
+
+<script type="text/javascript">
+    
+    readerConfig.alertPopupMsg = {
+        
+        PRINTING_DISABLED_MESSAGE : "<i class='material-icons'>info_outline</i> <h2>Do not print this page</h2> <h3>To view your printing options, return to the document and click the print option in the menu in the top right corner of the page.</h3>",
+        
+        USER_UNAUTHORIZED: "You do not have the required license. The publication cannot be <span>X</span>.",
+        
+        SHARING_DISABLED: "Sharing access to publications is not currently enabled.",
+        SHARING_UNAUTHORIZED: "This content has license restrictions and cannot be shared via Shared Access.",
+        SHARING_UNAVAILABLE: "This content has license restrictions and cannot be shared via Shared Access.",
+        SHARING_TEMPORARY_ERROR: "<span>X</span> failed. Please try again."
+    };
+
+    LIT.Reader.config = {
+        /* http://requirejs.org/docs/api.html#config-waitSeconds */
+        waitSeconds: 0,
+        config: {
+            'readium_js_viewer/ModuleConfig': {
+                'mathJaxUrl': HTTPServerRootFolder + '/scripts/mathjax/MathJax.min.js',
+                'annotationCSSUrl': HTTPServerRootFolder + '/css/annotations.css',
+                'iframeContentCSSUrl': '/cloud-reader/resources/gen/custom/css/iframe-content.css',
+                'jsLibRoot': HTTPServerRootFolder + '/scripts/zip/',
+                'useSimpleLoader': false,
+                'epubLibraryPath': undefined,
+                'imagePathPrefix': '/cloud-reader/src/',
+                'canHandleUrl': false,
+                'canHandleDirectory': false,
+                'workerUrl': undefined,
+                'epubReadingSystemUrl': undefined,
+                "customConfig": readerConfig
+            }
+        }
+    };
+</script>
+
+<script async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/cache-update.js" type="text/javascript"></script>
+<script src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/readium-js-viewer_all_LITE.js" type="text/javascript"></script>
+<script type="text/javascript">
+    require.config(LIT.Reader.config);
+</script>
+        <script async="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/readium-additional-libs.js" type="text/javascript"></script>
+        
+        
+            
+                    <script type="module">
+                        if ('serviceWorker' in navigator && !window.READER_OFFLINE) {
+                            window.addEventListener("load", function (evt) {
+                                
+                                var CACHE_BUSTER_MARKER = 3;
+
+                                var assetsCacheName = 'readerAssetsCache-961372-' + CACHE_BUSTER_MARKER;
+                                var readerContentUrl = window.location.pathname;
+                                import ('/templates/jsp/cloudReader/js/readerServiceWorkerHelper.js').then(function (swHelper) {
+                                    swHelper.registerServiceWorkers(true, readerContentUrl, readerContentPage, assetsCacheName, readerConfig.format);
+                                });
+                            });
+                            
+                            var readerContentPage = "<!DOCTYPE html>"+$('html')[0].outerHTML;
+                        }
+                    </script>
+                
+        
+    <script defer="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/beacon.min.js" data-cf-beacon="{&quot;rayId&quot;:&quot;6a4e4561e79e5ea7&quot;,&quot;token&quot;:&quot;f3dd54df2ac243bab2129483f57546d1&quot;,&quot;version&quot;:&quot;2021.10.0&quot;,&quot;si&quot;:100}"></script>
+<script defer="" src="./Approximate Bayesian Computation using Markov Chain Monte Carlo simulation_ DREAM(ABC)_files/beacon.min.js" data-cf-beacon="{&quot;rayId&quot;:&quot;6a4e4561cb045ea7&quot;,&quot;token&quot;:&quot;f3dd54df2ac243bab2129483f57546d1&quot;,&quot;version&quot;:&quot;2021.10.0&quot;,&quot;si&quot;:100}"></script>
+
+
+<script>
+
+(function() {
+    if (!Array.prototype.forEach) {
+        Array.prototype.forEach = function forEach(callback, thisArg) {
+            if (typeof callback !== 'function') {
+                throw new TypeError(callback + ' is not a function');
+            }
+            var array = this;
+            thisArg = thisArg || this;
+            for (var i = 0, l = array.length; i !== l; ++i) {
+                callback.call(thisArg, array[i], i, array);
+            }
+        };
+    }
+    if (!Array.isArray) {
+        Array.isArray = function(arg) {
+            return Object.prototype.toString.call(arg) === '[object Array]';
+        };
+    }
+})();
+WileyDTM = {}
+if(!(window.eReaderPage)){
+	if (window.digitalData ) {
+		try {
+
+			var WileyDTM = {
+				setCookie: function(name, value, seconds) {
+					if (seconds == 'delete') {
+						var expires = "; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+					} else if (seconds) {
+						var date = new Date();
+						date.setTime(date.getTime() + (seconds * 1000));
+						var expires = "; expires=" + date.toGMTString();
+					}
+					/*try at highest scope and iterate lower*/
+					var i = 0;
+					var domain = document.location.hostname;
+					p = domain.split('.');
+					if (seconds == 'delete') {
+						while (i < (p.length - 1)) {
+							domain = p.splice(-1 - (++i)).join('.');
+							document.cookie = name + "=" + value + expires + ";domain=" + domain + ";path=/";
+						}
+					} else {
+						while (i < (p.length - 1) && document.cookie.indexOf(name + '=' + value) == -1) {
+							domain = p.splice(-1 - (++i)).join('.');
+							document.cookie = name + "=" + value + expires + ";domain=" + domain + ";path=/";
+						}
+					}
+				},
+				checkVI: function() {
+					//only return this on the ToC pages. Articles will have a primary volume, other pages will be undefined as well
+					if (digitalData.page && digitalData.page.page && digitalData.page.page == "Table of Contents") {
+						if (typeof(digitalData.publication.group.volume) == "undefined") {
+							return true;
+						}
+					}
+					return false;
+				},
+				isArticle: function() {
+					if (digitalData.publication && digitalData.publication.item) return true;
+					else return false;
+				},
+				hasSeries: function() {
+					if (digitalData.publication && digitalData.publication.series) return true;
+					else return false;
+				},
+				hasGroup: function() {
+					if (digitalData.publication && digitalData.publication.group) return true;
+					else return false;
+				},
+				getPublicationType: function() {
+					if (WileyDTM.hasGroup()) {
+						if (WileyDTM.hasSeries() && digitalData.publication.series.code == "mrwseries") return "mrw";
+						else if (digitalData.publication.group.eisbn) return "book"
+					}
+					if (WileyDTM.hasSeries() && digitalData.publication.series.eissn) return "journal"
+					return false;
+				},
+				getPublicationDOI: function() {
+					if (WileyDTM.hasGroup() && digitalData.publication.group.eisbn) return digitalData.publication.group.doi;
+					if (WileyDTM.hasSeries()) return digitalData.publication.series.doi;
+					return false;
+				},
+				getPublicationTitle: function() {
+					if (WileyDTM.hasGroup() && digitalData.publication.group.eisbn && digitalData.publication.group.title) {
+
+						return digitalData.publication.group.title.replace("&amp;", "&").replace("&apos;", "'").replace("&#233;", "é").replace("&#252;", "ü");
+					}
+					if (WileyDTM.hasSeries() && digitalData.publication.series.title) {
+						return digitalData.publication.series.title.replace("&amp;", "&").replace("&apos;", "'").replace("&#233;", "é").replace("&#252;", "ü");
+					}
+					return false;
+				},
+				getPublicationAccess: function() {
+					if (WileyDTM.hasGroup() && digitalData.publication.group.eisbn) return digitalData.publication.group.access;
+					if (WileyDTM.hasSeries()) return digitalData.publication.series.access;
+					return false;
+				},
+				getJournalCode: function() {
+					if (WileyDTM.getPublicationType() == "journal") return digitalData.publication.series.code;
+					return "";
+				},
+				getArticleFormats: function() {
+					if (WileyDTM.isArticle()) {
+						if (Array.isArray(digitalData.publication.item.formats)) return digitalData.publication.item.formats.join("|").replace("Full text", "HTML")
+
+						else return false;
+					}
+				},
+				getVolumeIssue: function() {
+					if (WileyDTM.hasGroup()) {
+						if (WileyDTM.checkVI()) {
+							return "Virtual Issue"
+						}
+						if (digitalData.publication.group.volume && digitalData.publication.group.issue) {
+							return digitalData.publication.group.volume + "/" + digitalData.publication.group.issue;
+						}
+					}
+					return false;
+
+				},
+				getIssueData: function() {
+					imap = {};
+					if (WileyDTM.getPublicationType() == "journal" && WileyDTM.hasGroup()) {
+						imap.issueTitle = digitalData.publication.group.title;
+						imap.issueDOI = digitalData.publication.group.doi;
+					}
+
+					return imap;
+				},
+				getTaxonomyMap: function() {
+					var tmap = {};
+					tmap.globalSubjects = [];
+					tmap.viCategories = [];
+					tmap.gptZoneName = "";
+					tmap.gptSiteName = "";
+
+					pubTopics = [];
+
+					if (WileyDTM.getPublicationType() == "journal") {
+						pubTopics = digitalData.publication.series.topics;
+						if (WileyDTM.hasGroup() && Array.isArray(digitalData.publication.group.topics)) {
+							digitalData.publication.group.topics.forEach(function(topic) {
+								if (topic.taxonomyUri && topic.taxonomyUri.indexOf("vi-categories") >= 0) {
+									tmap.viCategories.push(topic.topicLabel);
+								}
+							});
+						}
+					} else if (WileyDTM.getPublicationType() == "book") {
+						pubTopics = digitalData.publication.group.topics;
+					}
+
+					if (Array.isArray(pubTopics)) {
+						pubTopics.forEach(function(topic) {
+							if (topic.taxonomyUri) {
+								if (topic.taxonomyUri == "global-subject-codes") {
+									tmap.globalSubjects.push(topic.topicUri);
+								}
+								if (topic.taxonomyUri == "gpt-zonename") {
+									tmap.gptZoneName = topic.topicUri;
+								}
+								if (topic.taxonomyUri == "gpt-sitename") {
+									tmap.gptSiteName = topic.topicUri;
+								}
+							}
+						});
+					}
+					tmap.globalSubjectsString = tmap.globalSubjects.join("|");
+					tmap.viCategoriesString = tmap.viCategories.join("|");
+					return tmap
+				},
+				getIdentities: function() {
+					var imap = {};
+					imap.personUser = "";
+					imap.institutions = [];
+					if (digitalData.identities && Array.isArray(digitalData.identities)) {
+						digitalData.identities.forEach(function(identity) {
+							if (identity.type == "InstitutionUser") {
+								if (Array.isArray(identity.customerRecords)) {
+									identity.customerRecords.forEach(function(cr) {
+										imap.institutions.push(cr.customerDomain + ":" + cr.customerNumber);
+									});
+								}
+							} else if (identity.type == "PersonUser") {
+								if (Array.isArray(identity.customerRecords) && identity.customerRecords.length > 0) {
+									imap.personUser = identity.customerRecords[0].customerDomain + ":" + identity.customerRecords[0].customerNumber
+								}
+							}
+
+						});
+					}
+					imap.institutionsString = imap.institutions.join("|");
+					return imap;
+				},
+				isLoggedIn: function() {
+					if (WileyDTM.getIdentities().personUser) return true;
+					else return false;
+				},
+				getArticleAge: function() {
+					//in days
+					if (WileyDTM.isArticle()) {
+						if (digitalData.publication.item.earliestDate) {
+							if (typeof(Date.parse(digitalData.publication.item.earliestDate)) == "number") {
+								now = new Date();
+								pubDate = Date.parse(digitalData.publication.item.earliestDate);
+
+								timediff = now - Date.parse(digitalData.publication.item.earliestDate);
+								daydiff = Math.floor(timediff / (1000 * 60 * 60 * 24));
+								return daydiff;
+							}
+						}
+					}
+					return false;
+				},
+				getSearchData: function() {
+					searchData = {};
+					if (digitalData.page && digitalData.page.page && (digitalData.page.page == "Search Result" ||
+							digitalData.page.page == "Show Publications")) {
+						if (digitalData.search) {
+							searchData.type = digitalData.search.type;
+
+							if (digitalData.search.resultCounts) {
+								searchData.articleResults = digitalData.search.resultCounts.articlesChapters;
+								searchData.pubResults = digitalData.search.resultCounts.journalTitle;
+							}
+							if (digitalData.search.resultsDisplayed) {
+								searchData.sort = digitalData.search.resultsDisplayed.sort;
+								searchData.startPage = digitalData.search.resultsDisplayed.startPage;
+							}
+							if (digitalData.page.title.indexOf("[Earliest") >= 0) {
+								dfrag = digitalData.page.title.substring(digitalData.page.title.indexOf("[Earliest") + 11);
+								searchData.dateRange = dfrag.substring(0, dfrag.indexOf("]"))
+							}
+							if (digitalData.page.title.indexOf("[Publication Date") >= 0) {
+								searchData.dateRange = "Custom";
+							}
+
+							if (Array.isArray(digitalData.search.fields)) {
+								digitalData.search.fields.forEach(function(field) {
+									if (field.type == "AllField") {
+										searchData.searchTerm = searchData.searchTerm ? searchData.searchTerm : field.term[0];
+									}
+									if (field.type == "ContentGroupKey") {
+										searchData.title = field.term[0];
+									} else if (field.type == "SeriesKey") {
+										searchData.title = field.term[0];
+									}
+
+									if (field.type == "content") {
+										searchData.tab = field.term[0];
+									}
+									if (field.type == "PubType") {
+										searchData.pubType = field.term[0];
+									}
+									if (field.type == "ConceptID") {
+										if (field.term[0] == "15941") {
+											searchData.accessType = "Open Access";
+										} else {
+											searchData.subject = field.term[0];
+										}
+									}
+									if (field.type == "Title") {
+										searchData.advTitle = searchData.advTitle ? searchData.advTitle : field.term[0];
+									}
+									if (field.type == "ContribStored" || field.type == "ContribAuthorStored") {
+										searchData.authorFilter = true;
+									}
+
+									if (field.type == "target") {
+										searchData.mode = field.term[0];
+									}
+
+								});
+
+
+							}
+
+						}
+					}
+					return searchData;
+				}
+			};
+			WileyDTM.data = {
+				articleAge: WileyDTM.getArticleAge(),
+				publicationType: WileyDTM.getPublicationType(),
+				publicationDOI: WileyDTM.getPublicationDOI(),
+				publicationTitle: WileyDTM.getPublicationTitle(),
+				publicationAccess: WileyDTM.getPublicationAccess(),
+				volumeIssue: WileyDTM.getVolumeIssue(),
+				journalCode: WileyDTM.getJournalCode(),
+				tmap: WileyDTM.getTaxonomyMap(),
+				hasGroup: WileyDTM.hasGroup(),
+				issueData: WileyDTM.getIssueData(),
+				identities: WileyDTM.getIdentities(),
+				isLoggedIn: WileyDTM.isLoggedIn(),
+				isVI: WileyDTM.checkVI(),
+				articleFormats: WileyDTM.getArticleFormats(),
+				searchData: WileyDTM.getSearchData()
+			};
+		} catch (e) {
+			WileyDTM = {
+				'DTMError': 'WileyDTM failed: ' + e
+			};
+		}
+	} 
+	else {
+		WileyDTM = {
+			'DTMError': 'digitalData not defined'
+		};
+	}
+}
+</script><script>
+if(window.digitalData && digitalData.search && WileyDTM && WileyDTM.searchData){
+	if(digitalData.page.title.indexOf("[Earliest")>=0){
+		dfrag= digitalData.page.title.substring(digitalData.page.title.indexOf("[Earliest")+11);
+		WileyDTM.searchData.dateRange= dfrag.substring(0, dfrag.indexOf("]"))
+	}
+	if(digitalData.page.title.indexOf("[Publication Date")>=0){
+		WileyDTM.searchData.dateRange= "Custom";
+	}
+}
+
+
+</script><script>
+digitalData = window.digitalData ? digitalData : {};
+digitalData.event = digitalData.event || [];
+var lastEventData;
+
+digitalData.event.push = function (){
+	var newLength =  Array.prototype.push.apply(this,arguments),
+  		ev;
+  
+	if (arguments.length) {
+		ev = arguments[0];
+
+	    if (typeof ev === 'object') {
+			if (typeof ev.eventData === 'object') {
+				// send along entire eventData map
+				_satellite.setVar('eventData',ev.eventData); 
+			        window.console && console.log('Analytics eventData:');
+			        window.console && console.log(ev.eventData);
+        			lastEventData = ev.eventData;
+        
+			}
+			if (typeof ev.eventName === 'string') {
+				_satellite.track(ev.eventName);
+			        window.console && console.log('Analytics eventName:');
+			        window.console && console.log(ev.eventName);
+			}
+			digitalData.event.length=0; // TK refactor this later to handle multiple events
+		} else {
+	       	  _satellite.notify('No Analytics Event object - DataLayer Event requires a root object with eventName and optional eventData')
+	  	}
+	}
+  return newLength;
+ }
+
+
+</script><script>
+if(window.testad){
+	document.getElementsByTagName('DIV')[0].appendChild(testad);
+}
+
+</script><script>
+try{
+  
+  gtagjs = document.createElement('script');
+  gtagjs.setAttribute('src','https://www.googletagmanager.com/gtag/js?id=AW-973395369')
+  gtagjs.setAttribute('async','true')
+  document.getElementsByTagName('head')[0].appendChild(gtagjs);
+
+  dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-973395369');
+  gtag('event', 'page_view', {
+    'send_to': 'AW-973395369',
+    'publication': _satellite.getVar('pubTitle'),
+    'wol_subjects' : WileyDTM.getTaxonomyMap().globalSubjects,
+    'wol_publication_access':_satellite.getVar('publicationAccess')
+  });
+}
+catch(e){
+  
+}
+</script><script>
+try{for(var anchors=document.getElementsByTagName("a"),i=0;i<anchors.length;i++)anchors[i].getAttribute("href").match(/editorialmanager|manuscriptcentral|atyponrex|submission\.wiley\.com|main\.plex/i)&&anchors[i].setAttribute("target","_blank")}catch(e){}
+</script><script>
+!function(e,t,n,i,a,c){e.twq||((i=e.twq=function(){i.exe?i.exe.apply(i,arguments):i.queue.push(arguments)}).version="1.1",i.queue=[],(a=t.createElement(n)).async=!0,a.src="//static.ads-twitter.com/uwt.js",(c=t.getElementsByTagName(n)[0]).parentNode.insertBefore(a,c))}(window,document,"script"),twq("init","o2oym"),twq("track","PageView");
+</script><script>
+!function(e,t,a,l,i,o,n){e.fbq||(i=e.fbq=function(){i.callMethod?i.callMethod.apply(i,arguments):i.queue.push(arguments)},e._fbq||(e._fbq=i),(i.push=i).loaded=!0,i.version="2.0",i.queue=[],(o=t.createElement(a)).async=!0,o.src=l,(n=t.getElementsByTagName(a)[0]).parentNode.insertBefore(o,n))}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js"),window.fbq&&fbq("init","263124174624252"),"15318249"!=_satellite.getVar("journalCode")&&"123289503"!=_satellite.getVar("journalCode")||window.fbq&&fbq("init","2240878159265939"),window.fbq&&fbq("trackCustom","WOLPageView",{articleDoi:_satellite.getVar("articleDoi"),subjects:_satellite.getVar("globalSubjectString").split("|"),publicationDoi:_satellite.getVar("pubDoi"),pagePath:_satellite.getVar("pageGroup")+"|"+_satellite.getVar("pageTemplate")+"|"+_satellite.getVar("pageSubtype"),publicationTitle:_satellite.getVar("pubTitle"),publicationType:_satellite.getVar("pubType"),hub:_satellite.getVar("website")});
+</script><script>
+gaLoader=window.gaLoader?window.gaLoader:{},gaLoader.base="UA-68565440-",gaLoader.sites=["anthrosource","aapm","agupubs","aasldpubs","aslopubs","bpspubs","esajournals","physoc","iubmb","ascpt","stemcellsjournals","theoncologist"],gaLoader.accounts=["3","12","2","4","6","11","7","5","8","9","10","14"],gaLoader.load=function(){for(siteID=window._satellite&&_satellite.getVar("website"),siteIndex=-1,accountID="",i=0;i<gaLoader.sites.length;i++)0<=siteID.indexOf(gaLoader.sites[i])&&(siteIndex=gaLoader.accounts[i],accountID=gaLoader.base+siteIndex);var e,a,t,s,o,c,n;0<=siteID.indexOf("awwa")&&(window.customGASite="awwa",accountID="UA-36233426-1"),window._satellite&&"10.1002/(ISSN)1549-490X"==_satellite.getVar("pubDoi")&&(window.customGASite="onco",accountID="UA-68565440-10"),(0<=siteIndex||window.customGASite)&&(e=window,a=document,t="script",s="//www.google-analytics.com/analytics.js",o="ga",e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,c=a.createElement(t),n=a.getElementsByTagName(t)[0],c.async=1,c.src=s,n.parentNode.insertBefore(c,n),window.ga&&(ga("create",accountID,"auto","hubsGA"),window.customGASite&&"awwa"===customGASite?gaLoader.trackHubPV(!1):gaLoader.trackHubPV(!0)))},gaLoader.trackHubPV=function(e){try{if(window.ga){!function(){var e=document.location.search.replace("?","").split("&");for(i=0;i<e.length;i++){var a=e[i].split("=");"campaign"==a[0]&&(ga("hubsGA.set","campaignName",a[1]),ga("hubsGA.set","campaignId",a[1]),ga("hubsGA.set","campaignSource","wiley"),ga("hubsGA.set","campaignMedium","wiley"))}}();var a=document.location.href;_satellite.getVar("pageSubtype")&&"Access Denial"===_satellite.getVar("pageSubtype")&&(a=document.location.protocol+"//"+document.location.host+document.location.pathname+"-accessdenied"+document.location.search+document.location.hash,e&&ga("hubsGA.set","metric1",1)),e&&(_satellite.getVar("pubDoi")&&ga("hubsGA.set","dimension1",_satellite.getVar("pubDoi")),_satellite.getVar("pubTitle")&&ga("hubsGA.set","dimension2",_satellite.getVar("pubTitle")),_satellite.getVar("articleDoi")&&ga("hubsGA.set","dimension3",_satellite.getVar("articleDoi")),_satellite.getVar("articleTitle")&&ga("hubsGA.set","dimension4",_satellite.getVar("articleTitle"))),document.location.href.indexOf("/epdf")<1&&(ga("hubsGA.send","pageview",a),e&&(ga("hubsGA.set","metric1",0),ga("hubsGA.set","metric2",0),ga("hubsGA.set","metric3",0),ga("hubsGA.set","metric5",0)))}}catch(t){}},gaLoader.load();
+</script><div id="pt-ext-root"></div><script>_satellite["_runScript1"](function(event, target, Promise) {
+try{ereaderdata=readerAtmEventData,ereaderdata.manuallycalled=!0,digitalData.event.push({eventName:readerAtmEventName,eventData:readerAtmEventData})}catch(e){}
+});</script><script>
+window.ga&&(ga("set","metric2",1),ga("send","pageview",document.location.href),ga("set","metric2",0));
+</script><script>
+window.fbq&&fbq("trackCustom","FullTextArticle",{articleDoi:_satellite.getVar("articleDoi"),subjects:_satellite.getVar("globalSubjectString").split("|"),publicationDoi:_satellite.getVar("pubDoi"),pagePath:_satellite.getVar("pageGroup")+"|"+_satellite.getVar("pageTemplate")+"|"+_satellite.getVar("pageSubtype"),publicationTitle:_satellite.getVar("pubTitle"),publicationType:_satellite.getVar("pubType"),hub:_satellite.getVar("website")});
+</script><script>
+try{articleAccess=eventData.publication.item.access,metisBase="https://wiley.met.vgwort.de/na/",metisDOI=eventData.publication.item.doi.split("/").join("-");var metisPixel=document.createElement("img");metisFreePage="free"==articleAccess||"open"==articleAccess||"freeToRead"==articleAccess,metisPWPage="full"==articleAccess,publisherID="vgzm.60650-",metisFreePage&&(metisPixel.src=metisBase+publisherID+metisDOI,document.body.appendChild(metisPixel)),metisPWPage&&(metisPixel.src=metisBase+"pw-"+publisherID+metisDOI,document.body.appendChild(metisPixel))}catch(e){}
+</script><script>
+window.ga&&(ga("set","metric2",1),ga("send","pageview",document.location.href),ga("set","metric2",0));
+</script><script>
+window.fbq&&fbq("trackCustom","FullTextArticle",{articleDoi:_satellite.getVar("articleDoi"),subjects:_satellite.getVar("globalSubjectString").split("|"),publicationDoi:_satellite.getVar("pubDoi"),pagePath:_satellite.getVar("pageGroup")+"|"+_satellite.getVar("pageTemplate")+"|"+_satellite.getVar("pageSubtype"),publicationTitle:_satellite.getVar("pubTitle"),publicationType:_satellite.getVar("pubType"),hub:_satellite.getVar("website")});
+</script><script>
+try{articleAccess=eventData.publication.item.access,metisBase="https://wiley.met.vgwort.de/na/",metisDOI=eventData.publication.item.doi.split("/").join("-");var metisPixel=document.createElement("img");metisFreePage="free"==articleAccess||"open"==articleAccess||"freeToRead"==articleAccess,metisPWPage="full"==articleAccess,publisherID="vgzm.60650-",metisFreePage&&(metisPixel.src=metisBase+publisherID+metisDOI,document.body.appendChild(metisPixel)),metisPWPage&&(metisPixel.src=metisBase+"pw-"+publisherID+metisDOI,document.body.appendChild(metisPixel))}catch(e){}
+</script><div class="material-viewer">
+    <nav class="material-viewer_reg_top navbar" role="banner" aria-label="Toolbar">
+        <div class="btn-group material-viewer_top_left">
+            <div class="d-block d-md-none">
+                <div class="element-view">
+                    <div class="grouped">
+                        <button class="btn material-viewer_ctrl_caption" title="Element menu" type="button" tabindex="0">
+                            <span class="icon material-icons">sort</span>
+                        </button>
+                    </div>
+                    <div class="grouped">
+                        <!-- previous figure button -->
+                        <button class="btn material-viewer_ctrl_prev" title="Previous" type="button" tabindex="0">
+                            <span class="icon material-icons flip-horizontal">play_circle_filled</span>
+                        </button>
+                        <!-- next figure button -->
+                        <button class="btn material-viewer_ctrl_next" title="Next" type="button" tabindex="0">
+                            <span class="icon material-icons">play_circle_filled</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid-view">
+                    <button class="btn material-viewer_ctrl_return small" title="Return" type="button" tabindex="0">
+                        <span class="icon material-icons">arrow_back</span>
+                        <span class="text">BACK</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grouped d-none d-md-block">
+                <h2 class="material-viewer_title material-viewer_title_chapter" title="Chapter Title">chapter title
+                    here</h2>
+            </div>
+        </div>
+
+        <div class="btn-group material-viewer_top_center d-none d-md-flex">
+            <div class="element-view flex-container">
+                <div class="grouped">
+                    <h2 class="material-viewer_title material-viewer_title_text" title="Element Title" tabindex="0">figure title
+                        here</h2>
+                </div>
+
+                <div class="grouped download-toggle-hidden">
+                    <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" target="_blank" class="btn media__download" title="Download element" download="" aria-label="download element" tabindex="0">
+                        <span class="icon material-icons">get_app</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid-view">
+                <div class="grouped dropdown-widget">
+                    <button id="dropdownSort" class="dropdown-trigger btn" title="Select filtering" type="button" tabindex="0" aria-label="select filtering" aria-haspopup="true" aria-expanded="false">
+                        <span class="sorting_title_selection"><span class="text">All Materials</span>&nbsp;(<span class="counter">0</span>)</span>
+                        <span class="animated_arrow_down"></span>
+                    </button>
+
+                    <div class="dropdown-content materialViewer-sorting" aria-labelledby="dropdownSort">
+                        <div class="panels" data-vport="767" data-panel-desktop="materialViewerSorting">
+                            <fieldset class="sorting-list">
+                                <legend class="d-block d-md-none">SHOW</legend>
+                                <input type="radio" name="sorting-type" value="all" id="all-radio" class="on_light_bg" checked="">
+                                <label for="all-radio">
+                                    <span class="text">All materials</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="figure" id="image-radio" class="on_light_bg">
+                                <label for="image-radio">
+                                    <span class="text">Figures</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="table" id="table-radio" class="on_light_bg">
+                                <label for="table-radio">
+                                    <span class="text">Tables</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="video" id="video-radio" class="on_light_bg">
+                                <label for="video-radio">
+                                    <span class="text">Videos</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="audio" id="audio-radio" class="on_light_bg">
+                                <label for="audio-radio">
+                                    <span class="text">Audio files</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="code" id="code-radio" class="on_light_bg">
+                                <label for="code-radio">
+                                    <span class="text">Code snippets</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+
+                                <input type="radio" name="sorting-type" value="supplement" id="supplements-radio" class="on_light_bg">
+                                <label for="supplements-radio">
+                                    <span class="text">Other files</span>&nbsp;
+                                    <span class="counter">0</span>
+                                </label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group material-viewer_top_right">
+            <div class="grouped element-view material-viewer_zoom d-none d-md-inline-flex">
+
+                <button class="btn zoom-fit width" title="Fit Width" aria-label="fit width">
+                    <span class="icon material-icons">fullscreen</span>
+                </button>
+
+                    <button class="btn zoom-fit height d-none" title="Fit Height" aria-label="fit height">
+                        <span class="icon material-icons">fullscreen_exit</span>
+                    </button>
+
+                <!-- ZOOM OUT button -->
+                <button class="zoom-out btn" title="Zoom Out" type="button" tabindex="0" aria-label="zoon out">
+                    <span class="icon material-icons">remove_circle_outline</span>
+                </button>
+                <!-- ZOOM IN  button -->
+                <button class="zoom-in btn" title="Zoom In" type="button" tabindex="0" aria-label="zoom in">
+                    <span class="icon material-icons">add_circle_outline</span>
+                </button>
+            </div>
+
+            <div class="grouped material-viewer_navigation d-none d-md-inline-flex">
+                <!-- previous figure button -->
+                <button class="btn material-viewer_ctrl_prev" title="Previous" type="button" tabindex="0" aria-label="previous figure">
+                    <span class="icon material-icons flip-horizontal">play_circle_filled</span>
+                </button>
+                <!-- next figure button -->
+                <button class="btn material-viewer_ctrl_next" title="Next" type="button" tabindex="0" aria-label="next figure">
+                    <span class="icon material-icons">play_circle_filled</span>
+                </button>
+            </div>
+
+            <div class="grouped">
+                <div class="element-view">
+                    <button class="btn material-viewer_ctrl_browse" title="Browse all elements" type="button" tabindex="0" aria-label="browse all elements">
+                        <span class="icon reader-material-gallery"></span>
+                    </button>
+                </div>
+
+                <div class="grid-view">
+                    <div class="d-none d-md-inline-block">
+                        <button class="btn material-viewer_ctrl_return small" title="Return" type="button" tabindex="0" aria-label="return">
+                            <span class="icon material-icons">arrow_back</span>
+                            <span class="text">BACK</span>
+                        </button>
+                    </div>
+                    <div class="d-block d-md-none">
+                        <button class="btn material-viewer_ctrl_sorting" title="Browse sorting options" type="button" tabindex="0" aria-label="browse sorting options">
+                            <span class="icon reader-filter"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grouped">
+                <button class="btn material-viewer_ctrl_close small" title="Close viewer" type="button" tabindex="0" data-tooltip-position="bottom" browse="" sorting="" options="">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="material-viewer_reg_center">
+        <div class="material-viewer_cent_left js-open">
+            <button class="material-viewer_ctrl_caption toggle_sidebar_button btn btn--aside d-none d-md-inline-flex" title="Toggle element details" type="button" tabindex="0" aria-label="toggle element details">
+                <span class="icon reader-double-arrow flip-horizontal"></span>
+            </button>
+            <div class="material-viewer_figCaption">
+                <div class="material-viewer_figCaption_top">
+                    <h3 class="subheader material-viewer_title_text" tabindex="0">figure title here</h3>
+                    <div class="fig-download d-md-none">
+                        <a href="https://agupubs.onlinelibrary.wiley.com/doi/epdf/10.1002/2014WR015386" target="_blank" class="media__download" title="Download element" role="link" download="" tabindex="0">
+                            <span class="icon material-icons">get_app</span>
+                        </a>
+                    </div>
+                </div>
+                <div id="caption-tab-pane">
+                    <div class="paddedPane mediumText js__caption" tabindex="0"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="material-viewer_cent_center js-open">
+            <div class="material-viewer_hold_fig">
+                <figure class="holder"></figure>
+            </div>
+            <div class="material-viewer_hold_list"></div>
+        </div>
+
+        <div class="material-viewer_cent_right">
+            <div class="scrollingContainer">
+                <h3 class="subTitle sorting_title_selection">All Materials</h3>
+                <h4 class="mediumText d-block d-md-none material-viewer_title_chapter" title="Publication Title">publication
+                    title here</h4>
+                <div class="panels" data-vport="767" data-panel-mobile="materialViewerSorting"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
