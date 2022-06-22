@@ -1,4 +1,4 @@
-# # Copyright (C) 2020 Ben S. Lee
+# # Copyright (C) 2022 Ben S. Lee
 #email: slee287@gmu.edu
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,40 +13,43 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-# We remove the variance parameter for the lGM
+##############################################################################################################################
+# mcmc_source_Tr.R: Helper file for the fast particle-based approach for computer model calibration
+##############################################################################################################################
+# Load the necessary libraries
+library(invgamma); library(mvtnorm); library(tmvtnorm)
 
-# Libraries ---------------------------------------------------------------
-library(invgamma);
-library(mvtnorm);
-library(tmvtnorm)
-
-# Parameters --------------------------------------------------------------
+# Model Parameters
+# Parameter Names
 parNames<-c("PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" ,
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
-
-boundMat<-rbind(c(0, 5) , # PCTIM 0.3=original maximum
-                c(0 , 2), # ADIMP 0.5=original maximum
+# Parameter Bounds
+boundMat<-rbind(c(0, 5) , # PCTIM 
+                c(0 , 2), # ADIMP 
                 c(-50 , -0.1), # UZTWM
                 c(-70 , -0.1), # LZTWM
                 c(-100 , -0.1), # LZFSM
-                c(-100 , -0.1), # LZFPM Old -120
+                c(-100 , -0.1), # LZFPM 
                 c(-3.8 , -0.1), # LZSK
                 c(0.5 , 1.5), # snow_SCF
                 c(-3.5 , -0.1), # REXP
                 c(-3.5 , -0.1), # UZK
                 c(0.5,4.5), # rutpix_Q0CHN
-                c(0.3,1.9)) # rutpix_QMCHN Use Original: 3.4 ; BPrior: 2.25 
-
-rownames(boundMat)<-parNames
-colnames(boundMat)<-c("lower","upper")  
+                c(0.3,1.9)) # rutpix_QMCHN
+rownames(boundMat)<-parNames; colnames(boundMat)<-c("lower","upper")  
+# Update parNames with the observational error variance S2
 parNames<-c("S2",
             "PCTIM" , "ADIMP" , "UZTWM" ,"LZTWM" , 
             "LZFSM" , "LZFPM" , "LZSK" , "snow_SCF" , 
             "REXP" , "UZK" , "Q0CHN" , "QMCHN")
 
-originalBoundMat<-boundMat
+# Keep the original bounds matrix in the workspace as originalBoundMat
+originalBoundMat<-boundMat # Original Bounds Matrix
+
+# Functions to transform from the original bouns to new bounds (0,10)
+# New bounds scale from 0 to 10, which helps in the particle-based approach
+
 rep2orig<-function(par){ # Convert from reparameterized to original parameters
   c(par[1],par[-1]*(originalBoundMat[,2]-originalBoundMat[,1])/10+originalBoundMat[,1])
 }
@@ -55,31 +58,25 @@ orig2rep<-function(par){ # Convert from original parameters to reparameterized
   c(par[1],10*(par[-1]-originalBoundMat[,1])/(originalBoundMat[,2]-originalBoundMat[,1]))
 }
 
-priorPar<-rbind(c(0.2,0.2), # Inverse Gamma Hyperparameters
-                cbind(rep(0,12),rep(10,12)))
-
-
+# Create matrix for the prior distributions. 
+priorPar<-rbind(c(0.2,0.2), # Inverse Gamma Hyperparameters a=0.2 and b=0.2
+                cbind(rep(0,12),rep(10,12))) # All model parameters are bounded from 0 to 10
 ##################################################################################################################
-# Observations
+# Load Observational Data
 load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/input/obsData.RData")
 ##################################################################################################################
-# Load Source for RWrapper and Forward Model 
-if(FALSE){
-  source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run_rep_var/rWrapper_Continuous_Fast.R")  
-}else{
-  source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run_rep_var/rWrapper_Continuous.R")  
-}
+# Load Source for RWrapper and Computer Model 
+source("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/run_rep_var/rWrapper_Continuous.R")  
 ##################################################################################################################
-# Priors 
-logPrior<-function(par , priorPar){
+# Functions:
+# The following lines provide functions seen in the main calibration script Parallel_MPI.R
+logPrior<-function(par , priorPar){ # Prior Distribution
   lpriorVal<-sum(dunif(x = par[-1] , min = priorPar[-1,1] , max = priorPar[-1,2] , log = TRUE),
                  dinvgamma( x = par[1] , shape = priorPar[1,1] , rate = priorPar[1,2] , log = TRUE ))
 }
 
-# Likelihood
+# Likelihood Function
 logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
-  # Add TRYCatch here 
-  
   output<-modelEval(par=par, j=j , inputDir=inputDir , outputDir=outputDir) # Evaluate Model and Obtain output
   sigma2<-par[1] # Variance Parameter
   lenOut<-length(output[[1]])
@@ -87,34 +84,37 @@ logLikelihood_temper<-function(par, obs , j , inputDir , outputDir , temper){
   return(list(llhd,output))
 }
   
-# Posterior 
+# Posterior Distribution
 logPosterior_temper<-function(par , priorPar , obs , inputDir , outputDir , j , temper){
-  lPri<-logPrior( par = par , priorPar = priorPar )
+  lPri<-logPrior( par = par , priorPar = priorPar ) # Prior Distribution
   if(lPri==-Inf){
-    return(-1e10)
+    return(-1e10) # Very small number if the log prior outputs -Inf
   }else{
-    usePar<-rep2orig(par) # Reparameterize
+    usePar<-rep2orig(par) # Transform the proposed parameters to the original scale 
     llhd<-logLikelihood_temper(par = usePar, obs = obs , j = j , inputDir = inputDir , outputDir = outputDir , temper=temper)
-    lpostVal<-lPri+llhd[[1]]
-    output<-llhd[[2]]
+    lpostVal<-lPri+llhd[[1]] # Compute Log posterior 
+    output<-llhd[[2]] # Save the output
     return(list(lpostVal,output))
   }
 }
 #######################################################################################################
-# Function to Calculate New Likelihood with respect to tempering 
+# Function for Parts 1A and 1B: This is related to the importance sampling part. 
+#######################################################################################################
+# calcPF: Compute the tempered likelihood value using data from the previous cycle
 calcPF<-function(cycle,jobNum,llhdTemper,mcmcTemper,initResults, priorPar){
-  par<-parMat[jobNum,]
+  par<-parMat[jobNum,] # Parameters
+  names(par)<-parNames # Parameter names
   ################################################################################################
-  names(par)<-parNames
-  ################################################################################################
-  lprior<-logPrior(par=par, priorPar=priorPar)
-  llhd<-((initResults[[1]]-lprior)/mcmcTemper)*llhdTemper
+  lprior<-logPrior(par=par, priorPar=priorPar) # Compute log prior
+  llhd<-((initResults[[1]]-lprior)/mcmcTemper)*llhdTemper # Calculate the new tempered likelihood using the identity below
+  # lld_t*(sum_{i=1}^{t}gamma_i/gamma_t)+lprior=lpost_{t-1}
+  # L(\theta|Z)^{sum_{i=1}^{t-1}gamma_i}*P(\theta)\propto P_{t-1}(\theta|Z) # Posterior at the t-1 cycle
   results<-initResults[[2]]
   return(list(llhd,results))
 }
 
 #############################################################################
-# MCMC 
+# Function for the Mutation Stage via Metropolis-Hastings 
 #############################################################################
 mcmcManual_tempered<-function(iter,
                               init,
@@ -200,7 +200,7 @@ mcmcManual_tempered<-function(iter,
 }
 
 ########################################################################################################
-# Acceptance Rate
+# Function to Compute the Acceptance Rate
 ########################################################################################################
 accRateFunc<-function(x){
   accRate<-(length(unique(x))-1)/(length(x)-1)
@@ -287,7 +287,6 @@ combineIS<-function(cycle,cumulTemp,prop=0.5,ens){
 ########################################################################
 ########################################################################
 # Function to combine Mutation output 
-
 combineMH<-function(cycle,ens,stage){
   setwd("/glade/scratch/sanjib/runA_rep_var/output/")
 fileDirLoad<-list.files(pattern =  paste("MCMC_",cycle,"_",stage,"_",sep=""))
@@ -332,9 +331,7 @@ for(i in 1:length(fileDirLoad)){
 #Initial Results for next run
 initResultsList<-list(weightVect,resultsList)
 
-
-# Save 
-# total particles
+# Save Total particles
 save(TotalParMat,
      file=paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep_var/totalParticles_",cycle,".RData",sep=""))
 
@@ -366,18 +363,18 @@ combineTotalParticles<-function(cycle){
 # This uses the scaling factor from Rosenthal et. al (2008)
 ########################################################################
 genPropMat<-function(cycle,scale){
+  # Load data from the resampling portion
   load(paste("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep_var/rsParameters_",cycle,".RData",sep=""))
-  
-  # Covariance Matrix
+  # Combine particles and generate the covariance matrix for the proposal distribution
   if(cycle==1){
-    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep_var/BeginCovMat_Tr.RData")
-    CovMat<-CovMat*scale # Optimal proposal from Rosenthal et al. (2008)
+    load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep_var/BeginCovMat_Tr.RData") # Initial Data
+    CovMat<-CovMat*scale # Scale it accordingly
   }else{
     load("/glade/u/home/sanjib/FamosHydroModel/Official_Fast/output_rep_var/masterTotalParticles.RData")
-    TotalParMat<-rbind(masterTotalParticles,parMat)
-    uniqueID<-!duplicated(TotalParMat[,2])
-    TotalParMat<-TotalParMat[uniqueID,]
-    colnames(TotalParMat)<-parNames
+    TotalParMat<-rbind(masterTotalParticles,parMat) # Combine the particles from the resampling step
+    uniqueID<-!duplicated(TotalParMat[,2]) # remove duplicated particles
+    TotalParMat<-TotalParMat[uniqueID,] # Keep the unique particles 
+    colnames(TotalParMat)<-parNames # Parameter Names
     #####################################################################################################################
     CovMat<-cov(TotalParMat[,-1])*((2.38^2)/ncol(TotalParMat[,-1]))*scale # Optimal proposal from Rosenthal et al. (2008)
   }
