@@ -61,7 +61,7 @@ for(jobNum in 1:nrow(parMat)){
 temperVal<-list()
 temperVal$cumulative<-0
 temperVal$incremental<-0
-save(temperVal,file="output_rep/temperVal_0.RData")
+save(temperVal,file="output_rep_var/temperVal_0.RData")
 
 # Generate Covariance matrix for proposal
 # 1. Compute Weights
