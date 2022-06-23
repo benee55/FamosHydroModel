@@ -94,7 +94,7 @@ foreach::foreach(jobNum=1:ens) %dopar% {
   if(cycle==1){
     CovMat<-genPropMat(cycle=cycle,scale=1) # Cycle 1
   }else{
-    CovMat<-genPropMat(cycle=cycle,scale=0.5) # All subsequent cycles. We choose these values based on the overall performance
+    CovMat<-genPropMat(cycle=cycle,scale=0.2) # All subsequent cycles. We choose these values based on the overall performance
   }
   initResults<-list(initResultsList[[1]][jobNum],initResultsList[[2]][[jobNum]]) # Combine the output results from Part 1B. 
   # Particle Mutation: This performs an all-at-once update of the Metropolis-Hastings algorithm. 
